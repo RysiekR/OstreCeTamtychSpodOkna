@@ -7,6 +7,7 @@
 
         while (playerPokemon.HP > 0 && enemyPokemon.HP > 0)
         {
+            DisplayBattleUI(playerPokemon, enemyPokemon);
             Console.WriteLine("Wybierz akcję: \n1. Atak \n2. Leczenie");
             string? userInput = Console.ReadLine();
 
@@ -36,6 +37,16 @@
             Console.WriteLine("Wygrałeś walkę!");
         else
             Console.WriteLine("Przegrałeś walkę...");
+
+        static void DisplayBattleUI(Pokemon playerPokemon, Pokemon enemyPokemon)
+        {
+            Console.Clear(); 
+            Console.WriteLine("==== Walka Pokemon ====");
+            Console.WriteLine($"{"Gracz:",-15} {playerPokemon.Name,15} {"HP:",-4} {playerPokemon.HP,3} / {playerPokemon.MaxHP,3}");
+            Console.WriteLine($"{"Przeciwnik:",-15} {enemyPokemon.Name,15} {"HP:",-4} {enemyPokemon.HP,3} / {enemyPokemon.MaxHP,3}");
+            Console.WriteLine("=======================");
+        }
+        Console.ReadKey();
     }
 }
 
@@ -45,11 +56,13 @@ class Pokemon
     public int HP { get; set; }
     public int AttackPower { get; set; }
     public int HealPower { get; set; }
+    public int MaxHP { get; private set; }
 
     public Pokemon(string name, int hp, int attackPower, int healPower)
     {
         Name = name;
         HP = hp;
+        MaxHP = hp;
         AttackPower = attackPower;
         HealPower = healPower;
     }
