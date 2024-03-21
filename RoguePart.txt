@@ -1,20 +1,21 @@
 Player player = new();
 
 //inicializacja wyswietlania mapy i wsadzenie gracza na mape
-Display.Initialize(Display.baseMap,player);
+Display.Initialize(Display.baseMapBig,player);
 
 // !!! ACHTUNG ! ACHTUNG !!! endless loop
 //oddanie kontroli nad pozycja gracza w rece gracza
 while (true) 
 {
-player.UpdatePos();
+    
+    player.UpdatePos(Display.baseMapBig);
     
 }
 class Player
 {
     public int row = 3;
     public int col = 5;
-    public void UpdatePos()
+    public void UpdatePos(string[] jakaMapa)
     {
         int oldRow = row;
         int oldCol = col;
@@ -23,19 +24,19 @@ class Player
         switch (Console.ReadKey(true).Key)
         {
             case ConsoleKey.W :
-                if(!(Display.baseMap[row-1][col] == 'W')) { row--; }
+                if(!(jakaMapa[row-1][col] == 'W')) { row--; }
                 else { hitObstacle = true; }
                 break;
             case ConsoleKey.S:
-                if (!(Display.baseMap[row + 1][col] == 'W')) { row++; }
+                if (!(jakaMapa[row + 1][col] == 'W')) { row++; }
                 else { hitObstacle = true; }     
                 break;
             case ConsoleKey.A:
-                if (!(Display.baseMap[row][col - 1] == 'W')) { col--; }
+                if (!(jakaMapa[row][col - 1] == 'W')) { col--; }
                 else { hitObstacle = true; }
                 break;
             case ConsoleKey.D:
-                if (!(Display.baseMap[row][col + 1] == 'W')) { col++; }
+                if (!(jakaMapa[row][col + 1] == 'W')) { col++; }
                 else { hitObstacle = true; }
                 break;
         }
@@ -68,8 +69,26 @@ class Display
     "W          W",
     "WWWWWWWWWWWW",
 };
+    public static readonly string[] baseMapBig =
+{
+    "WWWWWWWWWWWWWWWWWWWWWWWWW",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "WWWWWWWWWWWWWWWWWWWWWWWWW",
+};
 
-    // TODO zamiast strin[] map wsadzic enuma chyba bedzzie ladnie i fajnie :)
     public static void Initialize(string[] map,Player gracz)
     {
 
