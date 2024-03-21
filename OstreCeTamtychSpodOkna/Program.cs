@@ -1,7 +1,15 @@
-﻿class Program
+﻿using Microsoft.VisualBasic;
+using Terminal.Gui;
+using System.Data;
+
+public class Program
 {
     static void Main()
     {
+        Application.Run<BattleWindow>();
+        //Console.WriteLine ($"Username: {((BattleWindow)Application.Top).usernameText.Text}");
+        Application.Shutdown();
+
         var playerPokemon = new Pokemon("Pikachu", 100, 30, 10);
         var enemyPokemon = new Pokemon("Charmander", 100, 20, 5);
 
@@ -11,6 +19,7 @@
 
         while (playerPokemon.HP > 0 && enemyPokemon.HP > 0)
         {
+
             string? userInput = Console.ReadLine();
             BattleUI.ClearLastLine();
 
@@ -42,6 +51,71 @@
 
         Console.ReadKey();
     }
+
+    public class BattleWindow : Window
+    {
+        public BattleWindow()
+        {
+            var attackButton = new Button()
+            {
+                Text = "Attack!",
+                X = 10,
+                Y = 10,
+                IsDefault = true,
+            };
+            attackButton.Clicked += () =>
+                        {
+                            Console.Beep(1000, 1800);
+                        };
+            var skillsButton = new Button()
+            {
+                Text = "Skills",
+                X = 20,
+                Y = 20,
+                IsDefault = true,
+            };
+            skillsButton.Clicked += () =>
+                        {
+                            var skillsDialog = new Dialog("Choose a skill", 60, 20)
+                            {
+                                X = Pos.Center(),
+                                Y = Pos.Center()
+                            };
+                            foreach (Skill element in skillList)
+                            {
+                                var skillButton = new Button($"{element.Name}")
+                                {
+                                    IsDefault = true,
+                                };
+                                skillsDialog.AddButton(skillButton);
+                            }
+                            var differentButton = new Button("Different")
+                            {
+                                X = 6,
+                                Y = 6,
+                                IsDefault = true,
+                            };
+                            // Dodanie przycisku do zamknięcia okna dialogowego
+                            skillsDialog.AddButton(differentButton);
+
+                            differentButton.Clicked += () =>
+                            {
+                                Application.RequestStop();
+                            };
+
+                            Application.Run(skillsDialog);
+                        };
+            Add(attackButton, skillsButton);
+        }
+
+    }
+    public static List<Skill> skillList = new List<Skill>()
+{
+    new Skill ("Thunderbolt", "Electric", 90, 100),
+    new Skill ("Flamethrower", "Fire", 90, 100),
+    new Skill ("Ice Beam", "Ice", 90, 100),
+    new Skill ("Psychic", "Psychic", 90, 100)
+};
 }
 class BattleUI
 {
@@ -69,17 +143,17 @@ class BattleUI
         Console.Write($"{enemyPokemon.HP} / {enemyPokemon.MaxHP}");
         Console.WriteLine();
         Console.WriteLine();
-        
+
         Console.SetCursorPosition(cursorLeft, cursorTop);
         // Console.Write(new string(' ', Console.WindowWidth)); 
     }
     public static void ClearLastLine()
-{
-    //Console.Write("\r" + new string(' ', Console.WindowWidth - 1) + "\r");
-    Console.SetCursorPosition(0, Console.CursorTop);
-    Console.Write(new string(' ', Console.BufferWidth));
-    Console.SetCursorPosition(0, Console.CursorTop - 1);
-}
+    {
+        //Console.Write("\r" + new string(' ', Console.WindowWidth - 1) + "\r");
+        Console.SetCursorPosition(0, Console.CursorTop);
+        Console.Write(new string(' ', Console.BufferWidth));
+        Console.SetCursorPosition(0, Console.CursorTop - 1);
+    }
 }
 class Pokemon
 {
@@ -108,4 +182,20 @@ class Pokemon
         this.HP += this.HealPower;
         Console.WriteLine($"{this.Name} użył leczenia, przywracając {this.HealPower} HP.");
     }
+}
+public class Skill
+{
+    public string Name { get; }
+    public string Type { get; }
+    public int Power { get; }
+    public int Accuracy { get; }
+
+    public Skill(string name, string type, int power, int accuracy)
+    {
+        Name = name;
+        Type = type;
+        Power = power;
+        Accuracy = accuracy;
+    }
+
 }
