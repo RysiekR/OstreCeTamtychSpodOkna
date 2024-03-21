@@ -109,3 +109,79 @@ class Pokemon
         Console.WriteLine($"{this.Name} użył leczenia, przywracając {this.HealPower} HP.");
     }
 }
+
+/*
+
+Player player = new();
+
+
+//inicializacja wyswietlania mapy i wsadzenie gracza na mape
+Display.Initialize(Display.baseMap, player);
+
+// !!! ACHTUNG ! ACHTUNG !!! endless loop
+//oddanie kontroli nad pozycja gracza w rece gracza
+while (true)
+{
+    player.UpdatePos();
+
+}
+class Player
+{
+    public int row = 3;
+    public int col = 5;
+    public void UpdatePos()
+    {
+        switch (Console.ReadKey(true).Key)
+        {
+            case ConsoleKey.W:
+                row--;
+                break;
+            case ConsoleKey.S:
+                row++;
+                break;
+            case ConsoleKey.A:
+                col--;
+                break;
+            case ConsoleKey.D:
+                col++;
+                break;
+        }
+        Console.SetCursorPosition(this.col, this.row);
+        Console.Write("#");
+    }
+}
+
+class Display
+{
+    //no mapa kurwa
+    public static readonly string[] baseMap =
+{
+    "WWWWWWWWWWWW",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "WWWWWWWWWWWW",
+};
+
+    // TODO zamiast strin[] map wsadzic enuma chyba bedzzie ladnie i fajnie :)
+    public static void Initialize(string[] map, Player gracz)
+    {
+        //narysowanie mapy "row by row"
+        foreach (string row in map)
+        {
+            Console.WriteLine(row);
+        }
+
+        //wrzucenie gracza na mape
+        Console.SetCursorPosition(gracz.col, gracz.row);
+        Console.Write("#");
+        Console.CursorVisible = false;
+    }
+}
+
+*/
