@@ -95,7 +95,7 @@ public class Program
                                 Y = 6,
                                 IsDefault = true,
                             };
-                            // Dodanie przycisku do zamknięcia okna dialogowego
+                            //Dodanie przycisku do zamknięcia okna dialogowego
                             skillsDialog.AddButton(differentButton);
 
                             differentButton.Clicked += () =>
@@ -197,5 +197,4 @@ public class Skill
         Power = power;
         Accuracy = accuracy;
     }
-
 }

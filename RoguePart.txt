@@ -1,0 +1,107 @@
+Player player = new();
+
+//inicializacja wyswietlania mapy i wsadzenie gracza na mape
+Display.Initialize(Display.baseMapBig,player);
+
+// !!! ACHTUNG ! ACHTUNG !!! endless loop
+//oddanie kontroli nad pozycja gracza w rece gracza
+while (true) 
+{
+    
+    player.UpdatePos(Display.baseMapBig);
+    
+}
+class Player
+{
+    public int row = 3;
+    public int col = 5;
+    public void UpdatePos(string[] jakaMapa)
+    {
+        int oldRow = row;
+        int oldCol = col;
+        bool hitObstacle = false;
+
+        switch (Console.ReadKey(true).Key)
+        {
+            case ConsoleKey.W :
+                if(!(jakaMapa[row-1][col] == 'W')) { row--; }
+                else { hitObstacle = true; }
+                break;
+            case ConsoleKey.S:
+                if (!(jakaMapa[row + 1][col] == 'W')) { row++; }
+                else { hitObstacle = true; }     
+                break;
+            case ConsoleKey.A:
+                if (!(jakaMapa[row][col - 1] == 'W')) { col--; }
+                else { hitObstacle = true; }
+                break;
+            case ConsoleKey.D:
+                if (!(jakaMapa[row][col + 1] == 'W')) { col++; }
+                else { hitObstacle = true; }
+                break;
+        }
+        Console.SetCursorPosition(this.col, this.row);
+        Console.Write("#");
+
+        //if wall was not hit remember to clear old position
+        if (!hitObstacle)
+        {
+            Console.SetCursorPosition(oldCol, oldRow);
+            Console.Write(" ");
+            hitObstacle = false;
+        }
+    }
+}
+
+class Display
+{
+    //no mapa kurwa
+    public static readonly string[] baseMap =
+{
+    "WWWWWWWWWWWW",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "W          W",
+    "WWWWWWWWWWWW",
+};
+    public static readonly string[] baseMapBig =
+{
+    "WWWWWWWWWWWWWWWWWWWWWWWWW",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "W                       W",
+    "WWWWWWWWWWWWWWWWWWWWWWWWW",
+};
+
+    public static void Initialize(string[] map,Player gracz)
+    {
+
+        //narysowanie mapy "row by row"
+        foreach (string row in map)
+        {
+            Console.WriteLine(row);
+
+        }
+
+        //wrzucenie gracza na mape
+        Console.SetCursorPosition(gracz.col, gracz.row);
+        Console.Write("#");
+        Console.CursorVisible = false;
+    }
+}
