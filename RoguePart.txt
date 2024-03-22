@@ -13,39 +13,100 @@ Display.Initialize(Display.baseMapBig,player);
 while (true) 
 {
 
-    player.UpdatePos(Display.baseMapBig);
+    player.UpdatePos(Display.baseMapBig, Display.obstacleLetters);
     
 }
 class Player
 {
     public int row = 3;
     public int col = 5;
-    public void UpdatePos(string[] jakaMapa)
+    public void UpdatePos(string[] jakaMapa, string obstacle)
     {
+
         int oldRow = row;
         int oldCol = col;
         bool hitObstacle = false;
-/*        bool isShop = false;
+        char charUp = jakaMapa[row - 1][col];
+        char charDown = jakaMapa[row + 1][col];
+        char charLeft = jakaMapa[row][col - 1];
+        char charRight = jakaMapa[row][col + 1];
+
+
+/*      bool isShop = false;
         bool isGrass = false;
 */
         switch (Console.ReadKey(true).Key)
         {
-            case ConsoleKey.W :
-                if(!(jakaMapa[row-1][col] == 'W')) { row--; }
-                else { hitObstacle = true; }
-                break;
+            /*  case ConsoleKey.W :
+                  if(!(jakaMapa[row-1][col] == 'W')) { row--; }
+                  else { hitObstacle = true; }
+                  break;
+              case ConsoleKey.S:
+                  if (!(jakaMapa[row + 1][col] == 'W')) { row++; }
+                  else { hitObstacle = true; }     
+                  break;
+              case ConsoleKey.A:
+                  if (!(jakaMapa[row][col - 1] == 'W')) { col--; }
+                  else { hitObstacle = true; }
+                  break;
+              case ConsoleKey.D:
+                  if (!(jakaMapa[row][col + 1] == 'W')) { col++; }
+                  else { hitObstacle = true; }
+                  break;*/
+            case ConsoleKey.W:
+                if (obstacle.Contains(jakaMapa[row - 1][col]))
+                { 
+                    metoda(jakaMapa[row - 1][col]); 
+                }
+                else
+                {
+                    row--; 
+                }
+                    break;
             case ConsoleKey.S:
-                if (!(jakaMapa[row + 1][col] == 'W')) { row++; }
-                else { hitObstacle = true; }     
+                if (obstacle.Contains(jakaMapa[row + 1][col]))
+                {
+                    metoda(jakaMapa[row + 1][col]);
+                }
+                else
+                {
+                    row++;
+                }
                 break;
             case ConsoleKey.A:
-                if (!(jakaMapa[row][col - 1] == 'W')) { col--; }
-                else { hitObstacle = true; }
+                if (obstacle.Contains(jakaMapa[row][col - 1]))
+                {
+                    metoda(jakaMapa[row][col - 1]);
+                }
+                else
+                {
+                    col--;
+                }
                 break;
             case ConsoleKey.D:
-                if (!(jakaMapa[row][col + 1] == 'W')) { col++; }
-                else { hitObstacle = true; }
+                if (obstacle.Contains(jakaMapa[row][col + 1]))
+                {
+                    metoda(jakaMapa[row][col + 1]);
+                }
+                else
+                {
+                    col++;
+                }
                 break;
+        }
+
+        void metoda(char charToLogic)
+        {
+            switch (charToLogic)
+            {
+                case 'W':
+                    hitObstacle = true;
+                    break;
+                case 'T':
+                    hitObstacle = true;
+                    break;
+            }
+                
         }
         Console.SetCursorPosition(this.col, this.row);
         Console.Write("#");
@@ -64,12 +125,14 @@ class Player
 
 class Display
 {
+
+    public static readonly string obstacleLetters = "WT";
     //no mapa kurwa
     public static readonly string[] baseMap =
 {
     "WWWWWWWWWWWW",
     "W          W",
-    "W          W",
+    "W    T     W",
     "W          W",
     "W          W",
     "W          W",
@@ -90,8 +153,8 @@ class Display
     "W                       W",
     "W                       W",
     "W                       W",
-    "W                       W",
-    "W                       W",
+    "W               TT      W",
+    "W               TT      W",
     "W                       W",
     "W                       W",
     "W                       W",
