@@ -2,8 +2,7 @@ using System.Threading.Tasks;
 Player player = new();
 
 Task playMusic = new Task(() => { while (true) { musicLibrary.Mario(); } });
-
-playMusic.Start();
+//playMusic.Start();
 
 //inicializacja wyswietlania mapy i wsadzenie gracza na mape
 Display.Initialize(Display.baseMapBig,player);
@@ -54,9 +53,9 @@ class Player
                   else { hitObstacle = true; }
                   break;*/
             case ConsoleKey.W:
-                if (obstacle.Contains(jakaMapa[row - 1][col]))
+                if (obstacle.Contains(charUp))
                 { 
-                    metoda(jakaMapa[row - 1][col]); 
+                    metoda(charUp); 
                 }
                 else
                 {
@@ -64,9 +63,9 @@ class Player
                 }
                     break;
             case ConsoleKey.S:
-                if (obstacle.Contains(jakaMapa[row + 1][col]))
+                if (obstacle.Contains(charDown))
                 {
-                    metoda(jakaMapa[row + 1][col]);
+                    metoda(charDown);
                 }
                 else
                 {
@@ -74,9 +73,9 @@ class Player
                 }
                 break;
             case ConsoleKey.A:
-                if (obstacle.Contains(jakaMapa[row][col - 1]))
+                if (obstacle.Contains(charLeft))
                 {
-                    metoda(jakaMapa[row][col - 1]);
+                    metoda(charLeft);
                 }
                 else
                 {
@@ -84,9 +83,9 @@ class Player
                 }
                 break;
             case ConsoleKey.D:
-                if (obstacle.Contains(jakaMapa[row][col + 1]))
+                if (obstacle.Contains(charRight))
                 {
-                    metoda(jakaMapa[row][col + 1]);
+                    metoda(charRight);
                 }
                 else
                 {
