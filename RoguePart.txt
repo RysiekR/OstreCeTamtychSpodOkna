@@ -9,17 +9,20 @@ Display.Initialize(Display.baseMapBig,player);
 
 // !!! ACHTUNG ! ACHTUNG !!! endless loop
 //oddanie kontroli nad pozycja gracza w rece gracza
+
 while (true) 
 {
 
-    player.UpdatePos(Display.baseMapBig, Display.obstacleLetters);
+    player.UpdatePos(Display.obstacleLetters);
     
 }
 class Player
 {
+    string[] jakaMapa = Display.baseMapBig;
+
     public int row = 3;
     public int col = 5;
-    public void UpdatePos(string[] jakaMapa, string obstacle)
+    public void UpdatePos(string obstacle)
     {
 
         int oldRow = row;
@@ -55,7 +58,11 @@ class Player
             case ConsoleKey.W:
                 if (obstacle.Contains(charUp))
                 { 
-                    metoda(charUp); 
+                    unpassableObstacle(charUp); 
+                }
+                else if (charUp == 'P')
+                {
+                    changeMapTo(Display.baseMap);
                 }
                 else
                 {
@@ -65,7 +72,11 @@ class Player
             case ConsoleKey.S:
                 if (obstacle.Contains(charDown))
                 {
-                    metoda(charDown);
+                    unpassableObstacle(charDown);
+                }
+                else if (charDown == 'P')
+                {
+                    changeMapTo(Display.baseMap);
                 }
                 else
                 {
@@ -75,7 +86,11 @@ class Player
             case ConsoleKey.A:
                 if (obstacle.Contains(charLeft))
                 {
-                    metoda(charLeft);
+                    unpassableObstacle(charLeft);
+                }
+                else if (charLeft == 'P')
+                {
+                    changeMapTo(Display.baseMap);
                 }
                 else
                 {
@@ -85,7 +100,11 @@ class Player
             case ConsoleKey.D:
                 if (obstacle.Contains(charRight))
                 {
-                    metoda(charRight);
+                    unpassableObstacle(charRight);
+                }
+                else if (charRight == 'P')
+                {
+                    changeMapTo(Display.baseMap);
                 }
                 else
                 {
@@ -94,7 +113,18 @@ class Player
                 break;
         }
 
-        void metoda(char charToLogic)
+        Console.SetCursorPosition(this.col, this.row);
+        Console.Write("#");
+
+        //if wall was not hit remember to clear old position
+        if (!hitObstacle)
+        {
+            Console.SetCursorPosition(oldCol, oldRow);
+            Console.Write(" ");
+            hitObstacle = false;
+        }
+
+        void unpassableObstacle(char charToLogic)
         {
             switch (charToLogic)
             {
@@ -107,18 +137,12 @@ class Player
             }
                 
         }
-        Console.SetCursorPosition(this.col, this.row);
-        Console.Write("#");
-
-        //if wall was not hit remember to clear old position
-        if (!hitObstacle)
+        void changeMapTo(string[] map)
         {
-            Console.SetCursorPosition(oldCol, oldRow);
-            Console.Write(" ");
-            hitObstacle = false;
+            jakaMapa = map;
+            Console.Clear();
+            Display.Initialize(map, this);
         }
-
-
     }
 }
 
@@ -126,6 +150,8 @@ class Display
 {
 
     public static readonly string obstacleLetters = "WT";
+    public static readonly string obstacleLettersWithLogic = "P";
+
     //no mapa kurwa
     public static readonly string[] baseMap =
 {
@@ -145,7 +171,7 @@ class Display
     "WWWWWWWWWWWWWWWWWWWWWWWWW",
     "W                       W",
     "W                       W",
-    "W                       W",
+    "W   P                   W",
     "W                       W",
     "W                       W",
     "W                       W",
@@ -175,6 +201,7 @@ class Display
         Console.Write("#");
         Console.CursorVisible = false;
     }
+
 }
 
 
