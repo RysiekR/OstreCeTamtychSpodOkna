@@ -8,28 +8,6 @@ namespace OstreCeTamtychSpodOkna
 {
     internal class Player
     {
-
-
-        //OLD MAIN
-        /*        using System.Threading.Tasks;
-        Player player = new();
-
-            Task playMusic = new Task(() => { while (true) { musicLibrary.Mario(); } });
-            //playMusic.Start();
-
-            //inicializacja wyswietlania mapy i wsadzenie gracza na mape
-            Display.Initialize(Display.baseMapBig, player);
-
-        // !!! ACHTUNG ! ACHTUNG !!! endless loop
-        //oddanie kontroli nad pozycja gracza w rece gracza
-
-        while (true) 
-        {
-
-            player.UpdatePos(Display.obstacleLetters);
-
-        }*/
-
         string[] jakaMapa = Display.baseMapBig;
         string obstacle = Display.obstacleLetters;
         //position (chcialem w vector2 ale on oddaje floaty a nam trzeba inty)
@@ -48,83 +26,19 @@ namespace OstreCeTamtychSpodOkna
             char charRight = jakaMapa[row][col + 1];
             ConsoleKey consoleKeyPressed = ConsoleKey.None;
 
-            /*      bool isShop = false;
-                    bool isGrass = false;
-            */
             switch (inputFromPlayer())
             {
-                /*  case ConsoleKey.W :
-                      if(!(jakaMapa[row-1][col] == 'W')) { row--; }
-                      else { hitObstacle = true; }
-                      break;
-                  case ConsoleKey.S:
-                      if (!(jakaMapa[row + 1][col] == 'W')) { row++; }
-                      else { hitObstacle = true; }     
-                      break;
-                  case ConsoleKey.A:
-                      if (!(jakaMapa[row][col - 1] == 'W')) { col--; }
-                      else { hitObstacle = true; }
-                      break;
-                  case ConsoleKey.D:
-                      if (!(jakaMapa[row][col + 1] == 'W')) { col++; }
-                      else { hitObstacle = true; }
-                      break;*/
                 case ConsoleKey.W:
                     Movement(charUp);
-                    /*if (obstacle.Contains(charUp))
-                    {
-                        unpassableObstacle(charUp);
-                    }
-                    else if (charUp == 'P')
-                    {
-                        changeMapTo(Display.baseMap);
-                    }
-                    else
-                    {
-                        row--;
-                    }*/
                     break;
                 case ConsoleKey.S:
-                    if (obstacle.Contains(charDown))
-                    {
-                        unpassableObstacle(charDown);
-                    }
-                    else if (charDown == 'P')
-                    {
-                        changeMapTo(Display.baseMap);
-                    }
-                    else
-                    {
-                        row++;
-                    }
+                    Movement(charDown);
                     break;
                 case ConsoleKey.A:
-                    if (obstacle.Contains(charLeft))
-                    {
-                        unpassableObstacle(charLeft);
-                    }
-                    else if (charLeft == 'P')
-                    {
-                        changeMapTo(Display.baseMap);
-                    }
-                    else
-                    {
-                        col--;
-                    }
+                    Movement(charLeft);
                     break;
                 case ConsoleKey.D:
-                    if (obstacle.Contains(charRight))
-                    {
-                        unpassableObstacle(charRight);
-                    }
-                    else if (charRight == 'P')
-                    {
-                        changeMapTo(Display.baseMap);
-                    }
-                    else
-                    {
-                        col++;
-                    }
+                    Movement(charRight);
                     break;
             }
 
@@ -149,6 +63,11 @@ namespace OstreCeTamtychSpodOkna
                     case 'T':
                         hitObstacle = true;
                         break;
+                    //
+                    //
+                    //
+                    // mozna dodac case i od razu na nim wykonac cos
+                    // np jak bedzie npc do odpalic rozmowe walke
                 }
 
             }
@@ -159,21 +78,24 @@ namespace OstreCeTamtychSpodOkna
                 Display.Initialize(map, this);
             }
            
-            //metoda ktora bedzie logika w switch('char goradollewoprawo')
-            // jest voidem
+            // bierze i sprawdza pole w kierunku w ktorym chcemy sie poruszyc
+            // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
             void Movement(char charInThisDirection)
             {
+                //sprawdzenie czy char gdzie idziemy jest charem ze string z przeszkodami nie do przejscia
                 if (obstacle.Contains(charInThisDirection))
                 {
                     unpassableObstacle(charInThisDirection);
                 }
+                //tu jak jest cos do zrobienia a nie tylko "E!!E!! nie ma przejscia
                 else if (charInThisDirection == 'P')
                 {
                     changeMapTo(Display.baseMap);
                 }
+                // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
                 else
                 {
-                    switch(inputFromPlayer())
+                    switch(consoleKeyPressed)
                     {
                         case ConsoleKey.W: { row--; }
                         break;
@@ -188,6 +110,11 @@ namespace OstreCeTamtychSpodOkna
                    
                 }
             }
+            //TODO zrobic check czy ten klawisz ma zastosowanie
+            //jak nie to jeszcze raz go zczytac
+            //i wyswietlic "nie dotykaj klawiszy ktore nic nie robia łobuzie"
+
+            // metoda ktora zczytuje i zwraca konkretny przycisk z klawiatury
             ConsoleKey inputFromPlayer()
             {
                 consoleKeyPressed = Console.ReadKey(true).Key;
