@@ -1,11 +1,13 @@
 ﻿using Microsoft.VisualBasic;
 using Terminal.Gui;
 using System.Data;
+using OstreCeTamtychSpodOkna;
 
 public class Program
 {
     static void Main()
     {
+        RogueTestDebug.newMain();
         Application.Run<BattleWindow>();
         //Console.WriteLine ($"Username: {((BattleWindow)Application.Top).usernameText.Text}");
         Application.Shutdown();

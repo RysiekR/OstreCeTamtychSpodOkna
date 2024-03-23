@@ -31,10 +31,12 @@ namespace OstreCeTamtychSpodOkna
         }*/
 
         string[] jakaMapa = Display.baseMapBig;
-
+        string obstacle = Display.obstacleLetters;
+        //position (chcialem w vector2 ale on oddaje floaty a nam trzeba inty)
         public int row = 3;
         public int col = 5;
-        public void UpdatePos(string obstacle)
+
+        public void UpdatePos()
         {
 
             int oldRow = row;
@@ -44,12 +46,12 @@ namespace OstreCeTamtychSpodOkna
             char charDown = jakaMapa[row + 1][col];
             char charLeft = jakaMapa[row][col - 1];
             char charRight = jakaMapa[row][col + 1];
-
+            ConsoleKey consoleKeyPressed = ConsoleKey.None;
 
             /*      bool isShop = false;
                     bool isGrass = false;
             */
-            switch (Console.ReadKey(true).Key)
+            switch (inputFromPlayer())
             {
                 /*  case ConsoleKey.W :
                       if(!(jakaMapa[row-1][col] == 'W')) { row--; }
@@ -68,7 +70,8 @@ namespace OstreCeTamtychSpodOkna
                       else { hitObstacle = true; }
                       break;*/
                 case ConsoleKey.W:
-                    if (obstacle.Contains(charUp))
+                    Movement(charUp);
+                    /*if (obstacle.Contains(charUp))
                     {
                         unpassableObstacle(charUp);
                     }
@@ -79,7 +82,7 @@ namespace OstreCeTamtychSpodOkna
                     else
                     {
                         row--;
-                    }
+                    }*/
                     break;
                 case ConsoleKey.S:
                     if (obstacle.Contains(charDown))
@@ -155,6 +158,42 @@ namespace OstreCeTamtychSpodOkna
                 Console.Clear();
                 Display.Initialize(map, this);
             }
+           
+            //metoda ktora bedzie logika w switch('char goradollewoprawo')
+            // jest voidem
+            void Movement(char charInThisDirection)
+            {
+                if (obstacle.Contains(charInThisDirection))
+                {
+                    unpassableObstacle(charInThisDirection);
+                }
+                else if (charInThisDirection == 'P')
+                {
+                    changeMapTo(Display.baseMap);
+                }
+                else
+                {
+                    switch(inputFromPlayer())
+                    {
+                        case ConsoleKey.W: { row--; }
+                        break;
+                        case ConsoleKey.S:{ row++;}
+                        break;
+                        case ConsoleKey.D: { col++; }
+                        break;
+                        case ConsoleKey.A: { col--; }
+                        break;
+                    }
+                        
+                   
+                }
+            }
+            ConsoleKey inputFromPlayer()
+            {
+                consoleKeyPressed = Console.ReadKey(true).Key;
+                return consoleKeyPressed;
+            }
+
         }
     }
 }
