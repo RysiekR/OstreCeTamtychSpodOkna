@@ -53,11 +53,13 @@ namespace OstreCeTamtychSpodOkna
         {
 
             //narysowanie mapy "row by row"
-            foreach (string row in map)
-            {
-                Console.WriteLine(row);
+            /* foreach (string row in map)
+             {
+                 Console.WriteLine(row);
 
-            }
+             }*/
+
+            Sprites.Draw(map, Sprites.wall);
 
             //wrzucenie gracza na mape
             Console.SetCursorPosition(gracz.col, gracz.row);
