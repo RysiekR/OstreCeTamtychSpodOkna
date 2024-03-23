@@ -65,6 +65,7 @@ public class Program
             };
             attackButton.Clicked += () =>
                         {
+                            // Jak testowałem to sie pies przestraszyl tego beepniecia
                             Console.Beep(1000, 1800);
                         };
             var skillsButton = new Button()
