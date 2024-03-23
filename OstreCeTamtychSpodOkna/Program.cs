@@ -7,16 +7,14 @@ public class Program
 {
     static void Main()
     {
-        // tworzenie clasy ktora trzyma .wav i uzycie go
-        if (OperatingSystem.IsWindows())
-        {
-            SoundPlayer retroClassic = new SoundPlayer("retro_classic1.wav");
-            retroClassic.Load();
-            retroClassic.Play();
-        }
+        //to powinno byc ale sie nie da do tego wtedy dostac
+        //if (OperatingSystem.IsWindows()) { 
+        SoundPlayer retroClassic = new SoundPlayer("retro_classic1.wav");
+        retroClassic.Load();
+        retroClassic.Play();
 
         //!!! comment this to turn off Rogue !!!
-        RogueTestDebug.newMain();
+        RogueTestDebug.newMain(retroClassic);
 
 
         Application.Run<BattleWindow>();
