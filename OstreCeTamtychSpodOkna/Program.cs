@@ -8,13 +8,14 @@ public class Program
     static void Main()
     {
         //to powinno byc ale sie nie da do tego wtedy dostac
-        //if (OperatingSystem.IsWindows()) { 
-        SoundPlayer retroClassic = new SoundPlayer("retro_classic1.wav");
+        //if (OperatingSystem.IsWindows()) { }
+        /*SoundPlayer retroClassic = new SoundPlayer("retro_classic1.wav");
         retroClassic.Load();
         retroClassic.Play();
+        retroClassic.Stop();*/
 
         //!!! comment this to turn off Rogue !!!
-        RogueTestDebug.newMain(retroClassic);
+        RogueTestDebug.newMain();
 
 
         Application.Run<BattleWindow>();

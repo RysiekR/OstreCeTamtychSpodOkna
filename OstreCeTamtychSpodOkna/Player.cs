@@ -10,6 +10,7 @@ namespace OstreCeTamtychSpodOkna
     {
         string[] jakaMapa = Display.baseMapBig;
         string obstacle = Display.obstacleLetters;
+        string logicLetters = Display.obstacleLettersWithLogic;
         //position (chcialem w vector2 ale on oddaje floaty a nam trzeba inty)
         public int row = 3;
         public int col = 5;
@@ -71,13 +72,25 @@ namespace OstreCeTamtychSpodOkna
                 }
 
             }
-            void changeMapTo(string[] map)
+            /*void changeMapTo(string[] map)
             {
                 jakaMapa = map;
                 Console.Clear();
                 Display.Initialize(map, this);
+
+
+            }*/
+            void changeMapTo(char letterOfTheMap)
+            {
+                switch(letterOfTheMap)
+                {
+                    case 'P': { jakaMapa = Display.baseMap; break; }
+                }
+                Console.Clear();
+                Display.Initialize(jakaMapa, this);
+
             }
-           
+
             // bierze i sprawdza pole w kierunku w ktorym chcemy sie poruszyc
             // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
             void Movement(char charInThisDirection)
@@ -89,9 +102,9 @@ namespace OstreCeTamtychSpodOkna
                 }
                 //tu jak jest cos do zrobienia a nie tylko "E!!E!! nie ma przejscia
                 //TODO wymyslic zrobic zeby bylo jak na gorze tylko ze stringiem liter na ktorych wykonujemy logike
-                else if (charInThisDirection == 'P')
+                else if (logicLetters.Contains(charInThisDirection))
                 {
-                    changeMapTo(Display.baseMap);
+                    changeMapTo(charInThisDirection);
                 }
                 // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
                 else
