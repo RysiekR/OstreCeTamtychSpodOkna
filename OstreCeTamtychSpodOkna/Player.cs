@@ -88,6 +88,7 @@ namespace OstreCeTamtychSpodOkna
                     unpassableObstacle(charInThisDirection);
                 }
                 //tu jak jest cos do zrobienia a nie tylko "E!!E!! nie ma przejscia
+                //TODO wymyslic zrobic zeby bylo jak na gorze tylko ze stringiem liter na ktorych wykonujemy logike
                 else if (charInThisDirection == 'P')
                 {
                     changeMapTo(Display.baseMap);

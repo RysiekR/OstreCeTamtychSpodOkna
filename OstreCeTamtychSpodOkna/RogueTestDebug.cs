@@ -17,6 +17,7 @@ namespace OstreCeTamtychSpodOkna
             //oddanie kontroli nad pozycja gracza w rece gracza
             while (true)
             {
+                //TODO Display.UpdateMap()
 
                 player.UpdatePos();
 
