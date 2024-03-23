@@ -7,7 +7,11 @@ public class Program
 {
     static void Main()
     {
+        
+        //!!! comment this to turn off Rogue !!!
         RogueTestDebug.newMain();
+
+
         Application.Run<BattleWindow>();
         //Console.WriteLine ($"Username: {((BattleWindow)Application.Top).usernameText.Text}");
         Application.Shutdown();
