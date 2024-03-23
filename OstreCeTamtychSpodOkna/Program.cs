@@ -2,12 +2,19 @@
 using Terminal.Gui;
 using System.Data;
 using OstreCeTamtychSpodOkna;
-
+using System.Media;
 public class Program
 {
     static void Main()
     {
-        
+        // tworzenie clasy ktora trzyma .wav i uzycie go
+        if (OperatingSystem.IsWindows())
+        {
+            SoundPlayer retroClassic = new SoundPlayer("retro_classic1.wav");
+            retroClassic.Load();
+            retroClassic.Play();
+        }
+
         //!!! comment this to turn off Rogue !!!
         RogueTestDebug.newMain();
 
@@ -72,7 +79,10 @@ public class Program
             attackButton.Clicked += () =>
                         {
                             // Jak testowałem to sie pies przestraszyl tego beepniecia
-                            Console.Beep(1000, 1800);
+                            if (OperatingSystem.IsWindows())
+                            {
+                                Console.Beep(1000, 1800);
+                            }
                         };
             var skillsButton = new Button()
             {
