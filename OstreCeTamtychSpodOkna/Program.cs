@@ -171,7 +171,7 @@ class BattleUI
         Console.SetCursorPosition(0, Console.CursorTop - 1);
     }
 }
-class Pokemon
+public class Pokemon
 {
     public string Name { get; set; }
     public int HP { get; set; }
