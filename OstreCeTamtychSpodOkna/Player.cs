@@ -8,14 +8,14 @@ namespace OstreCeTamtychSpodOkna
 {
     internal class Player
     {
-        string[] jakaMapa = Display.baseMapBig;
+        //string[] jakaMapa = Display.baseMapBig;
         string obstacle = Display.obstacleLetters;
         string logicLetters = Display.obstacleLettersWithLogic;
         public int row = 7;
         public int col = 15;
         //List<string> currentMap = new List<string>();
 
-        public void UpdatePos()
+        public void UpdatePos(List<string>jakaMapa)
         {
 
             int oldRow = row;
@@ -73,11 +73,11 @@ namespace OstreCeTamtychSpodOkna
             {
                 switch(letterOfTheMap)
                 {
-                    case 'P': { jakaMapa = Display.baseMap; break; }
+                    case 'P': { jakaMapa = Display.baseMap.ToList(); break; }
                 }
                 Console.Clear();
-                Display.Initialize(jakaMapa, this);
-
+                //Display.Initialize(Display.baseMap, this);
+                Sprites.Initialize(jakaMapa, this);
             }
 
             // bierze i sprawdza pole w kierunku w ktorym chcemy sie poruszyc

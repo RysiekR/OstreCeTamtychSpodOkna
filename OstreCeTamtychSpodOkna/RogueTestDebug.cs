@@ -27,7 +27,7 @@ namespace OstreCeTamtychSpodOkna
             {
                 //TODO Display.UpdateMap()
 
-                player.UpdatePos();
+                player.UpdatePos(map);
             }
         }
     }
