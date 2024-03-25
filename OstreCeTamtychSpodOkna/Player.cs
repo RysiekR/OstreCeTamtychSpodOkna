@@ -14,6 +14,7 @@ namespace OstreCeTamtychSpodOkna
         //position (chcialem w vector2 ale on oddaje floaty a nam trzeba inty)
         public int row = 3;
         public int col = 5;
+        //List<string> currentMap = new List<string>();
 
         public void UpdatePos()
         {
@@ -134,6 +135,11 @@ namespace OstreCeTamtychSpodOkna
                 consoleKeyPressed = Console.ReadKey(true).Key;
                 return consoleKeyPressed;
             }
+
+        }
+
+        public void SetMap()
+        {
 
         }
     }
