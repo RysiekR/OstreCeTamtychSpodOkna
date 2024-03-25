@@ -16,9 +16,10 @@
 
         public static readonly string[] map2 =
         {
-    "WWW",
-    "W W",
-    "WWW"
+    "WWWWW",
+    "W   W",
+    "W   W",
+    "WWWWW"
 };
 
         public static readonly string[] spriteWall =

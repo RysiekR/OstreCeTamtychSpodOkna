@@ -11,8 +11,8 @@ namespace OstreCeTamtychSpodOkna
         string[] jakaMapa = Display.baseMapBig;
         string obstacle = Display.obstacleLetters;
         string logicLetters = Display.obstacleLettersWithLogic;
-        public int row = 3;
-        public int col = 5;
+        public int row = 7;
+        public int col = 15;
         //List<string> currentMap = new List<string>();
 
         public void UpdatePos()
