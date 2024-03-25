@@ -9,6 +9,7 @@ namespace OstreCeTamtychSpodOkna
 
 
 {
+    //cale do wywalenia
     internal class Display
     {
 

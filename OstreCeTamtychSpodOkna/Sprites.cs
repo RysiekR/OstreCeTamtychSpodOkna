@@ -7,9 +7,7 @@
         {
     "WWWWWWW",
     "W     W",
-    "W     W",
-    "W     W",
-    "W     W",
+    "W   P W",
     "W     W",
     "WWWWWWW"
 };
@@ -40,7 +38,15 @@
     " , , ",
     ", , ,",
 };
-
+        public static readonly string[] spritePortal =
+        {
+            "     ",
+            " .P. ",
+            " PPP ",
+            " .P. ",
+            "     ",
+            
+        };
         public static readonly string[] wall =
         {
             "+---+",
@@ -104,6 +110,7 @@
             {
                 case 'W': bigSprite = spriteWall; break;
                 case ' ': bigSprite = spriteAir; break;
+                case 'P': bigSprite = spritePortal; break;
                 default: bigSprite = spriteAir; break;
             }
             return bigSprite;

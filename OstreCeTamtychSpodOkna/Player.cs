@@ -12,9 +12,10 @@ namespace OstreCeTamtychSpodOkna
         string logicLetters = "P";
         public int row = 7;
         public int col = 15;
-        public void UpdatePos(List<string>jakaMapa)
+        List<string> jakaMapa = new List<string>();
+        public void UpdatePos(List<string>mapaDoWczytania)
         {
-
+            jakaMapa = mapaDoWczytania;
             int oldRow = row;
             int oldCol = col;
             bool hitObstacle = false;

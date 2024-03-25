@@ -16,7 +16,7 @@ namespace OstreCeTamtychSpodOkna
 
 
             //laduje sie mapa na spritach jeszcze z logika stara na tablicy
-            Sprites.CreateFinallMap(map,Sprites.map2);
+            Sprites.CreateFinallMap(map,Sprites.map);
             
             
             //Display.Initialize(Display.baseMapBig, player);
