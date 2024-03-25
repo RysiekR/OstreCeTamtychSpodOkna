@@ -8,7 +8,7 @@ namespace OstreCeTamtychSpodOkna
 {
     internal class Player
     {
-        string obstacle = "╬╦┼╣╩";
+        string obstacle = "╬┼╦╩╣╠";
         string logicLetters = Display.obstacleLettersWithLogic;
         public int row = 7;
         public int col = 15;
@@ -53,9 +53,14 @@ namespace OstreCeTamtychSpodOkna
 
             void unpassableObstacle(char charToLogic)
             {
+                if (obstacle.Contains(charToLogic))
+                {
+                    hitObstacle = true;
+                }
 
+                else { Console.WriteLine("Error Player.UpdatePos.UnpassableObstacle"); }
                 //TODO albo zmienic tego switcha na ifa albo sie dowiedziec jak to zrobic inaczej czy w tym case moze byc funkcja ktora cos zwraca?
-                switch (charToLogic)
+                /*switch (charToLogic)
                 {
                     case '╬':
                         hitObstacle = true;
@@ -76,7 +81,7 @@ namespace OstreCeTamtychSpodOkna
                         hitObstacle = true;
                         break;
                     //
-                }
+                }*/
 
             }
             
