@@ -11,7 +11,6 @@ namespace OstreCeTamtychSpodOkna
         string[] jakaMapa = Display.baseMapBig;
         string obstacle = Display.obstacleLetters;
         string logicLetters = Display.obstacleLettersWithLogic;
-        //position (chcialem w vector2 ale on oddaje floaty a nam trzeba inty)
         public int row = 3;
         public int col = 5;
         //List<string> currentMap = new List<string>();
@@ -66,10 +65,6 @@ namespace OstreCeTamtychSpodOkna
                         hitObstacle = true;
                         break;
                     //
-                    //
-                    //
-                    // mozna dodac case i od razu na nim wykonac cos
-                    // np jak bedzie npc do odpalic rozmowe walke
                 }
 
             }
@@ -119,7 +114,7 @@ namespace OstreCeTamtychSpodOkna
                 }
             }
             //TODO zrobic check czy ten klawisz ma zastosowanie
-            //jak nie to jeszcze raz go zczytac
+            //jak nie ma to jeszcze raz go zczytac
             //i wyswietlic "nie dotykaj klawiszy ktore nic nie robia łobuzie"
 
             // metoda ktora zczytuje i zwraca konkretny przycisk z klawiatury
