@@ -73,14 +73,7 @@ namespace OstreCeTamtychSpodOkna
                 }
 
             }
-            /*void changeMapTo(string[] map)
-            {
-                jakaMapa = map;
-                Console.Clear();
-                Display.Initialize(map, this);
-
-
-            }*/
+            
             void changeMapTo(char letterOfTheMap)
             {
                 switch(letterOfTheMap)

@@ -84,6 +84,17 @@
             }
         }
 
+        public static void Initialize(List<string> map, Player gracz)
+        {
+            foreach (string row in map)
+            {
+                Console.WriteLine(row);
+            }
+
+            Console.SetCursorPosition(gracz.col, gracz.row);
+            Console.Write("#");
+            Console.CursorVisible = false;
+        }
         public static string[] ChoseSprite(char fromMap)
         {
             string[] bigSprite;

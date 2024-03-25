@@ -12,7 +12,15 @@ namespace OstreCeTamtychSpodOkna
         public static void newMain()
         {
             Player player = new();
-            Display.Initialize(Display.baseMapBig, player);
+            List<string> map = new();
+
+
+            //laduje sie mapa na spritach jeszcze z logika stara na tablicy
+            Sprites.CreateFinallMap(map,Sprites.map2);
+            //zrob initialize na liscie
+            //Display.Initialize(Display.baseMapBig, player);
+            Sprites.Initialize(map, player);
+
 
             while (true)
             {
