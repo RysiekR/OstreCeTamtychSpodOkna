@@ -3,172 +3,114 @@ using Terminal.Gui;
 using System.Data;
 using OstreCeTamtychSpodOkna;
 using System.Media;
+using System.Security.Cryptography.X509Certificates;
 public class Program
 {
-    static void Main()
+    public static void Main()
     {
-        //to powinno byc ale sie nie da do tego wtedy dostac
-        //if (OperatingSystem.IsWindows()) { }
-        /*SoundPlayer retroClassic = new SoundPlayer("retro_classic1.wav");
-        retroClassic.Load();
-        retroClassic.Play();
-        retroClassic.Stop();*/
+        Application.Init();
 
-        //!!! comment this to turn off Rogue !!!
-        RogueTestDebug.newMain();
-
-
-        Application.Run<BattleWindow>();
-        //Console.WriteLine ($"Username: {((BattleWindow)Application.Top).usernameText.Text}");
-        Application.Shutdown();
-
-        var playerPokemon = new Pokemon("Pikachu", 100, 30, 10);
-        var enemyPokemon = new Pokemon("Charmander", 100, 20, 5);
-
-        BattleUI.DisplayBattleUI(playerPokemon, enemyPokemon);
-
-        Console.WriteLine("Wybierz akcję: \n1. Atak \n2. Leczenie");
-
-        while (playerPokemon.HP > 0 && enemyPokemon.HP > 0)
-        {
-
-            string? userInput = Console.ReadLine();
-            BattleUI.ClearLastLine();
-
-            switch (userInput)
-            {
-                case "1":
-                    playerPokemon.Attack(enemyPokemon);
-                    break;
-                case "2":
-                    playerPokemon.Heal();
-                    break;
-                default:
-                    Console.WriteLine("Nieznana akcja.");
-                    continue;
-            }
-
-            if (enemyPokemon.HP > 0)
-            {
-                enemyPokemon.Attack(playerPokemon);
-            }
-            BattleUI.UpdateHPDisplay(playerPokemon, enemyPokemon);
-        }
-
-        if (playerPokemon.HP > 0)
-            Console.WriteLine("Wygrałeś walkę!");
-        else
-            Console.WriteLine("Przegrałeś walkę...");
-
-
-        Console.ReadKey();
-    }
-
-    public class BattleWindow : Window
-    {
-        public BattleWindow()
-        {
-            var attackButton = new Button()
-            {
-                Text = "Attack!",
-                X = 10,
-                Y = 10,
-                IsDefault = true,
-            };
-            attackButton.Clicked += () =>
-                        {
-                            // Jak testowałem to sie pies przestraszyl tego beepniecia
-                            if (OperatingSystem.IsWindows())
-                            {
-                                Console.Beep(1000, 1800);
-                            }
-                        };
-            var skillsButton = new Button()
-            {
-                Text = "Skills",
-                X = 20,
-                Y = 20,
-                IsDefault = true,
-            };
-            skillsButton.Clicked += () =>
-                        {
-                            var skillsDialog = new Dialog("Choose a skill", 60, 20)
-                            {
-                                X = Pos.Center(),
-                                Y = Pos.Center()
-                            };
-                            foreach (Skill element in skillList)
-                            {
-                                var skillButton = new Button($"{element.Name}")
-                                {
-                                    IsDefault = true,
-                                };
-                                skillsDialog.AddButton(skillButton);
-                            }
-                            var differentButton = new Button("Different")
-                            {
-                                X = 6,
-                                Y = 6,
-                                IsDefault = true,
-                            };
-                            //Dodanie przycisku do zamknięcia okna dialogowego
-                            skillsDialog.AddButton(differentButton);
-
-                            differentButton.Clicked += () =>
-                            {
-                                Application.RequestStop();
-                            };
-
-                            Application.Run(skillsDialog);
-                        };
-            Add(attackButton, skillsButton);
-        }
-
-    }
-    public static List<Skill> skillList = new List<Skill>()
+        Pokemon playerPokemon = new Pokemon("Pikachu", 100, 30, 10);
+        Pokemon enemyPokemon = new Pokemon("Charmander", 100, 20, 5);
+        List<Skill> skillList = new List<Skill>()
 {
     new Skill ("Thunderbolt", "Electric", 90, 100),
     new Skill ("Flamethrower", "Fire", 90, 100),
     new Skill ("Ice Beam", "Ice", 90, 100),
     new Skill ("Psychic", "Psychic", 90, 100)
 };
-}
-class BattleUI
-{
-    public static void DisplayBattleUI(Pokemon playerPokemon, Pokemon enemyPokemon)
-    {
-        Console.WriteLine("==== Walka Pokemon ====");
-        Console.WriteLine($"{"Gracz:",-15} {playerPokemon.Name,15} {"HP:",-4} {playerPokemon.HP,3} / {playerPokemon.MaxHP,3}");
-        Console.WriteLine($"{"Przeciwnik:",-15} {enemyPokemon.Name,15} {"HP:",-4} {enemyPokemon.HP,3} / {enemyPokemon.MaxHP,3}");
-        Console.WriteLine("=======================");
+        
+        GameState gameState = new GameState(playerPokemon, enemyPokemon, skillList);
+        
+        var battleWindow = new BattleWindow(gameState);
+        Application.Run(battleWindow);
+        
+        Application.Shutdown();
     }
-    public static void UpdateHPDisplay(Pokemon playerPokemon, Pokemon enemyPokemon)
-    {
-        int cursorTop = Console.CursorTop;
-        int cursorLeft = Console.CursorLeft;
-        // stawienie kursora na pozycji HP gracza
-        Console.SetCursorPosition(37, 1); //Zaktualizować jak coś się zmieni
-        Console.Write("                  ");
-        Console.SetCursorPosition(37, 1);
-        Console.Write($"{playerPokemon.HP} / {playerPokemon.MaxHP}");
 
-        //Ustawienie kursora na pozycji HP przeciwnika
-        Console.SetCursorPosition(37, 2); //Zaktualizować jak coś się zmieni
-        Console.Write("                   ");
-        Console.SetCursorPosition(37, 2);
-        Console.Write($"{enemyPokemon.HP} / {enemyPokemon.MaxHP}");
-        Console.WriteLine();
-        Console.WriteLine();
-
-        Console.SetCursorPosition(cursorLeft, cursorTop);
-        // Console.Write(new string(' ', Console.WindowWidth)); 
-    }
-    public static void ClearLastLine()
+    public class BattleWindow : Window
     {
-        //Console.Write("\r" + new string(' ', Console.WindowWidth - 1) + "\r");
-        Console.SetCursorPosition(0, Console.CursorTop);
-        Console.Write(new string(' ', Console.BufferWidth));
-        Console.SetCursorPosition(0, Console.CursorTop - 1);
+        public BattleWindow(GameState gameState) : base("Battle")
+        {
+            {
+                var attackButton = new Button()
+                {
+                    Text = "Attack!",
+                    X = 10,
+                    Y = 10,
+                    IsDefault = true,
+                };
+                attackButton.Clicked += () =>
+           {
+               gameState.PlayerPokemon.Attack(gameState.EnemyPokemon);
+
+               if (OperatingSystem.IsWindows())
+               {
+                   Console.Beep(1000, 1800);
+               }
+           };
+                var skillsButton = new Button()
+                {
+                    Text = "Skills",
+                    X = 20,
+                    Y = 20,
+                    IsDefault = true,
+                };
+                skillsButton.Clicked += () =>
+                            {
+                                var skillsDialog = new Dialog("Choose a skill", 60, 20)
+                                {
+                                    X = Pos.Center(),
+                                    Y = Pos.Center()
+                                };
+                                int column1XOffset = -30;
+                                int column2XOffset = 2;
+                                int startY = 1;
+                                int spacingY = 2;
+
+                                bool useFirstColumn = true; //Zmienna do przełączania między kolumnami
+
+                                foreach (Skill element in gameState.SkillList)
+                                {
+                                    var skillButton = new Button(element.Name)
+                                    {
+                                        X = Pos.Left(skillsDialog) + (useFirstColumn ? column1XOffset : column2XOffset),
+                                        Y = Pos.Top(skillsDialog) + startY,
+                                        IsDefault = false
+                                    };
+                                    skillButton.Clicked += () =>
+                                    {
+                                        //Logika przycisku skilli
+                                    };
+                                    skillsDialog.Add(skillButton);
+
+                                    if (useFirstColumn)
+                                    {
+                                        useFirstColumn = false;
+                                    }
+                                    else
+                                    {
+                                        useFirstColumn = true;
+                                        startY += spacingY;
+                                    }
+                                }
+                                var differentButton = new Button("Different")
+                                {
+                                    X = 6,
+                                    Y = 6,
+                                    IsDefault = true,
+                                };
+                                skillsDialog.AddButton(differentButton);
+
+                                differentButton.Clicked += () =>
+                                {
+                                    Application.RequestStop();
+                                };
+                                Application.Run(skillsDialog);
+                            };
+                Add(attackButton, skillsButton);
+            }
+        }
     }
 }
 public class Pokemon
@@ -177,7 +119,7 @@ public class Pokemon
     public int HP { get; set; }
     public int AttackPower { get; set; }
     public int HealPower { get; set; }
-    public int MaxHP { get; private set; }
+    public int MaxHP { get; private set; }//
 
     public Pokemon(string name, int hp, int attackPower, int healPower)
     {
@@ -212,5 +154,66 @@ public class Skill
         Type = type;
         Power = power;
         Accuracy = accuracy;
+    }
+}
+public enum GameMode
+{
+    Exploration,
+    Combat
+}
+//Klasa przechowująca stan gry
+public class GameState
+{
+    public Pokemon PlayerPokemon { get; set; }
+    public Pokemon EnemyPokemon { get; set; }
+    public List<Skill> SkillList { get; set; }
+    public GameMode CurrentMode { get; private set; }
+    //public Map CurrentMap { get; set; }
+
+
+    public GameState(Pokemon playerPokemon, Pokemon enemyPokemon, List<Skill> skillList)
+    {
+        PlayerPokemon = playerPokemon;
+        EnemyPokemon = enemyPokemon;
+        SkillList = skillList;
+        CurrentMode = GameMode.Exploration;
+        //CurrentMap = startingMap;
+    }
+    
+    public void SwitchMode(GameMode mode)
+    {
+        SaveGameState();
+        CurrentMode = mode;
+
+        switch (mode)
+        {
+            case GameMode.Exploration:
+                PrepareExplorationMode();
+                break;
+            case GameMode.Combat:
+                PrepareCombatMode();
+                break;
+                //Możesz dodać więcej trybów jak coś wymyślisz.
+        }
+    }
+    private void SaveGameState()
+    {
+        Console.WriteLine("Zapisywanie stanu gry...");
+        //Tu można dać coś w stylu SaveToFile(gameState);
+    }
+    private void PrepareExplorationMode()
+    {
+        //np. wyświetlenie mapy, zresetowanie stanu walki.
+        Console.WriteLine("Przygotowanie trybu eksploracji...");
+        //Jakieś cuda typu: currentMap.Display();
+        //combatSystem.Reset();
+    }
+
+    private void PrepareCombatMode()
+    {
+        //Tu jakiś wybór przeciwnika, inicjalizacja walki itd.
+        Console.WriteLine("Przygotowanie trybu walki...");
+        //Coś typu: enemySelector.ChooseEnemy();
+        //combatSystem.Initialize(playerPokemon, enemyPokemon);
     }
 }
