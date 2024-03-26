@@ -1,7 +1,9 @@
 ﻿using Terminal.Gui;
-public partial class Program
+
+namespace OstreCeTamtychSpodOkna
+
 {
-    public class BattleWindow : Window
+    internal class BattleWindow : Window
     {
         public BattleWindow(GameState gameState) : base("Battle")
         {
