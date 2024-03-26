@@ -8,6 +8,14 @@ public class Program
 {
     public static void Main()
     {
+    /*    Console.WriteLine("Press alt+enter or f11");
+        Console.BufferWidth = Console.WindowWidth;
+        Console.BufferHeight =Console.WindowHeight;
+        Console.ReadLine();
+        Console.Clear();
+        RogueTestDebug.NewMain();*/
+
+
         Application.Init();
 
         Pokemon playerPokemon = new Pokemon("Pikachu", 100, 30, 10);

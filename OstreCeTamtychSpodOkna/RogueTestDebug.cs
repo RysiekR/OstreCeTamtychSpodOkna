@@ -9,7 +9,7 @@ namespace OstreCeTamtychSpodOkna
 {
     internal class RogueTestDebug
     {
-        public static void newMain()
+        public static void NewMain()
         {
             Player player = new();
             List<string> map = new();
