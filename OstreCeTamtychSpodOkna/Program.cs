@@ -8,6 +8,8 @@ public class Program
 {
     public static void Main()
     {
+        Application.Init();
+
         Pokemon playerPokemon = new Pokemon("Pikachu", 100, 30, 10);
         Pokemon enemyPokemon = new Pokemon("Charmander", 100, 20, 5);
         List<Skill> skillList = new List<Skill>()
@@ -17,11 +19,12 @@ public class Program
     new Skill ("Ice Beam", "Ice", 90, 100),
     new Skill ("Psychic", "Psychic", 90, 100)
 };
+        
         GameState gameState = new GameState(playerPokemon, enemyPokemon, skillList);
-        if(gameState is object)
-        {
-        Application.Run(new BattleWindow(gameState));
-        }
+        
+        var battleWindow = new BattleWindow(gameState);
+        Application.Run(battleWindow);
+        
         Application.Shutdown();
     }
 
@@ -168,6 +171,7 @@ public class GameState
     public GameMode CurrentMode { get; private set; }
     //public Map CurrentMap { get; set; }
 
+
     public GameState(Pokemon playerPokemon, Pokemon enemyPokemon, List<Skill> skillList)
     {
         PlayerPokemon = playerPokemon;
@@ -176,6 +180,7 @@ public class GameState
         CurrentMode = GameMode.Exploration;
         //CurrentMap = startingMap;
     }
+    
     public void SwitchMode(GameMode mode)
     {
         SaveGameState();
