@@ -11,8 +11,14 @@ namespace OstreCeTamtychSpodOkna
     {
         public static void NewMain()
         {
+
+            Map cityMap = new Map(Sprites.map);
+            Map arenaMap = new Map(Sprites.map2);
             Player player = new();
             List<string> map = new();
+
+
+
 
 
             //laduje sie mapa na spritach jeszcze z logika stara na tablicy

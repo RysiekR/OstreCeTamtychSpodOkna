@@ -98,6 +98,8 @@ namespace OstreCeTamtychSpodOkna
                 }
                 Console.Clear();
                 //Display.Initialize(Display.baseMap, this);
+
+
                 Sprites.Initialize(jakaMapa, this);
             }
 

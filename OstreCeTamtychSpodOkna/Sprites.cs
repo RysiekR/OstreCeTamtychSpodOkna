@@ -10,9 +10,6 @@
     "W   P W",
     "W     W",
     "W     W",
-    "W     W",
-    "W     W",
-    "W     W",
     "WWWWWWW"
 };
 
@@ -75,13 +72,15 @@
             "     ",
             "     ",
         };
-
+//TODO zrobic zeby bylo private(albo pomyslec dlaczego nie)
         public static readonly int spriteHeight = spriteWall.Length;
 
+        //TODO createfinalmap przenies do classy map i uzywac tego tam !
+        //mozna uzywac Map.CreateFinalMap a nawet uzywac bezposrednio obiektu mapy
         public static void CreateFinallMap(List<string> final, string[] mapSmallSprites)
         {
             //no jedziemy z koksem !!!
-
+            final.Clear();
             foreach (string row in mapSmallSprites)
             {
                 string[] temp = new string[spriteHeight];
@@ -96,6 +95,8 @@
             }
         }
 
+
+        //TODO uzywac Map.PrintToConsole
         public static void Initialize(List<string> map, Player gracz)
         {
             foreach (string row in map)
@@ -107,6 +108,7 @@
             Console.Write("#");
             Console.CursorVisible = false;
         }
+        //to ma zostac\/
         public static string[] ChoseSprite(char fromMap)
         {
             string[] bigSprite;
@@ -120,8 +122,8 @@
             return bigSprite;
         }
 
-        //TODO zrobic zeby wybieralo dobra sciane
-        // co ma przyjmowac ?
+        //TODO zrobic zeby wybieralo dobra sciane !!! na koniec to !!! robic jak juz bedzie gra dzialala
+        // co ma przyjmowac ? musi przyjmowac sasiadow czyli musi przyjac aktualna mape i z niej wziac row-1/row+1 i col-1/col+1
         public static string[] ChoseWallSprite(string[] mapSmallSprites)
         {
             string[] chosenSprite = new string[spriteHeight];
@@ -130,6 +132,8 @@
             return chosenSprite;
         }
 
+
+        //mozna wywalic to na dole
         public static string[] AddTwoStringsTablesHorizontally(string[] first, string[] second)
         {
             string[] temps = new string[first.Length];

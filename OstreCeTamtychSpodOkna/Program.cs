@@ -8,12 +8,12 @@ public class Program
 {
     public static void Main()
     {
-    /*    Console.WriteLine("Press alt+enter or f11");
+        Console.WriteLine("Press alt+enter or f11");
         Console.BufferWidth = Console.WindowWidth;
-        Console.BufferHeight =Console.WindowHeight;
+        Console.BufferHeight = Console.WindowHeight;
         Console.ReadLine();
         Console.Clear();
-        RogueTestDebug.NewMain();*/
+        RogueTestDebug.NewMain();
 
 
         Application.Init();
