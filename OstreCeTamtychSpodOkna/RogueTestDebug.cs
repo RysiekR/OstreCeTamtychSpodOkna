@@ -12,6 +12,15 @@ namespace OstreCeTamtychSpodOkna
         public static void NewMain()
         {
 
+            /*string test = "asdf";
+            Console.WriteLine(test);
+            test = test.Insert(1, "q");
+            Console.WriteLine(test);
+            test = test.Remove((1 + 1),1);
+            Console.WriteLine(test);
+            Console.ReadLine();*/
+
+
             Map cityMap = new Map(Sprites.map);
             Map arenaMap = new Map(Sprites.map2);
             Player player = new();
@@ -38,7 +47,6 @@ namespace OstreCeTamtychSpodOkna
 
             while (true)
             {
-                //TODO Display.UpdateMap()
 
                 player.UpdatePos(currentMap);
                 currentMap.UpdateMap(player);

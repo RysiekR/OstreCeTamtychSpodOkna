@@ -60,14 +60,16 @@ namespace OstreCeTamtychSpodOkna
 
         public void PrintToConsole(Player gracz)
         {
+
+
             foreach (string row in this.mapAsList)
             {
                 Console.WriteLine(row);
             }
 
-            Console.SetCursorPosition(gracz.col, gracz.row);
+            /*Console.SetCursorPosition(gracz.col, gracz.row);
             Console.Write("#");
-            Console.CursorVisible = false;
+            Console.CursorVisible = false;*/
         }
 
         public void UpdateMap(Player player)

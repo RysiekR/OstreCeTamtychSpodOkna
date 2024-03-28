@@ -19,14 +19,14 @@ namespace OstreCeTamtychSpodOkna
         public int oldCol;
         public void UpdatePos(Map currentMap)
         {
-            oldCol = this.col;
-            oldRow = this.row;
+            oldCol = col;
+            oldRow = row;
             jakaMapa = currentMap.mapAsList;
             char charUp = jakaMapa[row - 1][col];
             char charDown = jakaMapa[row + 1][col];
             char charLeft = jakaMapa[row][col - 1];
             char charRight = jakaMapa[row][col + 1];
-            ConsoleKey consoleKeyPressed = ConsoleKey.None;
+            ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
 
             switch (inputFromPlayer())
             {
@@ -48,21 +48,25 @@ namespace OstreCeTamtychSpodOkna
 
             /*Console.SetCursorPosition(this.col, this.row);
             Console.Write("#");*/
+/*
+            string rowToChange = jakaMapa[row];
+            rowToChange.Insert(col, "#");
+            jakaMapa[row] = rowToChange;*/
 
-            /*string rowToChange = player.jakaMapa[player.row];
-            rowToChange.Insert(player.col,"#");
-            player.jakaMapa[player.row] = rowToChange;*/
-            jakaMapa[row].Insert(col, "#");
+
+            jakaMapa[row] = jakaMapa[row].Insert(col, "#");
+            jakaMapa[row] = jakaMapa[row].Remove(col+1,1);
 
             if (!hitObstacle)
             {
-                
-                jakaMapa[oldRow].Insert(oldCol, " ");
-                hitObstacle = false;
+
+                jakaMapa[oldRow]=jakaMapa[oldRow].Insert(oldCol, " ");
+                jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol +1,1);
             }
+                hitObstacle = false;
 
 
-            currentMap.mapAsList = this.jakaMapa;
+            currentMap.mapAsList = jakaMapa;
 
 
             //if wall was not hit remember to clear old position
@@ -121,7 +125,7 @@ namespace OstreCeTamtychSpodOkna
                 //Display.Initialize(Display.baseMap, this);
 
 
-                Sprites.Initialize(jakaMapa, this);
+                //Sprites.Initialize(jakaMapa, this);
             }
 
             // bierze i sprawdza pole w kierunku w ktorym chcemy sie poruszyc
