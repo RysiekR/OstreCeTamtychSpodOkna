@@ -70,6 +70,14 @@ namespace OstreCeTamtychSpodOkna
             Console.CursorVisible = false;
         }
 
+        public void UpdateMap(Player player)
+        {
+            
+
+
+            Console.Clear();
+            PrintToConsole(player);
+        }
 
     }
 }

@@ -15,25 +15,33 @@ namespace OstreCeTamtychSpodOkna
             Map cityMap = new Map(Sprites.map);
             Map arenaMap = new Map(Sprites.map2);
             Player player = new();
-            List<string> map = new();
-
-
-
-
-
-            //laduje sie mapa na spritach jeszcze z logika stara na tablicy
-            Sprites.CreateFinallMap(map,Sprites.map);
+            Map currentMap = cityMap;
             
-            
-            //Display.Initialize(Display.baseMapBig, player);
-            Sprites.Initialize(map, player);
+            /*
+            List<string> map;
+            map = cityMap.mapAsList;
+*/
+
+            /*
+                        //laduje sie mapa na spritach jeszcze z logika stara na tablicy
+                        Sprites.CreateFinallMap(map,Sprites.map);
+
+
+                        //Display.Initialize(Display.baseMapBig, player);
+                        Sprites.Initialize(map, player);
+            */
+
+
+            currentMap.PrintToConsole(player);
+
 
 
             while (true)
             {
                 //TODO Display.UpdateMap()
 
-                player.UpdatePos(map);
+                player.UpdatePos(currentMap);
+                currentMap.UpdateMap(player);
             }
         }
     }

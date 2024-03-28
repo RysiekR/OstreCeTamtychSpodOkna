@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -12,13 +13,15 @@ namespace OstreCeTamtychSpodOkna
         string logicLetters = "P";
         public int row = 7;
         public int col = 15;
-        List<string> jakaMapa = new List<string>();
-        public void UpdatePos(List<string>mapaDoWczytania)
+        public List<string> jakaMapa = new List<string>();
+        public bool hitObstacle = false;
+        public int oldRow;
+        public int oldCol;
+        public void UpdatePos(Map currentMap)
         {
-            jakaMapa = mapaDoWczytania;
-            int oldRow = row;
-            int oldCol = col;
-            bool hitObstacle = false;
+            oldCol = this.col;
+            oldRow = this.row;
+            jakaMapa = currentMap.mapAsList;
             char charUp = jakaMapa[row - 1][col];
             char charDown = jakaMapa[row + 1][col];
             char charLeft = jakaMapa[row][col - 1];
@@ -41,16 +44,34 @@ namespace OstreCeTamtychSpodOkna
                     break;
             }
 
-            Console.SetCursorPosition(this.col, this.row);
-            Console.Write("#");
+            // zamiast set cursor pos zmien current map char w nowym miejscu
+
+            /*Console.SetCursorPosition(this.col, this.row);
+            Console.Write("#");*/
+
+            /*string rowToChange = player.jakaMapa[player.row];
+            rowToChange.Insert(player.col,"#");
+            player.jakaMapa[player.row] = rowToChange;*/
+            jakaMapa[row].Insert(col, "#");
+
+            if (!hitObstacle)
+            {
+                
+                jakaMapa[oldRow].Insert(oldCol, " ");
+                hitObstacle = false;
+            }
+
+
+            currentMap.mapAsList = this.jakaMapa;
+
 
             //if wall was not hit remember to clear old position
-            if (!hitObstacle)
+            /*if (!hitObstacle)
             {
                 Console.SetCursorPosition(oldCol, oldRow);
                 Console.Write(" ");
                 hitObstacle = false;
-            }
+            }*/
 
             void unpassableObstacle(char charToLogic)
             {
