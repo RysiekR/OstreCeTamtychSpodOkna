@@ -11,45 +11,17 @@ namespace OstreCeTamtychSpodOkna
     {
         public static void NewMain()
         {
-
-            /*string test = "asdf";
-            Console.WriteLine(test);
-            test = test.Insert(1, "q");
-            Console.WriteLine(test);
-            test = test.Remove((1 + 1),1);
-            Console.WriteLine(test);
-            Console.ReadLine();*/
-
-
             Map cityMap = new Map(Sprites.map);
             Map arenaMap = new Map(Sprites.map2);
             Player player = new();
             Map currentMap = cityMap;
-            
-            /*
-            List<string> map;
-            map = cityMap.mapAsList;
-*/
 
-            /*
-                        //laduje sie mapa na spritach jeszcze z logika stara na tablicy
-                        Sprites.CreateFinallMap(map,Sprites.map);
-
-
-                        //Display.Initialize(Display.baseMapBig, player);
-                        Sprites.Initialize(map, player);
-            */
-
-
-            currentMap.PrintToConsole(player);
-
-
+            //TODO mapa sie inicjalizuje bez avatara naprawic jak bedzie gamestate
 
             while (true)
             {
-
                 player.UpdatePos(currentMap);
-                currentMap.UpdateMap(player);
+                currentMap.UpdateMap();
             }
         }
     }

@@ -8,7 +8,6 @@ namespace OstreCeTamtychSpodOkna
 {
     internal class Map
     {
-
         //w założeniu ma byc obiektem w ktorym mozna trzymac mape
         //np obiekt mapaMiasta, mapaAreny
         //i mozna go nadpisac zeby bo wczytaniu drugiej mapy gdzies bylo to co po nas zostalo
@@ -20,7 +19,7 @@ namespace OstreCeTamtychSpodOkna
             CreateFinallMap(mapAsList, miniMapa);
         }
 
-        //TODO zmodyfikowac ta metode zeby byla jasne co robi
+        //czysci i buduje nowa mape
         public void CreateFinallMap(List<string> final, string[] mapSmallSprites)
         {
             final.Clear();
@@ -58,27 +57,18 @@ namespace OstreCeTamtychSpodOkna
             }
         }
 
-        public void PrintToConsole(Player gracz)
+        public void PrintToConsole()
         {
-
-
             foreach (string row in this.mapAsList)
             {
                 Console.WriteLine(row);
             }
-
-            /*Console.SetCursorPosition(gracz.col, gracz.row);
-            Console.Write("#");
-            Console.CursorVisible = false;*/
         }
 
-        public void UpdateMap(Player player)
+        public void UpdateMap()
         {
-            
-
-
             Console.Clear();
-            PrintToConsole(player);
+            PrintToConsole();
         }
 
     }

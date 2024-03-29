@@ -2,7 +2,8 @@
 {
     internal class Sprites
     {
-
+        public static readonly string obstacle = "╬┼╦╩╣╠";
+        //minimapy
         public static readonly string[] map =
         {
     "WWWWWWW",
@@ -12,7 +13,6 @@
     "W     W",
     "WWWWWWW"
 };
-
         public static readonly string[] map2 =
         {
     "WWWWWWWW",
@@ -21,7 +21,7 @@
     "W      W",
     "WWWWWWWW"
 };
-
+        //sprity
         public static readonly string[] spriteWall =
         {
     "╬╦╬╦╬",
@@ -30,7 +30,6 @@
     "╠┼┼┼╣",
     "╬╩╩╩╬"
 };
-
         public static readonly string[] spriteAir =
         {
     ", , ,",
@@ -72,49 +71,15 @@
             "     ",
             "     ",
         };
-//TODO zrobic zeby bylo private(albo pomyslec dlaczego nie)
+        //wysokosc sprita potrzebna w map.spriteheight
         public static readonly int spriteHeight = spriteWall.Length;
 
-        //TODO createfinalmap przenies do classy map i uzywac tego tam !
-        //mozna uzywac Map.CreateFinalMap a nawet uzywac bezposrednio obiektu mapy
-        public static void CreateFinallMap(List<string> final, string[] mapSmallSprites)
-        {
-            //no jedziemy z koksem !!!
-            final.Clear();
-            foreach (string row in mapSmallSprites)
-            {
-                string[] temp = new string[spriteHeight];
-                foreach (char smallSprite in row)
-                {
-                    //tutaj trzeba przypisac do tempa sprity z lini w mapie
-                    temp = AddTwoStringsTablesHorizontally(temp, ChoseSprite(smallSprite));
-
-                }
-                //po dodaniu jednej lini spritow mamy gotowa cala linie spritow do wrzucenia do listy
-                AddVertically(final, temp);
-            }
-        }
-
-
-        //TODO uzywac Map.PrintToConsole
-        public static void Initialize(List<string> map, Player gracz)
-        {
-            foreach (string row in map)
-            {
-                Console.WriteLine(row);
-            }
-
-            Console.SetCursorPosition(gracz.col, gracz.row);
-            Console.Write("#");
-            Console.CursorVisible = false;
-        }
-        //to ma zostac\/
         public static string[] ChoseSprite(char fromMap)
         {
             string[] bigSprite;
             switch (fromMap)
             {
-                case 'W': bigSprite = spriteWall; break;
+                case 'W': bigSprite = spriteWall; break; //zamiast poprostu spriteWall uzyc chosewallsprite
                 case ' ': bigSprite = spriteAir; break;
                 case 'P': bigSprite = spritePortal; break;
                 default: bigSprite = spriteAir; break;
@@ -128,31 +93,8 @@
         {
             string[] chosenSprite = new string[spriteHeight];
             //give me logic procedure
-
             return chosenSprite;
         }
-
-
-        //mozna wywalic to na dole
-        public static string[] AddTwoStringsTablesHorizontally(string[] first, string[] second)
-        {
-            string[] temps = new string[first.Length];
-            first.CopyTo(temps, 0);
-            for (int i = 0; i < first.Length; i++)
-            {
-                temps[i] += second[i];
-            }
-            return temps;
-        }
-
-        public static void AddVertically(List<string> bazowa, string[] dodawana)
-        {
-            for (int i = 0; i < dodawana.Length; i++)
-            {
-                bazowa.Add(dodawana[i]);
-            }
-        }
-
     }
 }
 
