@@ -13,6 +13,8 @@ namespace OstreCeTamtychSpodOkna
         string logicLetters = "P";
         public int row = 7;
         public int col = 15;
+
+        //TODO uzyc mapy z GSRogue
         public List<string> jakaMapa = new List<string>();
         public bool hitObstacle = false;
         public int oldRow;
@@ -21,6 +23,8 @@ namespace OstreCeTamtychSpodOkna
         {
             oldCol = col;
             oldRow = row;
+
+            //TODO jak bedzie uzyte z GSRogue to juz chyba nie trzeba tu przypisywac
             jakaMapa = currentMap.mapAsList;
             char charUp = jakaMapa[row - 1][col];
             char charDown = jakaMapa[row + 1][col];
@@ -152,7 +156,7 @@ namespace OstreCeTamtychSpodOkna
             }
 
         }
-
+        //TODO zapisywanie mapy do GSRogue
         public void SetMap()
         {
 
