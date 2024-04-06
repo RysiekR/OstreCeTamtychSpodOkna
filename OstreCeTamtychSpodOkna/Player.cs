@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OstreCeTamtychSpodOkna
+﻿namespace OstreCeTamtychSpodOkna
 {
     internal class Player
     {
@@ -19,6 +12,7 @@ namespace OstreCeTamtychSpodOkna
         public bool hitObstacle = false;
         public int oldRow;
         public int oldCol;
+        ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
         public void UpdatePos(Map currentMap)
         {
             oldCol = col;
@@ -30,7 +24,6 @@ namespace OstreCeTamtychSpodOkna
             char charDown = jakaMapa[row + 1][col];
             char charLeft = jakaMapa[row][col - 1];
             char charRight = jakaMapa[row][col + 1];
-            ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
 
             switch (inputFromPlayer())
             {
@@ -49,113 +42,94 @@ namespace OstreCeTamtychSpodOkna
             }
 
             jakaMapa[row] = jakaMapa[row].Insert(col, "#");
-            jakaMapa[row] = jakaMapa[row].Remove(col+1,1);
+            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
 
             //if wall was not hit remember to clear old position
             if (!hitObstacle)
             {
-                jakaMapa[oldRow]=jakaMapa[oldRow].Insert(oldCol, " ");
-                jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol +1,1);
+                jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
+                jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
             }
-                hitObstacle = false;
+            hitObstacle = false;
 
             //zapisanie zmodyfikowanej mapy
             currentMap.mapAsList = jakaMapa;
-
-
-            // bierze i sprawdza pole w kierunku w ktorym chcemy sie poruszyc
-            // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
-            void Movement(char charInThisDirection)
-            {
-                //sprawdzenie czy char gdzie idziemy jest charem ze string z przeszkodami nie do przejscia
-                if (obstacle.Contains(charInThisDirection))
-                {
-                    unpassableObstacle(charInThisDirection);
-                }
-                //tu jak jest cos do zrobienia a nie tylko "E!!E!! nie ma przejscia
-                //TODO wymyslic zrobic zeby bylo jak na gorze tylko ze stringiem liter na ktorych wykonujemy logike
-                else if (logicLetters.Contains(charInThisDirection))
-                {
-                    changeMapTo(charInThisDirection);
-                }
-                // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
-                else
-                {
-                    switch(consoleKeyPressed)
-                    {
-                        case ConsoleKey.W: { row--; }
-                        break;
-                        case ConsoleKey.S:{ row++;}
-                        break;
-                        case ConsoleKey.D: { col++; }
-                        break;
-                        case ConsoleKey.A: { col--; }
-                        break;
-                    }
-                        
-                   
-                }
-            }
-            
-            void unpassableObstacle(char charToLogic)
-            {
-                if (obstacle.Contains(charToLogic))
-                {
-                    hitObstacle = true;
-                }
-
-                else { Console.WriteLine("Error Player.UpdatePos.UnpassableObstacle"); }
-                //TODO albo zmienic tego switcha na ifa albo sie dowiedziec jak to zrobic inaczej czy w tym case moze byc funkcja ktora cos zwraca?
-                /*switch (charToLogic)
-                {
-                    case '╬':
-                        hitObstacle = true;
-                        break;
-                    case '╦':
-                        hitObstacle = true;
-                        break;
-                    case '┼':
-                        hitObstacle = true;
-                        break;
-                    case '╣':
-                        hitObstacle = true;
-                        break;
-                    case '╩':
-                        hitObstacle = true;
-                        break;
-                    case 'T':
-                        hitObstacle = true;
-                        break;
-                    //
-                }*/
-
-            }
-            
-            void changeMapTo(char letterOfTheMap)
-            {
-                //TODO tu jest jeszcze do dopracowania , trzeba uzywac gamestatu
-                
-                Map tempMap = new Map(Sprites.map2);
-                switch(letterOfTheMap)
-                {
-                    case 'P': { jakaMapa = tempMap.mapAsList; break; }
-                }
-                Console.Clear();
-            }
-
-
-
-            //TODO zrobic check czy ten klawisz ma zastosowanie
-            //jak nie ma to jeszcze raz go zczytac
-            //i wyswietlic "nie dotykaj klawiszy ktore nic nie robia łobuzie"
-            // metoda ktora zczytuje i zwraca konkretny przycisk z klawiatury
-            ConsoleKey inputFromPlayer()
-            {
-                consoleKeyPressed = Console.ReadKey(true).Key;
-                return consoleKeyPressed;
-            }
-
         }
+
+        // bierze i sprawdza pole w kierunku w ktorym chcemy sie poruszyc
+        // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
+        void Movement(char charInThisDirection)
+        {
+            //sprawdzenie czy char gdzie idziemy jest charem ze string z przeszkodami nie do przejscia
+            if (obstacle.Contains(charInThisDirection))
+            {
+                unpassableObstacle(charInThisDirection);
+            }
+            //tu jak jest cos do zrobienia a nie tylko "E!!E!! nie ma przejscia
+            //TODO wymyslic zrobic zeby bylo jak na gorze tylko ze stringiem liter na ktorych wykonujemy logike
+            else if (logicLetters.Contains(charInThisDirection))
+            {
+                changeMapTo(charInThisDirection);
+            }
+            // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
+            else
+            {
+                switch (consoleKeyPressed)
+                {
+                    case ConsoleKey.W:
+                        { row--; }
+                        break;
+                    case ConsoleKey.S:
+                        { row++; }
+                        break;
+                    case ConsoleKey.D:
+                        { col++; }
+                        break;
+                    case ConsoleKey.A:
+                        { col--; }
+                        break;
+                }
+
+
+            }
+        }
+
+        void unpassableObstacle(char charToLogic)
+        {
+            if (obstacle.Contains(charToLogic))
+            {
+                hitObstacle = true;
+            }
+
+            else { Console.WriteLine("Error Player.UpdatePos.UnpassableObstacle"); }
+           
+        }
+
+        void changeMapTo(char letterOfTheMap)
+        {
+            //TODO tu jest jeszcze do dopracowania , trzeba uzywac gamestatu
+
+            Map tempMap = new Map(Sprites.map2);
+            switch (letterOfTheMap)
+            {
+                case 'P': { jakaMapa = tempMap.mapAsList; break; }
+            }
+            Console.Clear();
+        }
+
+
+
+        //TODO zrobic check czy ten klawisz ma zastosowanie
+        //jak nie ma to jeszcze raz go zczytac
+        //i wyswietlic "nie dotykaj klawiszy ktore nic nie robia łobuzie"
+        // metoda ktora zczytuje i zwraca konkretny przycisk z klawiatury
+        ConsoleKey inputFromPlayer()
+        {
+            consoleKeyPressed = Console.ReadKey(true).Key;
+            return consoleKeyPressed;
+        }
+
+
         //TODO zapisywanie mapy do GSRogue
         public void SetMap()
         {
