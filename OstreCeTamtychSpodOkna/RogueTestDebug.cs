@@ -24,7 +24,7 @@ namespace OstreCeTamtychSpodOkna
             {
                 player.UpdatePos(currentMap);
                 foreach (Enemy enemi in enemies)
-                { enemy.UpdatePos(currentMap);}
+                { enemi.UpdatePos(currentMap);}
                 currentMap.UpdateMap();
             }
         }

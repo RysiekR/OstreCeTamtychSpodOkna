@@ -3,20 +3,19 @@
     //enemy class with movement logic, in the future will be holding pokemons 
     internal class Enemy
     {
-        public int row;
-        public int col;
+        private int row;
+        private int col;
 
-        public Enemy(int row, int col)
+        public Enemy(int rowSpawn, int colSpawn)
         {
-            this.row = row;
-            this.col = col;
+            this.row = rowSpawn;
+            this.col = colSpawn;
         }
-        int oldCol;
-        int oldRow;
+        private int oldCol;
+        private int oldRow;
         public List<string> jakaMapa = new List<string>();
         Random rnd = new Random();
-        bool hitObstacle = false;
-        string obstacle = Sprites.obstacle;
+        private bool hitObstacle = false;
         string enemyAvatar = "5";
 
 
@@ -67,11 +66,10 @@
         void Movement(int direction,char charInThisDirection)
         {
             //sprawdzenie czy char gdzie idziemy jest charem ze string z przeszkodami nie do przejscia
-            if (obstacle.Contains(charInThisDirection))
+            if (Sprites.obstacle.Contains(charInThisDirection))
             {
                 unpassableObstacle(charInThisDirection);
             }
-            
             // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
             else
             {
@@ -90,14 +88,12 @@
                         { col--; }
                         break;
                 }
-
-
             }
         }
 
         void unpassableObstacle(char charToLogic)
         {
-            if (obstacle.Contains(charToLogic))
+            if (Sprites.obstacle.Contains(charToLogic))
             {
                 hitObstacle = true;
             }
