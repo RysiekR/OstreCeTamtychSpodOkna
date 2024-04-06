@@ -8,6 +8,7 @@ namespace OstreCeTamtychSpodOkna
 {
     internal class GameStateRogue
     {
+        //docelowo ma trzymac mape miasta i generowac arene
         // jak narazie przychowalnia map 
         private Map cityMap;
         private Map arenaMap;

@@ -9,10 +9,10 @@ namespace OstreCeTamtychSpodOkna
 {
     internal class Player
     {
-        string obstacle = Sprites.obstacle;
-        string logicLetters = "P";
         public int row = 7;
         public int col = 15;
+        string obstacle = Sprites.obstacle;
+        string logicLetters = "P";
 
         //TODO uzyc mapy z GSRogue
         public List<string> jakaMapa = new List<string>();
