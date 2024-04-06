@@ -13,16 +13,16 @@
         }
         private int oldCol;
         private int oldRow;
-        public List<string> jakaMapa = new List<string>();
+        public List<string> jakaMapa;
         Random rnd = new Random();
         private bool hitObstacle = false;
         string enemyAvatar = "5";
-
+        int randomMove;
 
         public void UpdatePos(Map currentMap)
         {
-            oldCol = col;
-            oldRow = row;
+            oldCol = this.col;
+            oldRow = this.row;
 
             //TODO jak bedzie uzyte z GSRogue to juz chyba nie trzeba tu przypisywac
             jakaMapa = currentMap.mapAsList;
@@ -30,50 +30,56 @@
             char charDown = jakaMapa[row + 1][col];
             char charLeft = jakaMapa[row][col - 1];
             char charRight = jakaMapa[row][col + 1];
-
-            switch (rnd.Next(1, 5))
+            randomMove = rnd.Next(1, 5);
+            switch (randomMove)
             {
                 case 1:
-                    Movement(1,charUp);
+                    Movement(charUp);
                     break;
                 case 2:
-                    Movement(2,charDown);
+                    Movement(charDown);
                     break;
                 case 3:
-                    Movement(3,charLeft);
+                    Movement(charLeft);
                     break;
                 case 4:
-                    Movement(4,charRight);
+                    Movement(charRight);
                     break;
             }
 
-            jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);
-            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
 
             //if wall was not hit remember to clear old position
             if (!hitObstacle)
             {
+            jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);
+            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
                 jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
                 jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
+            }
+            else
+            {
+                jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);
+                jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
+
             }
             hitObstacle = false;
 
             //zapisanie zmodyfikowanej mapy
-            currentMap.mapAsList = jakaMapa;
+            currentMap.mapAsList = this.jakaMapa;
         }
 
         // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
-        void Movement(int direction,char charInThisDirection)
+        void Movement(char charInThisDirection)
         {
             //sprawdzenie czy char gdzie idziemy jest charem ze string z przeszkodami nie do przejscia
-            if (Sprites.obstacle.Contains(charInThisDirection))
+            if (Sprites.obstacle.Contains(charInThisDirection) || charInThisDirection == 'P' || charInThisDirection == '#')
             {
                 unpassableObstacle(charInThisDirection);
             }
             // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
             else
             {
-                switch (direction)
+                switch (randomMove)
                 {
                     case 1:
                         { row--; }
@@ -82,10 +88,10 @@
                         { row++; }
                         break;
                     case 3:
-                        { col++; }
+                        { col--; }
                         break;
                     case 4:
-                        { col--; }
+                        { col++; }
                         break;
                 }
             }

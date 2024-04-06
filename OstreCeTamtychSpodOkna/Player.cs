@@ -8,8 +8,8 @@
         string logicLetters = "P";
 
         //TODO uzyc mapy z GSRogue
-        public List<string> jakaMapa = new List<string>();
-        public bool hitObstacle = false;
+        public List<string> jakaMapa;
+        private bool hitObstacle = false;
         public int oldRow;
         public int oldCol;
         ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
@@ -41,19 +41,19 @@
                     break;
             }
 
-            jakaMapa[row] = jakaMapa[row].Insert(col, "#");
-            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
 
             //if wall was not hit remember to clear old position
             if (!hitObstacle)
             {
+            jakaMapa[row] = jakaMapa[row].Insert(col, "#");
+            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
                 jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
                 jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
             }
             hitObstacle = false;
 
             //zapisanie zmodyfikowanej mapy
-            currentMap.mapAsList = jakaMapa;
+            currentMap.mapAsList = this.jakaMapa;
         }
 
         // bierze i sprawdza pole w kierunku w ktorym chcemy sie poruszyc
