@@ -10,10 +10,10 @@ namespace OstreCeTamtychSpodOkna
     {
         //docelowo ma trzymac mape miasta i generowac arene
         // jak narazie przychowalnia map 
-        private Map cityMap;
-        private Map arenaMap;
+        public Map cityMap;
+        public Map arenaMap;
         public Map currentMap;
-        GameStateRogue(Map cityMap, Map arenaMap)
+        GameStateRogue(Map cityMap)
         {
             if (cityMap is object)
             {

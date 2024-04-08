@@ -5,10 +5,10 @@
         public int row = 7;
         public int col = 15;
         string obstacle = Sprites.obstacle;
-        string logicLetters = "P";
+        string logicLetters = "P123456789";
 
         //TODO uzyc mapy z GSRogue
-        public List<string> jakaMapa;
+        public List<string> jakaMapa = new List<string>();
         private bool hitObstacle = false;
         public int oldRow;
         public int oldCol;
@@ -19,7 +19,8 @@
             oldRow = row;
 
             //TODO jak bedzie uzyte z GSRogue to juz chyba nie trzeba tu przypisywac
-            jakaMapa = currentMap.mapAsList;
+            jakaMapa.Clear();
+            jakaMapa.AddRange(currentMap.mapAsList);
             char charUp = jakaMapa[row - 1][col];
             char charDown = jakaMapa[row + 1][col];
             char charLeft = jakaMapa[row][col - 1];
@@ -45,15 +46,18 @@
             //if wall was not hit remember to clear old position
             if (!hitObstacle)
             {
-            jakaMapa[row] = jakaMapa[row].Insert(col, "#");
-            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
+                jakaMapa[row] = jakaMapa[row].Insert(col, "#");
+                jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
                 jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
                 jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
             }
             hitObstacle = false;
 
             //zapisanie zmodyfikowanej mapy
-            currentMap.mapAsList = this.jakaMapa;
+            currentMap.mapAsList.Clear();
+            currentMap.mapAsList.AddRange(jakaMapa);
+
+
         }
 
         // bierze i sprawdza pole w kierunku w ktorym chcemy sie poruszyc
@@ -69,7 +73,14 @@
             //TODO wymyslic zrobic zeby bylo jak na gorze tylko ze stringiem liter na ktorych wykonujemy logike
             else if (logicLetters.Contains(charInThisDirection))
             {
-                changeMapTo(charInThisDirection);
+                if (charInThisDirection == 'P')
+                {
+                    changeMapTo(charInThisDirection);
+                }
+                else if (charInThisDirection == '5')
+                {
+                    Console.Beep(500, 400);
+                }
             }
             // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
             else
@@ -102,7 +113,7 @@
             }
 
             else { Console.WriteLine("Error Player.UpdatePos.UnpassableObstacle"); }
-           
+
         }
 
         void changeMapTo(char letterOfTheMap)
@@ -112,9 +123,13 @@
             Map tempMap = new Map(Sprites.map2);
             switch (letterOfTheMap)
             {
-                case 'P': { jakaMapa = tempMap.mapAsList; break; }
+                case 'P':
+                    {
+                        jakaMapa.Clear();
+                        jakaMapa.AddRange(tempMap.mapAsList);
+                        break;
+                    }
             }
-            Console.Clear();
         }
 
 

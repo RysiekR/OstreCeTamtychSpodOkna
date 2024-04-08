@@ -6,20 +6,25 @@
         //minimapy
         public static readonly string[] map =
         {
-    "WWWWWWW",
-    "W     W",
-    "W   P W",
-    "W     W",
-    "W     W",
-    "WWWWWWW"
+    "WWWWWWWWWWWWW",
+    "W           W",
+    "W           W",
+    "WP          W",
+    "W           W",
+    "W           W",
+    "W           W",
+    "WWWWWWWWWWWWW",
 };
         public static readonly string[] map2 =
         {
-    "WWWWWWWW",
-    "W      W",
-    "W      W",
-    "W      W",
-    "WWWWWWWW"
+    "WWWWWWWWWWWWW",
+    "W           W",
+    "W           W",
+    "W        P  W",
+    "W           W",
+    "W           W",
+    "W           W",
+    "WWWWWWWWWWWWW",
 };
         //sprity
         public static readonly string[] spriteWall =

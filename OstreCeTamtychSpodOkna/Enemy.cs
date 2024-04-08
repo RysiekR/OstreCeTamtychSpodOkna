@@ -99,9 +99,13 @@
 
         void unpassableObstacle(char charToLogic)
         {
-            if (Sprites.obstacle.Contains(charToLogic))
+            if (Sprites.obstacle.Contains(charToLogic) || charToLogic == 'P')
             {
                 hitObstacle = true;
+            }
+            else if (charToLogic == '#')
+            {
+                Console.Beep(); // przeciwnik w nas wszedl
             }
 
             else { Console.WriteLine("Error ! ! ! Enemy.UpdatePos.UnpassableObstacle"); }
