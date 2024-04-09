@@ -15,9 +15,10 @@ namespace OstreCeTamtychSpodOkna
             Map arenaMap = new Map(Sprites.map2);
             Player player = new();
             Map currentMap = cityMap;
-            Enemy enemy = new(6, 6);
             List<Enemy> enemies = new List<Enemy>();
-            enemies.Add(enemy);
+            enemies.Add(new Enemy(6,6));
+            enemies.Add(new Enemy(7,7));
+            enemies.Add(new Enemy(20,20));
             //TODO mapa sie inicjalizuje bez avatara naprawic jak bedzie gamestate
             Display.InitializeDisplay(currentMap);
             while (true)

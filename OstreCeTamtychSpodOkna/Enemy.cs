@@ -5,18 +5,21 @@
     {
         private int row;
         private int col;
+        string enemyAvatar;
 
         public Enemy(int rowSpawn, int colSpawn)
         {
             this.row = rowSpawn;
             this.col = colSpawn;
+            Random random = new Random();
+            enemyAvatar = random.Next(1,10).ToString();
+
         }
         private int oldCol;
         private int oldRow;
         public List<string> jakaMapa;
         Random rnd = new Random();
         private bool hitObstacle = false;
-        string enemyAvatar = "5";
         int randomMove;
 
         public void UpdatePos(Map currentMap)
