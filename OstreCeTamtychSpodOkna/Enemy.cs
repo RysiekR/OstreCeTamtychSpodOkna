@@ -6,18 +6,19 @@
         private int row;
         private int col;
         string enemyAvatar;
-
-        public Enemy(int rowSpawn, int colSpawn)
+        string enemyString = "123456789";
+        public Enemy(int rowSpawn, int colSpawn, Map currentMap)
         {
             this.row = rowSpawn;
             this.col = colSpawn;
             Random random = new Random();
             enemyAvatar = random.Next(1,10).ToString();
+            InitializeEnemyPosition(currentMap);
 
         }
         private int oldCol;
         private int oldRow;
-        public List<string> jakaMapa;
+        public List<string> jakaMapa = new();
         Random rnd = new Random();
         private bool hitObstacle = false;
         int randomMove;
@@ -26,9 +27,8 @@
         {
             oldCol = this.col;
             oldRow = this.row;
-
-            //TODO jak bedzie uzyte z GSRogue to juz chyba nie trzeba tu przypisywac
-            jakaMapa = currentMap.mapAsList;
+            jakaMapa.Clear();
+            jakaMapa.AddRange(currentMap.mapAsList);
             char charUp = jakaMapa[row - 1][col];
             char charDown = jakaMapa[row + 1][col];
             char charLeft = jakaMapa[row][col - 1];
@@ -68,7 +68,9 @@
             hitObstacle = false;
 
             //zapisanie zmodyfikowanej mapy
-            currentMap.mapAsList = this.jakaMapa;
+            currentMap.mapAsList.Clear();
+            currentMap.mapAsList.AddRange(jakaMapa);
+
         }
 
         // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
@@ -102,7 +104,7 @@
 
         void unpassableObstacle(char charToLogic)
         {
-            if (Sprites.obstacle.Contains(charToLogic) || charToLogic == 'P')
+            if (Sprites.obstacle.Contains(charToLogic) || charToLogic == 'P' || enemyString.Contains(charToLogic))
             {
                 hitObstacle = true;
             }
@@ -115,7 +117,18 @@
 
         }
 
-
+        private void InitializeEnemyPosition(Map currentMap)
+        {
+            //pobranie mapy
+            jakaMapa.Clear();
+            jakaMapa.AddRange(currentMap.mapAsList);
+            //wstawienie enemy
+            jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);
+            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
+            //wyplucie mapy z enemy
+            currentMap.mapAsList.Clear();
+            currentMap.mapAsList.AddRange(jakaMapa);
+        }
 
     }
 }

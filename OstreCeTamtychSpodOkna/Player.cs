@@ -6,19 +6,22 @@
         public int col = 15;
         string obstacle = Sprites.obstacle;
         string logicLetters = "P123456789";
+        string enemyString = "123456789";
 
-        //TODO uzyc mapy z GSRogue
         public List<string> jakaMapa = new List<string>();
         private bool hitObstacle = false;
         public int oldRow;
         public int oldCol;
         ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
+
+        public Player(Map currentMap)
+        {
+            InitializePlayerPosition(currentMap);
+        }
         public void UpdatePos(Map currentMap)
         {
             oldCol = col;
             oldRow = row;
-
-            //TODO jak bedzie uzyte z GSRogue to juz chyba nie trzeba tu przypisywac
             jakaMapa.Clear();
             jakaMapa.AddRange(currentMap.mapAsList);
             char charUp = jakaMapa[row - 1][col];
@@ -77,9 +80,9 @@
                 {
                     changeMapTo(charInThisDirection);
                 }
-                else if (charInThisDirection == '5')
+                else if (enemyString.Contains(charInThisDirection))
                 {
-                    Console.Beep(500, 400);
+                    Console.Beep(500, 400);// tutaj wywolac walke TODO MIODEK
                 }
             }
             // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
@@ -149,6 +152,19 @@
         public void SetMap()
         {
 
+        }
+
+        private void InitializePlayerPosition(Map currentMap)
+        {
+            //pobranie mapy
+            jakaMapa.Clear();
+            jakaMapa.AddRange(currentMap.mapAsList);
+            //wstawienie gracza
+            jakaMapa[row] = jakaMapa[row].Insert(col, "#");
+            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
+            //wyplucie mapy z graczem
+            currentMap.mapAsList.Clear();
+            currentMap.mapAsList.AddRange(jakaMapa);
         }
     }
 }

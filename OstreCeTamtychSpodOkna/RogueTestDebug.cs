@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OstreCeTamtychSpodOkna
+﻿namespace OstreCeTamtychSpodOkna
 {
     internal class RogueTestDebug
     {
@@ -13,13 +6,16 @@ namespace OstreCeTamtychSpodOkna
         {
             Map cityMap = new Map(Sprites.map);
             Map arenaMap = new Map(Sprites.map2);
-            Player player = new();
             Map currentMap = cityMap;
             List<Enemy> enemies = new List<Enemy>();
-            enemies.Add(new Enemy(6,6));
-            enemies.Add(new Enemy(7,7));
-            enemies.Add(new Enemy(20,20));
+            enemies.Add(new Enemy(6, 6, currentMap));
+            enemies.Add(new Enemy(7, 7, currentMap));
+            enemies.Add(new Enemy(20, 20, currentMap));
+            enemies.Add(new Enemy(30, 30, currentMap));
+            enemies.Add(new Enemy(20, 20, currentMap));
+
             //TODO mapa sie inicjalizuje bez avatara naprawic jak bedzie gamestate
+            Player player = new(currentMap);
             Display.InitializeDisplay(currentMap);
             while (true)
             {
@@ -30,7 +26,7 @@ namespace OstreCeTamtychSpodOkna
 
                 Display.SetNewDisplay(currentMap);
                 Display.RenderDisplay();
-                
+
             }
         }
     }
