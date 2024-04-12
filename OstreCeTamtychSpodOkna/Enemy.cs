@@ -51,7 +51,7 @@
             }
 
 
-            //if wall was not hit remember to clear old position
+            //if wall was not hit: move enemy and clear old position
             if (!hitObstacle)
             {
             jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);

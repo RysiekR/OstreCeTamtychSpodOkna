@@ -46,7 +46,7 @@
             }
 
 
-            //if wall was not hit remember to clear old position
+            //if wall was not hit: move player and clear old position
             if (!hitObstacle)
             {
                 jakaMapa[row] = jakaMapa[row].Insert(col, "#");
@@ -63,7 +63,7 @@
 
         }
 
-        // bierze i sprawdza pole w kierunku w ktorym chcemy sie poruszyc
+        // bierze i sprawdza char w kierunku w ktorym chcemy sie poruszyc
         // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
         void Movement(char charInThisDirection)
         {
@@ -72,8 +72,7 @@
             {
                 unpassableObstacle(charInThisDirection);
             }
-            //tu jak jest cos do zrobienia a nie tylko "E!!E!! nie ma przejscia
-            //TODO wymyslic zrobic zeby bylo jak na gorze tylko ze stringiem liter na ktorych wykonujemy logike
+            // miejsce z logika znaków z ktorymi jest jakas interakcja
             else if (logicLetters.Contains(charInThisDirection))
             {
                 if (charInThisDirection == 'P')
