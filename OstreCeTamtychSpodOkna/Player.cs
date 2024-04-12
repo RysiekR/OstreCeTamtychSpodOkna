@@ -2,6 +2,8 @@
 {
     internal class Player
     {
+
+
         public int row = 7;
         public int col = 15;
         string obstacle = Sprites.obstacle;
@@ -13,10 +15,20 @@
         public int oldRow;
         public int oldCol;
         ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
+        char charUp;
+        char charDown;
+        char charLeft;
+        char charRight;
+
+        private Dictionary<ConsoleKey, Action> movements = new Dictionary<ConsoleKey, Action> { };
 
         public Player(Map currentMap)
         {
             InitializePlayerPosition(currentMap);
+            movements.Add(ConsoleKey.W, () => Movement(charUp));
+            movements.Add(ConsoleKey.S, () => Movement(charDown));
+            movements.Add(ConsoleKey.A, () => Movement(charLeft));
+            movements.Add(ConsoleKey.D, () => Movement(charRight));
         }
         public void UpdatePos(Map currentMap)
         {
@@ -24,12 +36,13 @@
             oldRow = row;
             jakaMapa.Clear();
             jakaMapa.AddRange(currentMap.mapAsList);
-            char charUp = jakaMapa[row - 1][col];
-            char charDown = jakaMapa[row + 1][col];
-            char charLeft = jakaMapa[row][col - 1];
-            char charRight = jakaMapa[row][col + 1];
+            charUp = jakaMapa[row - 1][col];
+            charDown = jakaMapa[row + 1][col];
+            charLeft = jakaMapa[row][col - 1];
+            charRight = jakaMapa[row][col + 1];
 
-            switch (inputFromPlayer())
+
+            /*switch (inputFromPlayer())
             {
                 case ConsoleKey.W:
                     Movement(charUp);
@@ -43,23 +56,28 @@
                 case ConsoleKey.D:
                     Movement(charRight);
                     break;
-            }
+            }*/
 
+            consoleKeyPressed = Console.ReadKey(true).Key;
 
-            //if wall was not hit: move player and clear old position
-            if (!hitObstacle)
+            if (movements.TryGetValue(consoleKeyPressed, out var movementAction))
             {
-                jakaMapa[row] = jakaMapa[row].Insert(col, "#");
-                jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
-                jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
-                jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
+                movementAction();
+
+                //if wall was not hit: move player and clear old position
+                if (!hitObstacle)
+                {
+                    jakaMapa[row] = jakaMapa[row].Insert(col, "#");
+                    jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
+                    jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
+                    jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
+                }
+                hitObstacle = false;
+
+                //zapisanie zmodyfikowanej mapy
+                currentMap.mapAsList.Clear();
+                currentMap.mapAsList.AddRange(jakaMapa);
             }
-            hitObstacle = false;
-
-            //zapisanie zmodyfikowanej mapy
-            currentMap.mapAsList.Clear();
-            currentMap.mapAsList.AddRange(jakaMapa);
-
 
         }
 
@@ -134,6 +152,7 @@
             }
         }
 
+        
 
 
         //TODO zrobic check czy ten klawisz ma zastosowanie
@@ -144,13 +163,6 @@
         {
             consoleKeyPressed = Console.ReadKey(true).Key;
             return consoleKeyPressed;
-        }
-
-
-        //TODO zapisywanie mapy do GSRogue
-        public void SetMap()
-        {
-
         }
 
         private void InitializePlayerPosition(Map currentMap)
