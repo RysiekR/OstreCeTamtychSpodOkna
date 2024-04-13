@@ -37,7 +37,18 @@
             logicFromChars = new Dictionary<char, Action>
                 {
                     {'P', () => changeMapTo('P')}
+                    
                 };
+            //dodanie kazdego znaku przez ktory nie mozna przejsc
+            foreach (char obstacleChar in obstacle)
+            {
+                logicFromChars[obstacleChar] = () => unpassableObstacle(obstacleChar);
+            }
+            //dodanie znakow enemies
+            foreach (char enemy in enemyString) 
+            {
+                logicFromChars[enemy] = () => Console.Beep(500, 400); //TODO MIODEK walka
+            }
         }
         public void UpdatePos(Map currentMap)
         {
@@ -49,23 +60,6 @@
             charDown = jakaMapa[row + 1][col];
             charLeft = jakaMapa[row][col - 1];
             charRight = jakaMapa[row][col + 1];
-
-
-            /*switch (inputFromPlayer())
-            {
-                case ConsoleKey.W:
-                    Movement(charUp);
-                    break;
-                case ConsoleKey.S:
-                    Movement(charDown);
-                    break;
-                case ConsoleKey.A:
-                    Movement(charLeft);
-                    break;
-                case ConsoleKey.D:
-                    Movement(charRight);
-                    break;
-            }*/
 
             consoleKeyPressed = Console.ReadKey(true).Key;
 
