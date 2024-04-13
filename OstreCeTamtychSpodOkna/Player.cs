@@ -20,7 +20,7 @@
         char charLeft;
         char charRight;
 
-        private Dictionary<ConsoleKey, Action> movements;/* = new Dictionary<ConsoleKey, Action> { };*/
+        private Dictionary<ConsoleKey, Action> movements;
         private Dictionary<char, Action> logicFromChars;
 
         public Player(Map currentMap)
@@ -36,6 +36,7 @@
 
             logicFromChars = new Dictionary<char, Action>
                 {
+                    //tutaj dodawac logike zwiazana z np sklepami i szpitalami
                     {'P', () => changeMapTo('P')}
                     
                 };
@@ -93,23 +94,7 @@
         // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
         void Movement(char charInThisDirection)
         {
-            /*//sprawdzenie czy char gdzie idziemy jest charem ze string z przeszkodami nie do przejscia
-            if (obstacle.Contains(charInThisDirection))
-            {
-                unpassableObstacle(charInThisDirection);
-            }
-            // miejsce z logika znaków z ktorymi jest jakas interakcja
-            else if (logicLetters.Contains(charInThisDirection))
-            {
-                if (charInThisDirection == 'P')
-                {
-                    changeMapTo(charInThisDirection);
-                }
-                else if (enemyString.Contains(charInThisDirection))
-                {
-                    Console.Beep(500, 400);// tutaj wywolac walke TODO MIODEK
-                }
-            }*/
+            //spraawdz biblioteke i jezeli cos trzeba to to zrob jak nie to wykonaj switch (TODO wywalic tego switcha)
             if (logicFromChars.TryGetValue(charInThisDirection, out var action))
             {
                 action();
@@ -132,8 +117,6 @@
                         { col--; }
                         break;
                 }
-
-
             }
         }
 
