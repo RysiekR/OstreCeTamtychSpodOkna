@@ -54,13 +54,18 @@
             //if wall was not hit: move enemy and clear old position
             if (!hitObstacle)
             {
-            jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);
-            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
-                jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
-                jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
+                //tutaj jak moze isc
+                jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);
+                jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
+                if (jakaMapa[oldRow][oldCol] != '#')
+                {
+                    jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
+                    jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
+                }
             }
             else
             {
+                //tutaj jak nie moze
                 jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);
                 jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
 

@@ -20,15 +20,24 @@
         char charLeft;
         char charRight;
 
-        private Dictionary<ConsoleKey, Action> movements = new Dictionary<ConsoleKey, Action> { };
+        private Dictionary<ConsoleKey, Action> movements;/* = new Dictionary<ConsoleKey, Action> { };*/
+        private Dictionary<char, Action> logicFromChars;
 
         public Player(Map currentMap)
         {
             InitializePlayerPosition(currentMap);
-            movements.Add(ConsoleKey.W, () => Movement(charUp));
-            movements.Add(ConsoleKey.S, () => Movement(charDown));
-            movements.Add(ConsoleKey.A, () => Movement(charLeft));
-            movements.Add(ConsoleKey.D, () => Movement(charRight));
+            movements = new Dictionary<ConsoleKey, Action>
+            {
+                {ConsoleKey.W, () => Movement(charUp) },
+                {ConsoleKey.S, () => Movement(charDown) },
+                {ConsoleKey.A, () => Movement(charLeft) },
+                {ConsoleKey.D, () => Movement(charRight) }
+            };
+
+            logicFromChars = new Dictionary<char, Action>
+                {
+                    {'P', () => changeMapTo('P')}
+                };
         }
         public void UpdatePos(Map currentMap)
         {
@@ -67,10 +76,15 @@
                 //if wall was not hit: move player and clear old position
                 if (!hitObstacle)
                 {
+                    //jak moze isc
                     jakaMapa[row] = jakaMapa[row].Insert(col, "#");
                     jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
-                    jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
-                    jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
+                    if (!enemyString.Contains(jakaMapa[oldRow][oldCol]))
+                    {
+                        jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
+                        jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
+                    }
+
                 }
                 hitObstacle = false;
 
@@ -152,7 +166,7 @@
             }
         }
 
-        
+
 
 
         //TODO zrobic check czy ten klawisz ma zastosowanie
