@@ -3,7 +3,7 @@
     internal class Player
     {
 
-
+        private int grassPoints = 0;
         public int row = 7;
         public int col = 15;
         string obstacle = Sprites.obstacle;
@@ -15,10 +15,6 @@
         public int oldRow;
         public int oldCol;
         ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
-        char charUp;
-        char charDown;
-        char charLeft;
-        char charRight;
 
         private Dictionary<ConsoleKey, Action> movements;
         private Dictionary<char, Action> logicFromChars;
@@ -28,22 +24,23 @@
             InitializePlayerPosition(currentMap);
             movements = new Dictionary<ConsoleKey, Action>
             {
-                {ConsoleKey.W, () => Movement(charUp) },
-                {ConsoleKey.S, () => Movement(charDown) },
-                {ConsoleKey.A, () => Movement(charLeft) },
-                {ConsoleKey.D, () => Movement(charRight) }
-            };
+                {ConsoleKey.W, () => Movement(jakaMapa[row - 1][col]) },
+                {ConsoleKey.S, () => Movement(jakaMapa[row + 1][col]) },
+                {ConsoleKey.A, () => Movement(jakaMapa[row][col - 1]) },
+                {ConsoleKey.D, () => Movement(jakaMapa[row][col + 1]) },
+                {ConsoleKey.P, () => PrintPoints() }
+        };
 
             logicFromChars = new Dictionary<char, Action>
                 {
                     //tutaj dodawac logike zwiazana z np sklepami i szpitalami
-                    {'P', () => changeMapTo('P')}
-                    
+                    {'P', () => changeMapTo('P')},
+                    {',', () => grassPoints++ }
                 };
             //dodanie kazdego znaku przez ktory nie mozna przejsc
             foreach (char obstacleChar in obstacle)
             {
-                logicFromChars[obstacleChar] = () => unpassableObstacle(obstacleChar);
+                logicFromChars[obstacleChar] = () => hitObstacle = true;
             }
             //dodanie znakow enemies
             foreach (char enemy in enemyString) 
@@ -57,13 +54,8 @@
             oldRow = row;
             jakaMapa.Clear();
             jakaMapa.AddRange(currentMap.mapAsList);
-            charUp = jakaMapa[row - 1][col];
-            charDown = jakaMapa[row + 1][col];
-            charLeft = jakaMapa[row][col - 1];
-            charRight = jakaMapa[row][col + 1];
 
             consoleKeyPressed = Console.ReadKey(true).Key;
-
             if (movements.TryGetValue(consoleKeyPressed, out var movementAction))
             {
                 movementAction();
@@ -91,16 +83,16 @@
         }
 
         // bierze i sprawdza char w kierunku w ktorym chcemy sie poruszyc
-        // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
+        // i sprawdza co tam jest i robi co trzeba(mam nadzieje)(teraz dolozylem slownik to juz wcale nie mam pewnosci)
         void Movement(char charInThisDirection)
         {
-            //spraawdz biblioteke i jezeli cos trzeba to to zrob jak nie to wykonaj switch (TODO wywalic tego switcha)
+            //sprawdz biblioteke i jezeli cos trzeba to to zrob jak nie to wykonaj switch
             if (logicFromChars.TryGetValue(charInThisDirection, out var action))
             {
                 action();
             }
             // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
-            else
+            if(!hitObstacle)
             {
                 switch (consoleKeyPressed)
                 {
@@ -120,21 +112,10 @@
             }
         }
 
-        void unpassableObstacle(char charToLogic)
-        {
-            if (obstacle.Contains(charToLogic))
-            {
-                hitObstacle = true;
-            }
-
-            else { Console.WriteLine("Error Player.UpdatePos.UnpassableObstacle"); }
-
-        }
-
         void changeMapTo(char letterOfTheMap)
         {
             //TODO tu jest jeszcze do dopracowania , trzeba uzywac gamestatu
-
+            hitObstacle = true;
             Map tempMap = new Map(Sprites.map2);
             switch (letterOfTheMap)
             {
@@ -145,19 +126,6 @@
                         break;
                     }
             }
-        }
-
-
-
-
-        //TODO zrobic check czy ten klawisz ma zastosowanie
-        //jak nie ma to jeszcze raz go zczytac
-        //i wyswietlic "nie dotykaj klawiszy ktore nic nie robia łobuzie"
-        // metoda ktora zczytuje i zwraca konkretny przycisk z klawiatury
-        ConsoleKey inputFromPlayer()
-        {
-            consoleKeyPressed = Console.ReadKey(true).Key;
-            return consoleKeyPressed;
         }
 
         private void InitializePlayerPosition(Map currentMap)
@@ -172,9 +140,17 @@
             currentMap.mapAsList.Clear();
             currentMap.mapAsList.AddRange(jakaMapa);
         }
+
+        private void PrintPoints()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Console.SetCursorPosition(80, i + 5);
+                Console.Write(" ");
+            }
+            Console.SetCursorPosition(80, 5);
+            Console.Write(grassPoints);
+        }
     }
 }
-
-
-
 

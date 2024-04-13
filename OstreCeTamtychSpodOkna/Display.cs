@@ -25,12 +25,12 @@
                 if (display[row] != newDisplay[row])
                 {
 
-                    for (int i = 0; i < display[row].Length; i++)
+                    for (int col = 0; col < display[row].Length; col++)
                     {
-                        if (display[row][i] != newDisplay[row][i])
+                        if (display[row][col] != newDisplay[row][col])
                         {
-                            Console.SetCursorPosition(i, row);
-                            Console.Write(newDisplay[row][i]);
+                            Console.SetCursorPosition(col, row);
+                            Console.Write(newDisplay[row][col]);
                             Console.CursorVisible = false;
                         }
                     }
