@@ -93,7 +93,7 @@
         // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
         void Movement(char charInThisDirection)
         {
-            //sprawdzenie czy char gdzie idziemy jest charem ze string z przeszkodami nie do przejscia
+            /*//sprawdzenie czy char gdzie idziemy jest charem ze string z przeszkodami nie do przejscia
             if (obstacle.Contains(charInThisDirection))
             {
                 unpassableObstacle(charInThisDirection);
@@ -109,6 +109,10 @@
                 {
                     Console.Beep(500, 400);// tutaj wywolac walke TODO MIODEK
                 }
+            }*/
+            if (logicFromChars.TryGetValue(charInThisDirection, out var action))
+            {
+                action();
             }
             // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
             else
