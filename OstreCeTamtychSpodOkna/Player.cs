@@ -28,7 +28,8 @@
                 {ConsoleKey.S, () => Movement(jakaMapa[row + 1][col]) },
                 {ConsoleKey.A, () => Movement(jakaMapa[row][col - 1]) },
                 {ConsoleKey.D, () => Movement(jakaMapa[row][col + 1]) },
-                {ConsoleKey.P, () => PrintPoints() }
+                {ConsoleKey.P, () => PrintPoints() },
+                {ConsoleKey.M, () => ShowMenu() }
         };
 
             logicFromChars = new Dictionary<char, Action>
@@ -150,6 +151,29 @@
             }
             Console.SetCursorPosition(80, 5);
             Console.Write(grassPoints);
+        }
+
+        private void ShowMenu()
+        {
+            Console.Clear();
+            bool condition = true;
+            while (condition) 
+            {
+                Console.WriteLine("Menu text, 1 to get back to game");
+                string check = Console.ReadLine();
+                if (check == "1")
+                {
+                    
+                    condition = false;
+                }
+                else if (check == "2") 
+                {
+                    // cos zrob
+                }
+                else if(check == "3") { }
+            }
+            Console.Clear();
+            Display.PrintToConsole();
         }
     }
 }
