@@ -7,6 +7,7 @@
         private int col;
         string enemyAvatar;
         string enemyString = "123456789";
+        string obstacleString = "AC#P";
         public Enemy(int rowSpawn, int colSpawn, Map currentMap)
         {
             this.row = rowSpawn;
@@ -82,7 +83,7 @@
         void Movement(char charInThisDirection)
         {
             //sprawdzenie czy char gdzie idziemy jest charem ze string z przeszkodami nie do przejscia
-            if (Sprites.obstacle.Contains(charInThisDirection) || charInThisDirection == 'P' || charInThisDirection == '#')
+            if (Sprites.obstacle.Contains(charInThisDirection) || obstacleString.Contains(charInThisDirection)/* == 'P' || charInThisDirection == '#'*/)
             {
                 unpassableObstacle(charInThisDirection);
             }
@@ -109,7 +110,7 @@
 
         void unpassableObstacle(char charToLogic)
         {
-            if (Sprites.obstacle.Contains(charToLogic) || charToLogic == 'P' || enemyString.Contains(charToLogic))
+            if (Sprites.obstacle.Contains(charToLogic) || obstacleString.Contains(charToLogic) || enemyString.Contains(charToLogic))
             {
                 hitObstacle = true;
             }
@@ -133,6 +134,11 @@
             //wyplucie mapy z enemy
             currentMap.mapAsList.Clear();
             currentMap.mapAsList.AddRange(jakaMapa);
+        }
+
+        public void SpawnEnemies()
+        {
+
         }
 
     }

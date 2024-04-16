@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OstreCeTamtychSpodOkna
+﻿namespace OstreCeTamtychSpodOkna
 {
     internal class Map
     {
@@ -13,11 +7,13 @@ namespace OstreCeTamtychSpodOkna
         //i mozna go nadpisac zeby bo wczytaniu drugiej mapy gdzies bylo to co po nas zostalo
         private readonly int spriteHeight = Sprites.spriteHeight;
         public List<string> mapAsList = new List<string>();
-
+        public List<Enemy> enemyList = new List<Enemy>();
         public Map(string[] miniMapa)
         {
             CreateFinallMap(mapAsList, miniMapa);
         }
+
+
 
         //czysci i buduje nowa mape
         public void CreateFinallMap(List<string> final, string[] mapSmallSprites)
@@ -57,19 +53,13 @@ namespace OstreCeTamtychSpodOkna
             }
         }
 
-        public void PrintToConsole()
+        private void GenerateEnemies(int howMany)
         {
-            foreach (string row in this.mapAsList)
+            Random rnd = new Random();
+            for (int i = 0; i < howMany; i++)
             {
-                Console.WriteLine(row);
+                enemyList.Add(new Enemy(rnd.Next(6, 45), rnd.Next(6, 45), this));
             }
         }
-
-        public void UpdateMap()
-        {
-            Console.Clear();
-            PrintToConsole();
-        }
-
     }
 }

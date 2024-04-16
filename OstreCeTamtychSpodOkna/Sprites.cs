@@ -26,6 +26,29 @@
     "W           W",
     "WWWWWWWWWWWWW",
 };
+
+        public static readonly string[] arena =
+        {
+    "WWWWWWWWWWWWW",
+    "W           W",
+    "W           W",
+    "W           W",
+    "W           W",
+    "W         C W",
+    "W           W",
+    "WWWWWWWWWWWWW",
+};
+        public static readonly string[] city =
+        {
+    "WWWWWWWWWWWWW",
+    "W           W",
+    "W A         W",
+    "W           W",
+    "W           W",
+    "W           W",
+    "W           W",
+    "WWWWWWWWWWWWW",
+};
         //sprity
         public static readonly string[] spriteWall =
         {
@@ -49,6 +72,24 @@
             " .P. ",
             " PPP ",
             " .P. ",
+            "     ",
+            
+        };
+        public static readonly string[] spritePortalToCity =
+        {
+            "     ",
+            " .C. ",
+            " CCC ",
+            " .C. ",
+            "     ",
+
+        };
+        public static readonly string[] spritePortalToArena =
+        {
+            "     ",
+            " .A. ",
+            " AAA ",
+            " .A. ",
             "     ",
             
         };
@@ -87,6 +128,8 @@
                 case 'W': bigSprite = spriteWall; break; //zamiast poprostu spriteWall uzyc chosewallsprite
                 case ' ': bigSprite = spriteAir; break;
                 case 'P': bigSprite = spritePortal; break;
+                case 'A': bigSprite = spritePortalToArena; break;
+                case 'C': bigSprite = spritePortalToCity; break;
                 default: bigSprite = spriteAir; break;
             }
             return bigSprite;

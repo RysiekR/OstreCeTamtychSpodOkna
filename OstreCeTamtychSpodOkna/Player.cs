@@ -2,7 +2,7 @@
 {
     internal class Player
     {
-
+        public bool isOnArena = false;
         private int grassPoints = 0;
         public int row = 7;
         public int col = 15;
@@ -11,6 +11,7 @@
         string enemyString = "123456789";
 
         public List<string> jakaMapa = new List<string>();
+        public List<string> cityMap = new List<string>();
         private bool hitObstacle = false;
         public int oldRow;
         public int oldCol;
@@ -36,7 +37,9 @@
                 {
                     //tutaj dodawac logike zwiazana z np sklepami i szpitalami
                     {'P', () => changeMapTo('P')},
-                    {',', () => grassPoints++ }
+                    {',', () => grassPoints++ },
+                    {'A', () => changeMapTo('A') },
+                    {'C', () => changeMapTo('C') }
                 };
             //dodanie kazdego znaku przez ktory nie mozna przejsc
             foreach (char obstacleChar in obstacle)
@@ -44,7 +47,7 @@
                 logicFromChars[obstacleChar] = () => hitObstacle = true;
             }
             //dodanie znakow enemies
-            foreach (char enemy in enemyString) 
+            foreach (char enemy in enemyString)
             {
                 logicFromChars[enemy] = () => Console.Beep(500, 400); //TODO MIODEK walka
             }
@@ -67,7 +70,7 @@
                     //jak moze isc
                     jakaMapa[row] = jakaMapa[row].Insert(col, "#");
                     jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
-                    if (!enemyString.Contains(jakaMapa[oldRow][oldCol]))
+                    if (!enemyString.Contains(jakaMapa[oldRow][oldCol]) && ((col != oldCol) || (row != oldRow)))
                     {
                         jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
                         jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
@@ -93,7 +96,7 @@
                 action();
             }
             // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
-            if(!hitObstacle)
+            if (!hitObstacle)
             {
                 switch (consoleKeyPressed)
                 {
@@ -117,16 +120,48 @@
         {
             //TODO tu jest jeszcze do dopracowania , trzeba uzywac gamestatu
             hitObstacle = true;
-            Map tempMap = new Map(Sprites.map2);
+            Map tempMap;// = new Map(Sprites.map2);
             switch (letterOfTheMap)
             {
                 case 'P':
                     {
+                        tempMap = new Map(Sprites.map2);
                         jakaMapa.Clear();
                         jakaMapa.AddRange(tempMap.mapAsList);
                         break;
                     }
+                case 'A':
+                    {
+                        //uzywac listy enemies z gamestate
+                        tempMap = new Map(Sprites.arena);
+
+                        RogueTestDebug.enemies.Clear();
+                        RogueTestDebug.enemies.Add(new Enemy(6, 6, tempMap));
+                        RogueTestDebug.enemies.Add(new Enemy(7, 7, tempMap));
+                        RogueTestDebug.enemies.Add(new Enemy(9, 9, tempMap));
+                        RogueTestDebug.enemies.Add(new Enemy(15, 15, tempMap));
+
+
+                            jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
+                            jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
+
+
+                        cityMap.Clear();
+                        cityMap.AddRange(jakaMapa);
+                        jakaMapa.Clear();
+                        jakaMapa.AddRange(tempMap.mapAsList);
+                        isOnArena = true;
+                        break;
+                    }
+                case 'C':
+                    {
+                        jakaMapa.Clear();
+                        jakaMapa.AddRange(cityMap);
+                        isOnArena = false;
+                        break;
+                    }
             }
+
         }
 
         private void InitializePlayerPosition(Map currentMap)
@@ -157,20 +192,20 @@
         {
             Console.Clear();
             bool condition = true;
-            while (condition) 
+            while (condition)
             {
                 Console.WriteLine("Menu text, 1 to get back to game");
                 string check = Console.ReadLine();
                 if (check == "1")
                 {
-                    
+
                     condition = false;
                 }
-                else if (check == "2") 
+                else if (check == "2")
                 {
                     // cos zrob
                 }
-                else if(check == "3") { }
+                else if (check == "3") { }
             }
             Console.Clear();
             Display.PrintToConsole();
