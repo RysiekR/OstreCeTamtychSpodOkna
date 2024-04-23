@@ -61,7 +61,7 @@ public class BattleWindow : Window
         };
         Add(playerHPBar, enemyHPBar);
 
-        var attackButton = new Button ("Attack!")
+        var attackButton = new Button("Attack!")
         {
             X = Pos.Percent(10),
             Y = Pos.Percent(90),
@@ -70,13 +70,12 @@ public class BattleWindow : Window
                 Normal = Terminal.Gui.Attribute.Make(Color.BrightMagenta, Color.Red)
             }
         };
-
         var skillsButton = new Button("Skills")
         {
             X = Pos.Percent(30),
             Y = Pos.Percent(90)
         };
-         var itemsButton = new Button("Items")
+        var itemsButton = new Button("Items")
         {
             X = Pos.Percent(50),
             Y = Pos.Percent(90)
@@ -91,7 +90,6 @@ public class BattleWindow : Window
             }
         };
 
-        
         Add(attackButton, skillsButton, itemsButton, fleeButton);
 
         //Logika przycisków
@@ -128,11 +126,6 @@ public class BattleWindow : Window
         playerHPBar.Text = $"{gameState.PlayerPokemon.HP}/{gameState.PlayerPokemon.MaxHP}";
         enemyHPBar.Text = $"{gameState.EnemyPokemon.HP}/{gameState.EnemyPokemon.MaxHP}";
     }
-
-    
-        
-        
-
     private void CreateSkillsGrid(Dialog skillsDialog)
     {
         int rows = (gameState.SkillList.Count + 1) / 2;
@@ -144,13 +137,54 @@ public class BattleWindow : Window
                 if (skillIndex < gameState.SkillList.Count)
                 {
                     var skill = gameState.SkillList[skillIndex];
-                    var skillButton = new Button (skill.Name);
-                    skillButton.X = j * 20; // Odstęp między kolumnami
-                    skillButton.Y = i * 2; // Odstęp między wierszami
+                    var skillButton = new Button(skill.Name)
+                    {
+                        X = j * 20,
+                        Y = i * 2,
+                        ColorScheme = GetColorSchemeForSkillType(skill.Type)
+                    };
                     skillsDialog.Add(skillButton);
                 }
             }
         }
+        var returnButton = new Button("Return")
+        {
+            X = Pos.Center(),
+            Y = Pos.Percent(90),
+        };
+        returnButton.Clicked += () => { skillsDialog.Running = false; };
+        skillsDialog.Add(returnButton);
+    }
+    private ColorScheme GetColorSchemeForSkillType(string type)
+    {
+        var normalAttribute = Terminal.Gui.Attribute.Make(Color.White, Color.Black);
+        var focusAttribute = Terminal.Gui.Attribute.Make(Color.White, Color.Black); 
+
+        switch (type)
+        {
+            case "Electric":
+                normalAttribute = Terminal.Gui.Attribute.Make(Color.BrightYellow, Color.Black);
+                focusAttribute = Terminal.Gui.Attribute.Make(Color.White, Color.Black);
+                break;
+            case "Fire":
+                normalAttribute = Terminal.Gui.Attribute.Make(Color.BrightRed, Color.Black);
+                focusAttribute = Terminal.Gui.Attribute.Make(Color.Red, Color.Black);
+                break;
+            case "Ice":
+                normalAttribute = Terminal.Gui.Attribute.Make(Color.BrightBlue, Color.Black);
+                focusAttribute = Terminal.Gui.Attribute.Make(Color.Blue, Color.Black);
+                break;
+            case "Psychic":
+                normalAttribute = Terminal.Gui.Attribute.Make(Color.BrightMagenta, Color.Black);
+                focusAttribute = Terminal.Gui.Attribute.Make(Color.Magenta, Color.Black);
+                break;
+        }
+
+        return new ColorScheme()
+        {
+            Normal = normalAttribute,
+            Focus = focusAttribute
+        };
     }
 }
 public class Pokemon
