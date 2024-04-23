@@ -1,144 +1,215 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OstreCeTamtychSpodOkna
+﻿namespace OstreCeTamtychSpodOkna
 {
     internal class Player
     {
-        string[] jakaMapa = Display.baseMapBig;
-        string obstacle = Display.obstacleLetters;
-        string logicLetters = Display.obstacleLettersWithLogic;
-        //position (chcialem w vector2 ale on oddaje floaty a nam trzeba inty)
-        public int row = 3;
-        public int col = 5;
+        public bool isOnArena = false;
+        private int grassPoints = 0;
+        public int row = 7;
+        public int col = 15;
+        string obstacle = Sprites.obstacle;
+        string logicLetters = "P123456789";
+        string enemyString = "123456789";
 
-        public void UpdatePos()
+        public List<string> jakaMapa = new List<string>();
+        public List<string> cityMap = new List<string>();
+        private bool hitObstacle = false;
+        public int oldRow;
+        public int oldCol;
+        ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
+
+        private Dictionary<ConsoleKey, Action> movements;
+        private Dictionary<char, Action> logicFromChars;
+
+        public Player(Map currentMap)
         {
-
-            int oldRow = row;
-            int oldCol = col;
-            bool hitObstacle = false;
-            char charUp = jakaMapa[row - 1][col];
-            char charDown = jakaMapa[row + 1][col];
-            char charLeft = jakaMapa[row][col - 1];
-            char charRight = jakaMapa[row][col + 1];
-            ConsoleKey consoleKeyPressed = ConsoleKey.None;
-
-            switch (inputFromPlayer())
+            InitializePlayerPosition(currentMap);
+            movements = new Dictionary<ConsoleKey, Action>
             {
-                case ConsoleKey.W:
-                    Movement(charUp);
-                    break;
-                case ConsoleKey.S:
-                    Movement(charDown);
-                    break;
-                case ConsoleKey.A:
-                    Movement(charLeft);
-                    break;
-                case ConsoleKey.D:
-                    Movement(charRight);
-                    break;
+                {ConsoleKey.W, () => Movement(jakaMapa[row - 1][col]) },
+                {ConsoleKey.S, () => Movement(jakaMapa[row + 1][col]) },
+                {ConsoleKey.A, () => Movement(jakaMapa[row][col - 1]) },
+                {ConsoleKey.D, () => Movement(jakaMapa[row][col + 1]) },
+                {ConsoleKey.P, () => PrintPoints() },
+                {ConsoleKey.M, () => ShowMenu() }
+        };
+
+            logicFromChars = new Dictionary<char, Action>
+                {
+                    //tutaj dodawac logike zwiazana z np sklepami i szpitalami
+                    {'P', () => changeMapTo('P')},
+                    {',', () => grassPoints++ },
+                    {'A', () => changeMapTo('A') },
+                    {'C', () => changeMapTo('C') }
+                };
+            //dodanie kazdego znaku przez ktory nie mozna przejsc
+            foreach (char obstacleChar in obstacle)
+            {
+                logicFromChars[obstacleChar] = () => hitObstacle = true;
             }
-
-            Console.SetCursorPosition(this.col, this.row);
-            Console.Write("#");
-
-            //if wall was not hit remember to clear old position
-            if (!hitObstacle)
+            //dodanie znakow enemies
+            foreach (char enemy in enemyString)
             {
-                Console.SetCursorPosition(oldCol, oldRow);
-                Console.Write(" ");
-                hitObstacle = false;
+                logicFromChars[enemy] = () => Console.Beep(500, 400); //TODO MIODEK walka
             }
+        }
+        public void UpdatePos(Map currentMap)
+        {
+            oldCol = col;
+            oldRow = row;
+            jakaMapa.Clear();
+            jakaMapa.AddRange(currentMap.mapAsList);
 
-            void unpassableObstacle(char charToLogic)
+            consoleKeyPressed = Console.ReadKey(true).Key;
+            if (movements.TryGetValue(consoleKeyPressed, out var movementAction))
             {
-                switch (charToLogic)
-                {
-                    case 'W':
-                        hitObstacle = true;
-                        break;
-                    case 'T':
-                        hitObstacle = true;
-                        break;
-                    //
-                    //
-                    //
-                    // mozna dodac case i od razu na nim wykonac cos
-                    // np jak bedzie npc do odpalic rozmowe walke
-                }
+                movementAction();
 
-            }
-            /*void changeMapTo(string[] map)
-            {
-                jakaMapa = map;
-                Console.Clear();
-                Display.Initialize(map, this);
-
-
-            }*/
-            void changeMapTo(char letterOfTheMap)
-            {
-                switch(letterOfTheMap)
+                //if wall was not hit: move player and clear old position
+                if (!hitObstacle)
                 {
-                    case 'P': { jakaMapa = Display.baseMap; break; }
-                }
-                Console.Clear();
-                Display.Initialize(jakaMapa, this);
-
-            }
-
-            // bierze i sprawdza pole w kierunku w ktorym chcemy sie poruszyc
-            // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
-            void Movement(char charInThisDirection)
-            {
-                //sprawdzenie czy char gdzie idziemy jest charem ze string z przeszkodami nie do przejscia
-                if (obstacle.Contains(charInThisDirection))
-                {
-                    unpassableObstacle(charInThisDirection);
-                }
-                //tu jak jest cos do zrobienia a nie tylko "E!!E!! nie ma przejscia
-                //TODO wymyslic zrobic zeby bylo jak na gorze tylko ze stringiem liter na ktorych wykonujemy logike
-                else if (logicLetters.Contains(charInThisDirection))
-                {
-                    changeMapTo(charInThisDirection);
-                }
-                // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
-                else
-                {
-                    switch(consoleKeyPressed)
+                    //jak moze isc
+                    jakaMapa[row] = jakaMapa[row].Insert(col, "#");
+                    jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
+                    if (!enemyString.Contains(jakaMapa[oldRow][oldCol]) && ((col != oldCol) || (row != oldRow)))
                     {
-                        case ConsoleKey.W: { row--; }
-                        break;
-                        case ConsoleKey.S:{ row++;}
-                        break;
-                        case ConsoleKey.D: { col++; }
-                        break;
-                        case ConsoleKey.A: { col--; }
-                        break;
+                        jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
+                        jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
                     }
-                        
-                   
-                }
-            }
-            //TODO zrobic check czy ten klawisz ma zastosowanie
-            //jak nie to jeszcze raz go zczytac
-            //i wyswietlic "nie dotykaj klawiszy ktore nic nie robia łobuzie"
 
-            // metoda ktora zczytuje i zwraca konkretny przycisk z klawiatury
-            ConsoleKey inputFromPlayer()
-            {
-                consoleKeyPressed = Console.ReadKey(true).Key;
-                return consoleKeyPressed;
+                }
+                hitObstacle = false;
+
+                //zapisanie zmodyfikowanej mapy
+                currentMap.mapAsList.Clear();
+                currentMap.mapAsList.AddRange(jakaMapa);
             }
 
         }
+
+        // bierze i sprawdza char w kierunku w ktorym chcemy sie poruszyc
+        // i sprawdza co tam jest i robi co trzeba(mam nadzieje)(teraz dolozylem slownik to juz wcale nie mam pewnosci)
+        void Movement(char charInThisDirection)
+        {
+            //sprawdz biblioteke i jezeli cos trzeba to to zrob jak nie to wykonaj switch
+            if (logicFromChars.TryGetValue(charInThisDirection, out var action))
+            {
+                action();
+            }
+            // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
+            if (!hitObstacle)
+            {
+                switch (consoleKeyPressed)
+                {
+                    case ConsoleKey.W:
+                        { row--; }
+                        break;
+                    case ConsoleKey.S:
+                        { row++; }
+                        break;
+                    case ConsoleKey.D:
+                        { col++; }
+                        break;
+                    case ConsoleKey.A:
+                        { col--; }
+                        break;
+                }
+            }
+        }
+
+        void changeMapTo(char letterOfTheMap)
+        {
+            //TODO tu jest jeszcze do dopracowania , trzeba uzywac gamestatu
+            hitObstacle = true;
+            Map tempMap;// = new Map(Sprites.map2);
+            switch (letterOfTheMap)
+            {
+                case 'P':
+                    {
+                        tempMap = new Map(Sprites.map2);
+                        jakaMapa.Clear();
+                        jakaMapa.AddRange(tempMap.mapAsList);
+                        break;
+                    }
+                case 'A':
+                    {
+                        //uzywac listy enemies z gamestate
+                        tempMap = new Map(Sprites.arena);
+
+                        RogueTestDebug.enemies.Clear();
+                        RogueTestDebug.enemies.Add(new Enemy(6, 6, tempMap));
+                        RogueTestDebug.enemies.Add(new Enemy(7, 7, tempMap));
+                        RogueTestDebug.enemies.Add(new Enemy(9, 9, tempMap));
+                        RogueTestDebug.enemies.Add(new Enemy(15, 15, tempMap));
+
+
+                            jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
+                            jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
+
+
+                        cityMap.Clear();
+                        cityMap.AddRange(jakaMapa);
+                        jakaMapa.Clear();
+                        jakaMapa.AddRange(tempMap.mapAsList);
+                        isOnArena = true;
+                        break;
+                    }
+                case 'C':
+                    {
+                        jakaMapa.Clear();
+                        jakaMapa.AddRange(cityMap);
+                        isOnArena = false;
+                        break;
+                    }
+            }
+
+        }
+
+        private void InitializePlayerPosition(Map currentMap)
+        {
+            //pobranie mapy
+            jakaMapa.Clear();
+            jakaMapa.AddRange(currentMap.mapAsList);
+            //wstawienie gracza
+            jakaMapa[row] = jakaMapa[row].Insert(col, "#");
+            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
+            //wyplucie mapy z graczem
+            currentMap.mapAsList.Clear();
+            currentMap.mapAsList.AddRange(jakaMapa);
+        }
+
+        private void PrintPoints()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Console.SetCursorPosition(80, i + 5);
+                Console.Write(" ");
+            }
+            Console.SetCursorPosition(80, 5);
+            Console.Write(grassPoints);
+        }
+
+        private void ShowMenu()
+        {
+            Console.Clear();
+            bool condition = true;
+            while (condition)
+            {
+                Console.WriteLine("Menu text, 1 to get back to game");
+                string check = Console.ReadLine();
+                if (check == "1")
+                {
+
+                    condition = false;
+                }
+                else if (check == "2")
+                {
+                    // cos zrob
+                }
+                else if (check == "3") { }
+            }
+            Console.Clear();
+            Display.PrintToConsole();
+        }
     }
 }
-
-
-
 

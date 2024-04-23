@@ -1,56 +1,98 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OstreCeTamtychSpodOkna
+﻿namespace OstreCeTamtychSpodOkna
 {
     internal class Sprites
     {
-
-        //TODO wez kartke i dlugopis i rozrysuj to sobie po kazdym jednym znaczku
-        public static void Draw(string[] map, string[] sprite)
+        public static readonly string obstacle = "╬┼╦╩╣╠";
+        //minimapy
+        public static readonly string[] map =
         {
-            int x = 0;
-            int y = 0;
-            int xCursor = x * 5;
-            int yCursor = y * 5;
+    "WWWWWWWWWWWWW",
+    "W           W",
+    "W           W",
+    "WP          W",
+    "W           W",
+    "W           W",
+    "W           W",
+    "WWWWWWWWWWWWW",
+};
+        public static readonly string[] map2 =
+        {
+    "WWWWWWWWWWWWW",
+    "W           W",
+    "W           W",
+    "W        P  W",
+    "W           W",
+    "W           W",
+    "W           W",
+    "WWWWWWWWWWWWW",
+};
 
-            foreach (string row in map)
-            {
-                //wypisuje jedna linie z tablicy mapa
-                //Console.WriteLine(row);
+        public static readonly string[] arena =
+        {
+    "WWWWWWWWWWWWW",
+    "W           W",
+    "W           W",
+    "W           W",
+    "W           W",
+    "W         C W",
+    "W           W",
+    "WWWWWWWWWWWWW",
+};
+        public static readonly string[] city =
+        {
+    "WWWWWWWWWWWWW",
+    "W           W",
+    "W A         W",
+    "W           W",
+    "W           W",
+    "W           W",
+    "W           W",
+    "WWWWWWWWWWWWW",
+};
+        //sprity
+        public static readonly string[] spriteWall =
+        {
+    "╬╦╬╦╬",
+    "╠┼┼┼╣",
+    "╬┼┼┼╬",
+    "╠┼┼┼╣",
+    "╬╩╩╩╬"
+};
+        public static readonly string[] spriteAir =
+        {
+    ", , ,",
+    " , , ",
+    ", , ,",
+    " , , ",
+    ", , ,",
+};
+        public static readonly string[] spritePortal =
+        {
+            "     ",
+            " .P. ",
+            " PPP ",
+            " .P. ",
+            "     ",
+            
+        };
+        public static readonly string[] spritePortalToCity =
+        {
+            "     ",
+            " .C. ",
+            " CCC ",
+            " .C. ",
+            "     ",
 
-                foreach (char signOnMap in row)
-                {
-
-                    //wypisuje pojedynczy znak z mapy
-                    //Console.Write(signOnMap);
-                    foreach (string rowSprite in sprite)
-                    {
-                        
-                        //Console.WriteLine(rowSprite);
-                        // powypisaniu sprita przeskocz namiejsce kolejnnego sprita (moze row,signOnMap)
-                        //Console.SetCursorPosition(xCursor,yCursor);
-                        foreach (char spriteDetail in rowSprite)
-                        {
-                            Console.Write(spriteDetail); //wypisana 1 linia sprita
-                        }
-                        x++;
-                        Console.SetCursorPosition(yCursor, xCursor);
-                        //tu juz powinien byc wypisany caly sprite
-
-                    }
-                    y++;
-
-                    //Console.SetCursorPosition(xCursor, yCursor);
-
-                }
-
-            }
-
-        }
+        };
+        public static readonly string[] spritePortalToArena =
+        {
+            "     ",
+            " .A. ",
+            " AAA ",
+            " .A. ",
+            "     ",
+            
+        };
         public static readonly string[] wall =
         {
             "+---+",
@@ -58,7 +100,7 @@ namespace OstreCeTamtychSpodOkna
             "|+++|",
             "|+++|",
             "+---+"
-        } ;
+        };
         public static readonly string[] tree =
         {
             " *^* ",
@@ -75,6 +117,82 @@ namespace OstreCeTamtychSpodOkna
             "     ",
             "     ",
         };
+        //wysokosc sprita potrzebna w map.spriteheight
+        public static readonly int spriteHeight = spriteWall.Length;
 
+        public static string[] ChoseSprite(char fromMap)
+        {
+            string[] bigSprite;
+            switch (fromMap)
+            {
+                case 'W': bigSprite = spriteWall; break; //zamiast poprostu spriteWall uzyc chosewallsprite
+                case ' ': bigSprite = spriteAir; break;
+                case 'P': bigSprite = spritePortal; break;
+                case 'A': bigSprite = spritePortalToArena; break;
+                case 'C': bigSprite = spritePortalToCity; break;
+                default: bigSprite = spriteAir; break;
+            }
+            return bigSprite;
+        }
+
+        //TODO zrobic zeby wybieralo dobra sciane !!! na koniec to !!! robic jak juz bedzie gra dzialala
+        // co ma przyjmowac ? musi przyjmowac sasiadow czyli musi przyjac aktualna mape i z niej wziac row-1/row+1 i col-1/col+1
+        public static string[] ChoseWallSprite(string[] mapSmallSprites)
+        {
+            string[] chosenSprite = new string[spriteHeight];
+            //give me logic procedure
+            return chosenSprite;
+        }
     }
 }
+
+
+/* all the walls
+ * 
+╔╤╤╤═ ╔╤╤╤╗ ═╤╤╤═ ═╤╤╤╗
+╟┘│└─ ║│││║ ─┘│└─ ─┘│└╢
+╟─┼── ║│││║ ──┼── ──┼─╢
+╟┐│┌─ ║│││║ ─┐│┌─ ─┐│┌╢
+║│││╬ ║│││║ ╬│││╬ ╬│││║
+                       
+║│││╬ ║│││║       ╬│││║
+╟┘│└─ ║│││║       ─┘│└╢
+╟─┼── ║│││║       ──┼─╢
+╟┐│┌─ ║│││║       ─┐│┌╢
+║│││╬ ║│││║       ╬│││║
+                       
+╔════ ╬│││╬ ═════ ════╗
+╟──── ─┘│└─ ───── ────╢
+╟──── ──┼── ───── ────╢
+╟──── ─┐│┌─ ───── ────╢
+╚════ ╬│││╬ ═════ ════╝
+                       
+║│││╬ ║│││║ ╬│││╬ ╬│││║
+╟┘│└─ ║│││║ ─┘│└─ ─┘│└╢
+╟─┼── ║│││║ ──┼── ──┼─╢
+╟┐│┌─ ║│││║ ─┐│┌─ ─┐│┌╢
+╚╧╧╧═ ╚╧╧╧╝ ═╧╧╧═ ═╧╧╧╝
+
+*/
+
+
+/*     
+ ♣♣♣ 
+ ♣♣♣ 
+  ¥  
+     */
+
+/*
+  ▲  
+ ▲▀▲ 
+▐███▌
+▐█▀▀▌
+▐≡██▌*/
+
+/*
+  ▲  
+ ▲▀▲ 
+▐█▀▀▌
+▐███▌
+▐≡▄▄▌*/
+

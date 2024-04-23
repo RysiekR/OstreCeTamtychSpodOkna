@@ -1,24 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Media;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OstreCeTamtychSpodOkna
+﻿namespace OstreCeTamtychSpodOkna
 {
     internal class RogueTestDebug
     {
-        public static void newMain()
-        {
-            Player player = new();
-            Display.Initialize(Display.baseMapBig, player);
 
+        //TODO wrzucic liste do gamestate
+        public static List<Enemy> enemies = new List<Enemy>();
+
+        public static void NewMain()
+        {
+            Map cityMap = new Map(Sprites.city);
+            Map currentMap = cityMap;
+
+            Player player = new(currentMap);
+            Display.InitializeDisplay(currentMap);
             while (true)
             {
-                //TODO Display.UpdateMap()
+                player.UpdatePos(currentMap);
+                if (player.isOnArena)
+                {
+                    //TODO uzywac listy z gamestate
+                    foreach (Enemy enemi in enemies)
+                    { enemi.UpdatePos(currentMap); }
+                }
+                Display.SetNewDisplay(currentMap);
+                Display.RenderDisplay();
 
-                player.UpdatePos();
             }
         }
     }

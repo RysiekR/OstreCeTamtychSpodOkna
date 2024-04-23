@@ -1,71 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace OstreCeTamtychSpodOkna
-
-
+﻿namespace OstreCeTamtychSpodOkna
 {
-    internal class Display
+    internal static class Display
     {
+        private static List<string> display = new List<string>(); // ten ktory powinien juz byc wyswietlony, stary
+        private static List<string> newDisplay = new List<string>(); // temp do ktorego trzeba wrzucic zaktualizowana mape do wyswietlenia
+        
+        private static readonly int spriteWidth = Sprites.spriteWall[0].Length;
+        private static readonly int miniMapWidth = Sprites.map[0].Length;
+        private static readonly int mapDisplayWidth = spriteWidth*miniMapWidth;
 
-        public static readonly string obstacleLetters = "WT";
-        public static readonly string obstacleLettersWithLogic = "P";
+        private static readonly int spriteHeight = Sprites.spriteWall.Length;
+        private static readonly int miniMapHeight = Sprites.map.Length;
+        private static readonly int mapDisplayHeight = spriteHeight*miniMapHeight;
 
-        //no mapa kurwa
-        public static readonly string[] baseMap =
-    {
-    "WWWWWWWWWWWW",
-    "W          W",
-    "W    T     W",
-    "W          W",
-    "W          W",
-    "W          W",
-    "W          W",
-    "W          W",
-    "W          W",
-    "WWWWWWWWWWWW",
-};
-        public static readonly string[] baseMapBig =
-    {
-    "WWWWWWWWWWWWWWWWWWWWWWWWW",
-    "W                       W",
-    "W                       W",
-    "W   P                   W",
-    "W            ,,         W",
-    "W         ,,,,          W",
-    "W         ,,,           W",
-    "W       ,,,,            W",
-    "W                       W",
-    "W                       W",
-    "W               TT      W",
-    "W               TT      W",
-    "W                       W",
-    "W                       W",
-    "W                       W",
-    "WWWWWWWWWWWWWWWWWWWWWWWWW",
-};
+        private static List<string> infoDisplay = new List<string>();
+        private static List<string> newInfoDisplay = new List<string>();
 
-        public static void Initialize(string[] map, Player gracz)
+        // Porównanie buforów, wypisanie ich na ekran i zapis zmian
+        public static void RenderDisplay()
         {
 
-            //narysowanie mapy "row by row"
-            /* foreach (string row in map)
-             {
-                 Console.WriteLine(row);
+            for (int row = 0; row < display.Count; row++)
+            {
+                if (display[row] != newDisplay[row])
+                {
 
-             }*/
+                    for (int col = 0; col < display[row].Length; col++)
+                    {
+                        if (display[row][col] != newDisplay[row][col])
+                        {
+                            Console.SetCursorPosition(col, row);
+                            Console.Write(newDisplay[row][col]);
+                            Console.CursorVisible = false;
+                        }
+                    }
+                }
+            }
 
-            Sprites.Draw(map, Sprites.wall);
-
-            //wrzucenie gracza na mape
-            Console.SetCursorPosition(gracz.col, gracz.row);
-            Console.Write("#");
-            Console.CursorVisible = false;
+            // Przekopiowanie bufora zmian na bufor renderowania
+            display.Clear();
+            display.AddRange(newDisplay);
+        }
+        public static void SetNewDisplay(Map map)
+        {
+            newDisplay.Clear();
+            newDisplay.AddRange(map.mapAsList);
         }
 
+        public static void InitializeDisplay(Map map)
+        {
+            display.Clear();
+            display.AddRange(map.mapAsList);
+            PrintToConsole();
+        }
+        public static void InitializeDisplay(List<string> map)
+        {
+            display.Clear();
+            display.AddRange(map);
+            PrintToConsole();
+        }
+
+        public static void PrintToConsole()
+        {
+            foreach (string row in display)
+            {
+                Console.WriteLine(row);
+            }
+        }
     }
 }
