@@ -3,15 +3,15 @@ using Terminal.Gui;
 using System.Data;
 using OstreCeTamtychSpodOkna;
 using System.Media;
-using System.Security.Cryptography.X509Certificates;
+
 public class Program
 {
     public static void Main()
     {
         Application.Init();
 
-        Pokemon playerPokemon = new Pokemon("Pikachu", 100, 30, 10);
-        Pokemon enemyPokemon = new Pokemon("Charmander", 100, 20, 5);
+        Pokemon playerPokemon = new Pokemon("Pikachu", "Electric", 100, 30, 10);
+        Pokemon enemyPokemon = new Pokemon("Charmander", "Fire", 100, 20, 5);
         List<Skill> skillList = new List<Skill>()
 {
     new Skill ("Thunderbolt", "Electric", 90, 100),
@@ -19,112 +19,155 @@ public class Program
     new Skill ("Ice Beam", "Ice", 90, 100),
     new Skill ("Psychic", "Psychic", 90, 100)
 };
-        
+
         GameState gameState = new GameState(playerPokemon, enemyPokemon, skillList);
-        
+
         var battleWindow = new BattleWindow(gameState);
         Application.Run(battleWindow);
-        
+
         Application.Shutdown();
     }
 
-    public class BattleWindow : Window
+
+}
+public class BattleWindow : Window
+{
+    private GameState gameState;
+    private ProgressBar playerHPBar;
+    private ProgressBar enemyHPBar;
+
+    public BattleWindow(GameState gameState) : base("Battle")
     {
-        public BattleWindow(GameState gameState) : base("Battle")
+        this.gameState = gameState;
+
+        InitializeUI();
+    }
+
+    private void InitializeUI()
+    {
+        playerHPBar = new ProgressBar()
         {
+            X = Pos.Percent(10),
+            Y = Pos.Percent(80),
+            Width = Dim.Percent(80),
+            Height = 1
+        };
+        enemyHPBar = new ProgressBar()
+        {
+            X = Pos.Percent(10),
+            Y = Pos.Percent(10),
+            Width = Dim.Percent(80),
+            Height = 1
+        };
+        Add(playerHPBar, enemyHPBar);
+
+        var attackButton = new Button ("Attack!")
+        {
+            X = Pos.Percent(10),
+            Y = Pos.Percent(90),
+            ColorScheme = new ColorScheme()
             {
-                var attackButton = new Button()
+                Normal = Terminal.Gui.Attribute.Make(Color.BrightMagenta, Color.Red)
+            }
+        };
+
+        var skillsButton = new Button("Skills")
+        {
+            X = Pos.Percent(30),
+            Y = Pos.Percent(90)
+        };
+         var itemsButton = new Button("Items")
+        {
+            X = Pos.Percent(50),
+            Y = Pos.Percent(90)
+        };
+        var fleeButton = new Button("Flee")
+        {
+            X = Pos.Percent(70),
+            Y = Pos.Percent(90),
+            ColorScheme = new ColorScheme()
+            {
+                Normal = Terminal.Gui.Attribute.Make(Color.BrightBlue, Color.Black)
+            }
+        };
+
+        
+        Add(attackButton, skillsButton, itemsButton, fleeButton);
+
+        //Logika przycisków
+        ConfigureButtonEvents(attackButton, skillsButton, itemsButton, fleeButton);
+    }
+
+    private void ConfigureButtonEvents(Button attackButton, Button skillsButton, Button itemsButton, Button fleeButton)
+    {
+        attackButton.Clicked += () =>
+        {
+            gameState.PlayerPokemon.Attack(gameState.EnemyPokemon);
+            UpdateHPBars(); //Aktualizacja HP po ataku
+        };
+
+        skillsButton.Clicked += () =>
+        {
+            var skillsDialog = new Dialog("Choose a skill", 60, 20)
+            {
+                X = Pos.Center(),
+                Y = Pos.Center()
+            };
+
+            CreateSkillsGrid(skillsDialog);
+
+            Application.Run(skillsDialog);
+        };
+    }
+
+    private void UpdateHPBars()
+    {
+        playerHPBar.Fraction = (float)gameState.PlayerPokemon.HP / gameState.PlayerPokemon.MaxHP;
+        enemyHPBar.Fraction = (float)gameState.EnemyPokemon.HP / gameState.EnemyPokemon.MaxHP;
+
+        playerHPBar.Text = $"{gameState.PlayerPokemon.HP}/{gameState.PlayerPokemon.MaxHP}";
+        enemyHPBar.Text = $"{gameState.EnemyPokemon.HP}/{gameState.EnemyPokemon.MaxHP}";
+    }
+
+    
+        
+        
+
+    private void CreateSkillsGrid(Dialog skillsDialog)
+    {
+        int rows = (gameState.SkillList.Count + 1) / 2;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                int skillIndex = i * 2 + j;
+                if (skillIndex < gameState.SkillList.Count)
                 {
-                    Text = "Attack!",
-                    X = 10,
-                    Y = 10,
-                    IsDefault = true,
-                };
-                attackButton.Clicked += () =>
-           {
-               gameState.PlayerPokemon.Attack(gameState.EnemyPokemon);
-
-               if (OperatingSystem.IsWindows())
-               {
-                   Console.Beep(1000, 1800);
-               }
-           };
-                var skillsButton = new Button()
-                {
-                    Text = "Skills",
-                    X = 20,
-                    Y = 20,
-                    IsDefault = true,
-                };
-                skillsButton.Clicked += () =>
-                            {
-                                var skillsDialog = new Dialog("Choose a skill", 60, 20)
-                                {
-                                    X = Pos.Center(),
-                                    Y = Pos.Center()
-                                };
-                                int column1XOffset = -30;
-                                int column2XOffset = 2;
-                                int startY = 1;
-                                int spacingY = 2;
-
-                                bool useFirstColumn = true; //Zmienna do przełączania między kolumnami
-
-                                foreach (Skill element in gameState.SkillList)
-                                {
-                                    var skillButton = new Button(element.Name)
-                                    {
-                                        X = Pos.Left(skillsDialog) + (useFirstColumn ? column1XOffset : column2XOffset),
-                                        Y = Pos.Top(skillsDialog) + startY,
-                                        IsDefault = false
-                                    };
-                                    skillButton.Clicked += () =>
-                                    {
-                                        //Logika przycisku skilli
-                                    };
-                                    skillsDialog.Add(skillButton);
-
-                                    if (useFirstColumn)
-                                    {
-                                        useFirstColumn = false;
-                                    }
-                                    else
-                                    {
-                                        useFirstColumn = true;
-                                        startY += spacingY;
-                                    }
-                                }
-                                var differentButton = new Button("Different")
-                                {
-                                    X = 6,
-                                    Y = 6,
-                                    IsDefault = true,
-                                };
-                                skillsDialog.AddButton(differentButton);
-
-                                differentButton.Clicked += () =>
-                                {
-                                    Application.RequestStop();
-                                };
-                                Application.Run(skillsDialog);
-                            };
-                Add(attackButton, skillsButton);
+                    var skill = gameState.SkillList[skillIndex];
+                    var skillButton = new Button (skill.Name);
+                    skillButton.X = j * 20; // Odstęp między kolumnami
+                    skillButton.Y = i * 2; // Odstęp między wierszami
+                    skillsDialog.Add(skillButton);
+                }
             }
         }
     }
 }
-
 public class Pokemon
 {
     public string Name { get; set; }
+    public string Type { get; set; }
+    public int Level { get; private set; }
     public int HP { get; set; }
     public int AttackPower { get; set; }
     public int HealPower { get; set; }
-    public int MaxHP { get; private set; }//
+    public int MaxHP { get; private set; }
 
-    public Pokemon(string name, int hp, int attackPower, int healPower)
+    public Pokemon(string name, string type, int hp, int attackPower, int healPower)
     {
         Name = name;
+        Type = type;
+        Level = 1;
         HP = hp;
         MaxHP = hp;
         AttackPower = attackPower;
@@ -141,6 +184,37 @@ public class Pokemon
         this.HP += this.HealPower;
         Console.WriteLine($"{this.Name} użył leczenia, przywracając {this.HealPower} HP.");
     }
+    public void GainExperience(int experiencePoints)
+    {
+
+        int experienceThreshold = 100 * this.Level; //Wartość potrzebna do level up'a
+
+        // double experienceMultiplier = 1.6 / (1 + Math.Exp(opponent.Level - this.Level));
+        // int adjustedExperiencePoints = (int)(experiencePoints * experienceMultiplier) + 1;
+
+        if (experiencePoints >= experienceThreshold)
+        {
+            this.Level++;
+            Console.WriteLine($"{this.Name} zdobył {experiencePoints} punktów doświadczenia i awansował na poziom {this.Level}!");
+
+            //Zwiększanie statystyk po level up'ie
+            this.MaxHP += 10;
+            this.AttackPower += 2;
+            this.HealPower += 1;
+
+            //Warunek ewolucji
+            if (this.Level >= 10)
+            {
+                this.Name += "*";
+                Console.WriteLine($"{this.Name} ewoluował!");
+            }
+        }
+        else
+        {
+            Console.WriteLine($"{this.Name} zdobył {experiencePoints} punktów doświadczenia.");
+        }
+    }
+
 }
 public class Skill
 {
@@ -180,7 +254,7 @@ public class GameState
         CurrentMode = GameMode.Exploration;
         //CurrentMap = startingMap;
     }
-    
+
     public void SwitchMode(GameMode mode)
     {
         SaveGameState();
