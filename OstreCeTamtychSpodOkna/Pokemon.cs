@@ -1,6 +1,6 @@
-  public class Pokemon
+public class Pokemon
 {
-
+    PokemonLevel level;
     public string Name { get; set; }
     public Type type { get; private set; }
     public int Level { get; private set; }
@@ -10,6 +10,7 @@
  
     public Pokemon(string name, int hp)
     {
+        level = new PokemonLevel(this);
         Random random = new Random();
         Name = name;
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
@@ -47,4 +48,9 @@
         }
     }
 
+    public void LevelUpLogic()
+    {
+        //TOmfDO
+        Console.WriteLine("No Level up logic implemented !!!!!!!!!!!!!");
+    }
 }
