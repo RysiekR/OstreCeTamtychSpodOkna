@@ -73,7 +73,7 @@
             " PPP ",
             " .P. ",
             "     ",
-            
+
         };
         public static readonly string[] spritePortalToCity =
         {
@@ -91,7 +91,7 @@
             " AAA ",
             " .A. ",
             "     ",
-            
+
         };
         public static readonly string[] wall =
         {

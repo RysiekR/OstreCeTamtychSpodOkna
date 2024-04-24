@@ -6,15 +6,15 @@
         private int grassPoints = 0;
         public int row = 7;
         public int col = 15;
-        string obstacle = Sprites.obstacle;
         string logicLetters = "P123456789";
         string enemyString = "123456789";
 
-        public List<string> jakaMapa = new List<string>();
-        public List<string> cityMap = new List<string>();
+        /*        public List<string> jakaMapa = new List<string>();
+                public List<string> cityMap = new List<string>();
+        */
+        public Map currentMap;
+
         private bool hitObstacle = false;
-        public int oldRow;
-        public int oldCol;
         ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
 
         private Dictionary<ConsoleKey, Action> movements;
@@ -22,13 +22,14 @@
 
         public Player(Map currentMap)
         {
-            InitializePlayerPosition(currentMap);
+            this.currentMap = currentMap;
+            InitializePlayerPosition();
             movements = new Dictionary<ConsoleKey, Action>
             {
-                {ConsoleKey.W, () => Movement(jakaMapa[row - 1][col]) },
-                {ConsoleKey.S, () => Movement(jakaMapa[row + 1][col]) },
-                {ConsoleKey.A, () => Movement(jakaMapa[row][col - 1]) },
-                {ConsoleKey.D, () => Movement(jakaMapa[row][col + 1]) },
+                {ConsoleKey.W, () => Movement(this.currentMap.mapAsList[row - 1][col]) },
+                {ConsoleKey.S, () => Movement(this.currentMap.mapAsList[row + 1][col]) },
+                {ConsoleKey.A, () => Movement(this.currentMap.mapAsList[row][col - 1]) },
+                {ConsoleKey.D, () => Movement(this.currentMap.mapAsList[row][col + 1]) },
                 {ConsoleKey.P, () => PrintPoints() },
                 {ConsoleKey.M, () => ShowMenu() }
         };
@@ -42,7 +43,7 @@
                     {'C', () => changeMapTo('C') }
                 };
             //dodanie kazdego znaku przez ktory nie mozna przejsc
-            foreach (char obstacleChar in obstacle)
+            foreach (char obstacleChar in Sprites.obstacle)
             {
                 logicFromChars[obstacleChar] = () => hitObstacle = true;
             }
@@ -52,36 +53,15 @@
                 logicFromChars[enemy] = () => Console.Beep(500, 400); //TODO MIODEK walka
             }
         }
-        public void UpdatePos(Map currentMap)
+        public void UpdatePos()
         {
-            oldCol = col;
-            oldRow = row;
-            jakaMapa.Clear();
-            jakaMapa.AddRange(currentMap.mapAsList);
-
             consoleKeyPressed = Console.ReadKey(true).Key;
+
             if (movements.TryGetValue(consoleKeyPressed, out var movementAction))
             {
-                movementAction();
+                movementAction(); // tu jest wykonanie slownika
 
-                //if wall was not hit: move player and clear old position
-                if (!hitObstacle)
-                {
-                    //jak moze isc
-                    jakaMapa[row] = jakaMapa[row].Insert(col, "#");
-                    jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
-                    if (!enemyString.Contains(jakaMapa[oldRow][oldCol]) && ((col != oldCol) || (row != oldRow)))
-                    {
-                        jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
-                        jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
-                    }
 
-                }
-                hitObstacle = false;
-
-                //zapisanie zmodyfikowanej mapy
-                currentMap.mapAsList.Clear();
-                currentMap.mapAsList.AddRange(jakaMapa);
             }
 
         }
@@ -90,13 +70,17 @@
         // i sprawdza co tam jest i robi co trzeba(mam nadzieje)(teraz dolozylem slownik to juz wcale nie mam pewnosci)
         void Movement(char charInThisDirection)
         {
-            //sprawdz biblioteke i jezeli cos trzeba to to zrob jak nie to wykonaj switch
+            int oldCol = col;
+            int oldRow = row;
+
+            //sprawdz slownik i jezeli cos sie da zrobic to zrob
             if (logicFromChars.TryGetValue(charInThisDirection, out var action))
             {
-                action();
+                action(); //wykonanie akcji slownika z literkami logicznymi z mapy
             }
-            // tutaj jak moze normalnie chodzic to zmienia pozycje row / col
-            if (!hitObstacle)
+
+            // tutaj jak wykonaniu ze slownika mozna chodzic to zmienia pozycje row / col
+            if (!hitObstacle) 
             {
                 switch (consoleKeyPressed)
                 {
@@ -113,50 +97,44 @@
                         { col--; }
                         break;
                 }
+
+                //wpisanie ruchu do mapy
+                currentMap.mapAsList[row] = currentMap.mapAsList[row].Insert(col, "#");
+                currentMap.mapAsList[row] = currentMap.mapAsList[row].Remove(col + 1, 1);
+                currentMap.mapAsList[oldRow] = currentMap.mapAsList[oldRow].Insert(oldCol, " ");
+                currentMap.mapAsList[oldRow] = currentMap.mapAsList[oldRow].Remove(oldCol + 1, 1);
+                hitObstacle = false;
             }
+            hitObstacle = false;
+
+
+
         }
 
         void changeMapTo(char letterOfTheMap)
         {
-            //TODO tu jest jeszcze do dopracowania , trzeba uzywac gamestatu
             hitObstacle = true;
-            Map tempMap;// = new Map(Sprites.map2);
             switch (letterOfTheMap)
             {
-                case 'P':
-                    {
-                        tempMap = new Map(Sprites.map2);
-                        jakaMapa.Clear();
-                        jakaMapa.AddRange(tempMap.mapAsList);
-                        break;
-                    }
                 case 'A':
                     {
-                        //uzywac listy enemies z gamestate
-                        tempMap = new Map(Sprites.arena);
+                        TempGameState.GenerateArena();
+                        currentMap = TempGameState.tempArenaMap;
+                        Display.LoadArena();
 
-                        RogueTestDebug.enemies.Clear();
-                        RogueTestDebug.enemies.Add(new Enemy(6, 6, tempMap));
-                        RogueTestDebug.enemies.Add(new Enemy(7, 7, tempMap));
-                        RogueTestDebug.enemies.Add(new Enemy(9, 9, tempMap));
-                        RogueTestDebug.enemies.Add(new Enemy(15, 15, tempMap));
+                        int oldCol = col;
+                        int oldRow = row;
+                        TempGameState.cityMap.mapAsList[oldRow] = TempGameState.cityMap.mapAsList[oldRow].Insert(oldCol, " ");
+                        TempGameState.cityMap.mapAsList[oldRow] = TempGameState.cityMap.mapAsList[oldRow].Remove(oldCol + 1, 1);
 
-
-                            jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
-                            jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
-
-
-                        cityMap.Clear();
-                        cityMap.AddRange(jakaMapa);
-                        jakaMapa.Clear();
-                        jakaMapa.AddRange(tempMap.mapAsList);
                         isOnArena = true;
                         break;
                     }
                 case 'C':
                     {
-                        jakaMapa.Clear();
-                        jakaMapa.AddRange(cityMap);
+                       
+                        currentMap = TempGameState.cityMap;
+                        Display.LoadCityMap();
                         isOnArena = false;
                         break;
                     }
@@ -164,17 +142,11 @@
 
         }
 
-        private void InitializePlayerPosition(Map currentMap)
+        private void InitializePlayerPosition()
         {
-            //pobranie mapy
-            jakaMapa.Clear();
-            jakaMapa.AddRange(currentMap.mapAsList);
             //wstawienie gracza
-            jakaMapa[row] = jakaMapa[row].Insert(col, "#");
-            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
-            //wyplucie mapy z graczem
-            currentMap.mapAsList.Clear();
-            currentMap.mapAsList.AddRange(jakaMapa);
+            currentMap.mapAsList[row] = currentMap.mapAsList[row].Insert(col, "#");
+            currentMap.mapAsList[row] = currentMap.mapAsList[row].Remove(col + 1, 1);
         }
 
         private void PrintPoints()

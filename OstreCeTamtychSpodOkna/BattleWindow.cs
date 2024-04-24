@@ -1,4 +1,4 @@
-﻿using Terminal.Gui;
+﻿/*using Terminal.Gui;
 
 namespace OstreCeTamtychSpodOkna
 
@@ -88,3 +88,4 @@ namespace OstreCeTamtychSpodOkna
         }
     }
 }
+*/

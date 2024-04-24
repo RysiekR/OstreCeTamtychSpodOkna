@@ -1,6 +1,6 @@
 ﻿using OstreCeTamtychSpodOkna;
 //Klasa przechowująca stan gry
-internal class GameState
+/*internal class GameState
 {
     public Pokemon PlayerPokemon { get; set; }
     public Pokemon EnemyPokemon { get; set; }
@@ -54,4 +54,4 @@ internal class GameState
         //Coś typu: enemySelector.ChooseEnemy();
         //combatSystem.Initialize(playerPokemon, enemyPokemon);
     }
-}
+}*/

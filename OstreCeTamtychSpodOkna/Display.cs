@@ -62,10 +62,24 @@
 
         public static void PrintToConsole()
         {
+            Console.SetCursorPosition(0,0);
             foreach (string row in display)
             {
                 Console.WriteLine(row);
             }
+        }
+
+        public static void LoadArena()
+        {
+            InitializeDisplay(TempGameState.tempArenaMap);
+            //TODO print player
+        }
+
+        public static void LoadCityMap()
+        {
+            // TODO umiesc gracza w miejscu bezpiecznym dla kodu
+            InitializeDisplay(TempGameState.cityMap);
+            //TODO print player
         }
     }
 }
