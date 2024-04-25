@@ -6,12 +6,8 @@
         private int grassPoints = 0;
         public int row = 7;
         public int col = 15;
-        string logicLetters = "P123456789";
         string enemyString = "123456789";
 
-        /*        public List<string> jakaMapa = new List<string>();
-                public List<string> cityMap = new List<string>();
-        */
         public Map currentMap;
 
         private bool hitObstacle = false;
@@ -19,11 +15,19 @@
 
         private Dictionary<ConsoleKey, Action> movements;
         private Dictionary<char, Action> logicFromChars;
+        public List<Pokemon> pokemonList = new List<Pokemon>();
 
         public Player(Map currentMap)
         {
             this.currentMap = currentMap;
             InitializePlayerPosition();
+            pokemonList.Clear();
+            pokemonList.Add(new Pokemon("Pikachu", 50));
+            pokemonList.Add(new Pokemon("Bulbazaur", 100));
+            pokemonList.Add(new Pokemon("Squirtle", 20));
+            pokemonList.Add(new Pokemon("Charmander", 80));
+
+            //slowniki
             movements = new Dictionary<ConsoleKey, Action>
             {
                 {ConsoleKey.W, () => Movement(this.currentMap.mapAsList[row - 1][col]) },
@@ -60,10 +64,7 @@
             if (movements.TryGetValue(consoleKeyPressed, out var movementAction))
             {
                 movementAction(); // tu jest wykonanie slownika
-
-
             }
-
         }
 
         // bierze i sprawdza char w kierunku w ktorym chcemy sie poruszyc
@@ -103,7 +104,6 @@
                 currentMap.mapAsList[row] = currentMap.mapAsList[row].Remove(col + 1, 1);
                 currentMap.mapAsList[oldRow] = currentMap.mapAsList[oldRow].Insert(oldCol, " ");
                 currentMap.mapAsList[oldRow] = currentMap.mapAsList[oldRow].Remove(oldCol + 1, 1);
-                hitObstacle = false;
             }
             hitObstacle = false;
 
@@ -132,7 +132,6 @@
                     }
                 case 'C':
                     {
-                       
                         currentMap = TempGameState.cityMap;
                         Display.LoadCityMap();
                         isOnArena = false;
