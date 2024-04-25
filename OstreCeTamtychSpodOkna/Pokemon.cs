@@ -1,11 +1,9 @@
 public class Pokemon
 {
-    PokemonLevel level;
+    public PokemonLevel level;
     public string Name { get; set; }
     public Type type { get; private set; }
-    public int Level { get; private set; }
-    public int HP { get; set; }
-    public int MaxHP { get; private set; }
+    public Stats stats { get; set; }
     public List<SkillCategory> allSkills = new List<SkillCategory>(); 
  
     public Pokemon(string name, int hp)
@@ -14,12 +12,11 @@ public class Pokemon
         Random random = new Random();
         Name = name;
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
-        Level = 1;
-        HP = hp;
-        MaxHP = hp;
+        stats = new Stats(5,5,this);
         allSkills.Add(new OffensiveSkill("Fireball",this));
+
     }
-    public void GainExperience(int experiencePoints)
+/*    public void GainExperience(int experiencePoints)
     {
 
         int experienceThreshold = 100 * this.Level; //Wartość potrzebna do level up'a
@@ -47,10 +44,10 @@ public class Pokemon
             Console.WriteLine($"{this.Name} zdobył {experiencePoints} punktów doświadczenia.");
         }
     }
-
+*/
     public void LevelUpLogic()
     {
-        //TOmfDO
+        //TOmfDO stats.levelup()
         Console.WriteLine("No Level up logic implemented !!!!!!!!!!!!!");
     }
 }

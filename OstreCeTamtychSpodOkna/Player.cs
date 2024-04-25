@@ -44,7 +44,8 @@
                     {'P', () => changeMapTo('P')},
                     {',', () => grassPoints++ },
                     {'A', () => changeMapTo('A') },
-                    {'C', () => changeMapTo('C') }
+                    {'C', () => changeMapTo('C') },
+                    {'F', () => FightyFight() }
                 };
             //dodanie kazdego znaku przez ktory nie mozna przejsc
             foreach (char obstacleChar in Sprites.obstacle)
@@ -54,7 +55,7 @@
             //dodanie znakow enemies
             foreach (char enemy in enemyString)
             {
-                logicFromChars[enemy] = () => Console.Beep(500, 400); //TODO MIODEK walka
+                logicFromChars[enemy] = () => FightyFight(); //TODO MIODEK walka
             }
         }
         public void UpdatePos()
@@ -166,7 +167,7 @@
             while (condition)
             {
                 Console.WriteLine("Menu text, 1 to get back to game");
-                string check = Console.ReadLine();
+                string? check = Console.ReadLine();
                 if (check == "1")
                 {
 
@@ -181,6 +182,24 @@
             Console.Clear();
             Display.PrintToConsole();
         }
+        //TODO miodek
+        public void FightyFight()
+        {
+            hitObstacle = true;
+            Console.Beep();
+        }
     }
 }
 
+/*public struct Position
+{
+    public Position(int rowIn, int colIn)
+    {
+        _row = rowIn; _col = colIn;
+    }
+    public int row { get => _row; set { if (value < 0 && _row + value < 0) { _row = 0; } else { _row += value; } } }
+    public int col { get => _col; set { if (value < 0 && _col + value < 0) { _col = 0; } else { _col += value; } } }
+
+    private int _row;
+    private int _col;
+}*/

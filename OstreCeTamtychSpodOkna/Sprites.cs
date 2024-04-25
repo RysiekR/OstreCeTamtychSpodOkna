@@ -41,7 +41,7 @@
         public static readonly string[] city =
         {
     "WWWWWWWWWWWWW",
-    "W           W",
+    "W    F      W",
     "W A         W",
     "W           W",
     "W           W",
@@ -117,6 +117,14 @@
             "     ",
             "     ",
         };
+        public static readonly string[] debugFight =
+        {
+            "     ",
+            " .F. ",
+            " FFF ",
+            " .F. ",
+            "     ",
+        };
         //wysokosc sprita potrzebna w map.spriteheight
         public static readonly int spriteHeight = spriteWall.Length;
 
@@ -130,6 +138,7 @@
                 case 'P': bigSprite = spritePortal; break;
                 case 'A': bigSprite = spritePortalToArena; break;
                 case 'C': bigSprite = spritePortalToCity; break;
+                case 'F': bigSprite = debugFight; break;
                 default: bigSprite = spriteAir; break;
             }
             return bigSprite;

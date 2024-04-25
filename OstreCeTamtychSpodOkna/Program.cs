@@ -10,8 +10,6 @@ public class Program
     {
         Console.WriteLine("Press alt+enter or f11");
         Console.ReadLine();
-        Console.BufferWidth = Console.WindowWidth;
-        Console.BufferHeight = Console.WindowHeight;
         Console.Clear();
         RogueTestDebug.NewMain();
 

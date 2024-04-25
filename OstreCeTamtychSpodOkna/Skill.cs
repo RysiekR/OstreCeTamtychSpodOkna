@@ -36,7 +36,7 @@ public class OffensiveSkill : SkillCategory
     name = skillName;
     owner = ownerA;
     type = owner.type;
-    damage = random.Next(0,20*owner.Level);    //to do level 
+    damage = random.Next(0,20*owner.level.level);    //to do level 
     accuracy = random.Next(0,100); 
    }
     public class HealSkill : SkillCategory
@@ -51,7 +51,7 @@ public class OffensiveSkill : SkillCategory
             name = skillName;
             owner = ownerA;
             Random random = new Random();
-            healValue = random.Next(0,40*owner.Level);
+            healValue = random.Next(0,40*owner.level.level);
         }
     }
 }
