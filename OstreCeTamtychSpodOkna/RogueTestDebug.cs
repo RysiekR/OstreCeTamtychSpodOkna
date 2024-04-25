@@ -33,7 +33,7 @@
                 {
                     //TODO uzywac listy z gamestate
                     foreach (Enemy enemi in TempGameState.tempArenaMap.enemyList)
-                    { enemi.UpdatePos(player.currentMap); }
+                    { enemi.UpdatePos(); }
                 }
                 Display.SetNewDisplay(player.currentMap);
                 Display.RenderDisplay();

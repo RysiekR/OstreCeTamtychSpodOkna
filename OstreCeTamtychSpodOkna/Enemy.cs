@@ -8,32 +8,40 @@
         string enemyAvatar;
         string enemyString = "123456789";
         string obstacleString = "AC#P";
+        public Map currentMap;
+        public List<Pokemon> pokemonList = new List<Pokemon>();
+
         public Enemy(int rowSpawn, int colSpawn, Map currentMap)
         {
+            this.currentMap = currentMap;
             this.row = rowSpawn;
             this.col = colSpawn;
-            Random random = new Random();
-            enemyAvatar = random.Next(1,10).ToString();
-            InitializeEnemyPosition(currentMap);
-
+            pokemonList.Clear();
+            pokemonList.Add(new Pokemon("Achu"));
+            pokemonList.Add(new Pokemon("Albazaur"));
+            pokemonList.Add(new Pokemon("Irtle"));
+            pokemonList.Add(new Pokemon("Barmander"));
+            enemyAvatar = pokemonList.Count.ToString();
+            InitializeEnemyPosition();
         }
         private int oldCol;
         private int oldRow;
-        public List<string> jakaMapa = new();
+        //public List<string> jakaMapa = new();
         Random rnd = new Random();
         private bool hitObstacle = false;
         int randomMove;
 
-        public void UpdatePos(Map currentMap)
+        public void UpdatePos()
         {
-            oldCol = this.col;
-            oldRow = this.row;
-            jakaMapa.Clear();
-            jakaMapa.AddRange(currentMap.mapAsList);
-            char charUp = jakaMapa[row - 1][col];
-            char charDown = jakaMapa[row + 1][col];
-            char charLeft = jakaMapa[row][col - 1];
-            char charRight = jakaMapa[row][col + 1];
+            oldCol = col;
+            oldRow = row;
+            /*            jakaMapa.Clear();
+                        jakaMapa.AddRange(currentMap.mapAsList);
+            */
+            char charUp = currentMap.mapAsList[row - 1][col];
+            char charDown = currentMap.mapAsList[row + 1][col];
+            char charLeft = currentMap.mapAsList[row][col - 1];
+            char charRight = currentMap.mapAsList[row][col + 1];
             randomMove = rnd.Next(1, 5);
             switch (randomMove)
             {
@@ -53,30 +61,14 @@
 
 
             //if wall was not hit: move enemy and clear old position
-            if (!hitObstacle)
+            if (!hitObstacle)//tutaj jak moze isc
             {
-                //tutaj jak moze isc
-                jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);
-                jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
-                if (jakaMapa[oldRow][oldCol] != '#')
-                {
-                    jakaMapa[oldRow] = jakaMapa[oldRow].Insert(oldCol, " ");
-                    jakaMapa[oldRow] = jakaMapa[oldRow].Remove(oldCol + 1, 1);
-                }
-            }
-            else
-            {
-                //tutaj jak nie moze
-                jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);
-                jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
-
+                currentMap.mapAsList[row] = currentMap.mapAsList[row].Insert(col, enemyAvatar);
+                currentMap.mapAsList[row] = currentMap.mapAsList[row].Remove(col + 1, 1);
+                currentMap.mapAsList[oldRow] = currentMap.mapAsList[oldRow].Insert(oldCol, " ");
+                currentMap.mapAsList[oldRow] = currentMap.mapAsList[oldRow].Remove(oldCol + 1, 1);
             }
             hitObstacle = false;
-
-            //zapisanie zmodyfikowanej mapy
-            currentMap.mapAsList.Clear();
-            currentMap.mapAsList.AddRange(jakaMapa);
-
         }
 
         // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
@@ -123,23 +115,11 @@
 
         }
 
-        private void InitializeEnemyPosition(Map currentMap)
+        private void InitializeEnemyPosition()
         {
-            //pobranie mapy
-            jakaMapa.Clear();
-            jakaMapa.AddRange(currentMap.mapAsList);
             //wstawienie enemy
-            jakaMapa[row] = jakaMapa[row].Insert(col, enemyAvatar);
-            jakaMapa[row] = jakaMapa[row].Remove(col + 1, 1);
-            //wyplucie mapy z enemy
-            currentMap.mapAsList.Clear();
-            currentMap.mapAsList.AddRange(jakaMapa);
+            currentMap.mapAsList[row] = currentMap.mapAsList[row].Insert(col, enemyAvatar);
+            currentMap.mapAsList[row] = currentMap.mapAsList[row].Remove(col + 1, 1);
         }
-
-        public void SpawnEnemies()
-        {
-
-        }
-
     }
 }

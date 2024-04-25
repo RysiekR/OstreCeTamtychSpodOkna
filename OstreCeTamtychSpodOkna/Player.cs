@@ -22,10 +22,10 @@
             this.currentMap = currentMap;
             InitializePlayerPosition();
             pokemonList.Clear();
-            pokemonList.Add(new Pokemon("Pikachu", 50));
-            pokemonList.Add(new Pokemon("Bulbazaur", 100));
-            pokemonList.Add(new Pokemon("Squirtle", 20));
-            pokemonList.Add(new Pokemon("Charmander", 80));
+            pokemonList.Add(new Pokemon("Pikachu"));
+            pokemonList.Add(new Pokemon("Bulbazaur"));
+            pokemonList.Add(new Pokemon("Squirtle"));
+            pokemonList.Add(new Pokemon("Charmander"));
 
             //slowniki
             movements = new Dictionary<ConsoleKey, Action>
@@ -188,6 +188,7 @@
             hitObstacle = true;
             Console.Beep();
         }
+
     }
 }
 
