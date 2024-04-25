@@ -18,7 +18,7 @@ public enum Type
 {
     Lava,
     Mud,
-    Ice//Placeholder
+    Moist // albo Aqua
 }
 
 public class OffensiveSkill : SkillCategory
