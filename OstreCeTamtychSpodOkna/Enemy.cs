@@ -10,7 +10,6 @@ public class Enemy : HasPokemonList
         public static string enemyString = "123456789";
         string obstacleString = "AC#PN";
         public Map currentMap;
-        public List<Pokemon> pokemonList = new List<Pokemon>();
 
         public Enemy(int rowSpawn, int colSpawn, Map currentMap)
         {
