@@ -1,7 +1,8 @@
-﻿namespace OstreCeTamtychSpodOkna
-{
-    //enemy class with movement logic, in the future will be holding pokemons 
-    internal class Enemy : HasPokemonList
+﻿
+//enemy class with movement logic, in the future will be holding pokemons 
+using OstreCeTamtychSpodOkna;
+
+public class Enemy : HasPokemonList
     {
         public int row { get; private set; }
         public int col { get; private set; }
@@ -128,4 +129,3 @@
 
         }
     }
-}

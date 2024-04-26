@@ -15,8 +15,6 @@ public class BattleProgram
         Console.BufferWidth = Console.WindowWidth;
         Console.BufferHeight = Console.WindowHeight;
         Console.Clear();
-        RogueTestDebug.NewMain();
-
 
         Application.Init();
         

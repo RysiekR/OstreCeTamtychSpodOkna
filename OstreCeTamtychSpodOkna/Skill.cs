@@ -1,5 +1,3 @@
-using System.Buffers;
-
 public interface SkillCategory
 {
     public Category category { get; }

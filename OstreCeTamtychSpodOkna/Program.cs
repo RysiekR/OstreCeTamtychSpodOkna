@@ -11,17 +11,27 @@ public class Program
         Console.WriteLine("Press alt+enter or f11");
         Console.ReadLine();
         Console.Clear();
-        RogueTestDebug.NewMain();
+        //Start Game
+        Player player = new(MapHolder.cityMap);
+        for (int i = 0; i < 10; i++)
+        {
+            MapHolder.cityMap.enemyList.Add(new Enemy(6, i + 10, MapHolder.cityMap));
+        }
 
-/*
-        Application.Init();
+        Display.InitializeDisplay(MapHolder.cityMap);
 
-        GameState gameState = new GameState(playerPokemon, enemyPokemon, skillList);
+        while (true)
+        {
+            player.UpdatePos();
+            if (player.isOnArena)
+            {
+                foreach (Enemy enemi in MapHolder.tempArenaMap.enemyList)
+                { enemi.UpdatePos(); }
+            }
+            Display.SetNewDisplay(player.currentMap);
+            Display.RenderDisplay();
 
-        var battleWindow = new BattleWindow(gameState);
-        Application.Run(battleWindow);
-
-        Application.Shutdown();*/
+        }
     }
 
 

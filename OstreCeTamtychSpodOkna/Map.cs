@@ -1,6 +1,7 @@
-﻿namespace OstreCeTamtychSpodOkna
-{
-    internal class Map
+﻿
+using OstreCeTamtychSpodOkna;
+
+public class Map
     {
         //w założeniu ma byc obiektem w ktorym mozna trzymac mape
         //np obiekt mapaMiasta, mapaAreny
@@ -62,4 +63,3 @@
             }
         }
     }
-}

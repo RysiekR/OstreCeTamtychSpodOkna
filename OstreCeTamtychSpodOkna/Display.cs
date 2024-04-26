@@ -1,6 +1,6 @@
 ﻿namespace OstreCeTamtychSpodOkna
 {
-    internal static class Display
+    public static class Display
     {
         private static List<string> display = new List<string>(); // ten ktory powinien juz byc wyswietlony, stary
         private static List<string> newDisplay = new List<string>(); // temp do ktorego trzeba wrzucic zaktualizowana mape do wyswietlenia
@@ -71,14 +71,14 @@
 
         public static void LoadArena()
         {
-            InitializeDisplay(TempGameState.tempArenaMap);
+            InitializeDisplay(MapHolder.tempArenaMap);
             //TODO print player
         }
 
         public static void LoadCityMap()
         {
             // TODO umiesc gracza w miejscu bezpiecznym dla kodu
-            InitializeDisplay(TempGameState.cityMap);
+            InitializeDisplay(MapHolder.cityMap);
             //TODO print player
         }
     }

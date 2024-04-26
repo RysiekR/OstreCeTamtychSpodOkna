@@ -1,6 +1,6 @@
 ﻿namespace OstreCeTamtychSpodOkna
 {
-    internal class Sprites
+    public class Sprites
     {
         public static readonly string obstacle = "╬┼╦╩╣╠";
         //minimapy

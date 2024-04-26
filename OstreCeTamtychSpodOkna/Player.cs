@@ -1,6 +1,7 @@
-﻿namespace OstreCeTamtychSpodOkna
-{
-    internal class Player : HasPokemonList
+﻿
+using OstreCeTamtychSpodOkna;
+
+public class Player : HasPokemonList
     {
         public bool isOnArena = false;
         private int grassPoints = 0;
@@ -125,22 +126,22 @@
             {
                 case 'A':
                     {
-                        TempGameState.GenerateArena();
-                        currentMap = TempGameState.tempArenaMap;
+                        MapHolder.GenerateArena();
+                        currentMap = MapHolder.tempArenaMap;
                         InitializePlayerPosition();
                         Display.LoadArena();
 
                         int oldCol = col;
                         int oldRow = row;
-                        TempGameState.cityMap.mapAsList[oldRow] = TempGameState.cityMap.mapAsList[oldRow].Insert(oldCol, " ");
-                        TempGameState.cityMap.mapAsList[oldRow] = TempGameState.cityMap.mapAsList[oldRow].Remove(oldCol + 1, 1);
+                        MapHolder.cityMap.mapAsList[oldRow] = MapHolder.cityMap.mapAsList[oldRow].Insert(oldCol, " ");
+                        MapHolder.cityMap.mapAsList[oldRow] = MapHolder.cityMap.mapAsList[oldRow].Remove(oldCol + 1, 1);
 
                         isOnArena = true;
                         break;
                     }
                 case 'C':
                     {
-                        currentMap = TempGameState.cityMap;
+                        currentMap = MapHolder.cityMap;
                         InitializePlayerPosition();
                         Display.LoadCityMap();
                         isOnArena = false;
@@ -260,7 +261,7 @@
             return pokemonList[0];
         }
     }
-}
+
 
 /*public struct Position
 {
