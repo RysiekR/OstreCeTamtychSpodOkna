@@ -29,9 +29,23 @@
                     {
                         if (display[row][col] != newDisplay[row][col])
                         {
+                            if (Enemy.enemyString.Contains(newDisplay[row][col]))//jezeli rysujesz przeciwnika to rysuj uzywajac koloru czerwonego
+                            {
+                                // Set the color of the console output
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.SetCursorPosition(col, row);
+                                Console.Write(newDisplay[row][col]);
+                                Console.CursorVisible = false;
+                                // Reset the color back to the default
+                                Console.ResetColor();
+                            }
+                            else 
+                            {
                             Console.SetCursorPosition(col, row);
                             Console.Write(newDisplay[row][col]);
                             Console.CursorVisible = false;
+                            
+                            }
                         }
                     }
                 }
