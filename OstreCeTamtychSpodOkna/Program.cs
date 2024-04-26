@@ -26,3 +26,8 @@ public class Program
 
 
 }
+public class HasPokemonList
+{
+    public List<Pokemon> pokemonList = new List<Pokemon>();
+
+}

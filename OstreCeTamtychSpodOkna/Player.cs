@@ -1,6 +1,6 @@
 ﻿namespace OstreCeTamtychSpodOkna
 {
-    internal class Player
+    internal class Player : HasPokemonList
     {
         public bool isOnArena = false;
         private int grassPoints = 0;
@@ -15,7 +15,6 @@
 
         private Dictionary<ConsoleKey, Action> movements;
         private Dictionary<char, Action> logicFromChars;
-        public List<Pokemon> pokemonList = new List<Pokemon>();
 
         public Player(Map currentMap)
         {

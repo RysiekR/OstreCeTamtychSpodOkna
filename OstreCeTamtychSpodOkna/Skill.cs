@@ -3,6 +3,7 @@ using System.Buffers;
 public interface SkillCategory
 {
     public Category category { get; }
+    public string name { get; }
 }
 
 public enum Category

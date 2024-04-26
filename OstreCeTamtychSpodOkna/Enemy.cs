@@ -1,7 +1,7 @@
 ﻿namespace OstreCeTamtychSpodOkna
 {
     //enemy class with movement logic, in the future will be holding pokemons 
-    internal class Enemy
+    internal class Enemy : HasPokemonList
     {
         private int row;
         private int col;
@@ -15,7 +15,11 @@
             Random random = new Random();
             enemyAvatar = random.Next(1,10).ToString();
             InitializeEnemyPosition(currentMap);
-
+            pokemonList.Clear();
+            pokemonList.Add(new Pokemon("Achu", 50));
+            pokemonList.Add(new Pokemon("Albazaur", 100));
+            pokemonList.Add(new Pokemon("Irtle", 20));
+            pokemonList.Add(new Pokemon("Barmander", 80));
         }
         private int oldCol;
         private int oldRow;
