@@ -8,19 +8,15 @@ using System.Security.Cryptography.X509Certificates;
 
 public class BattleProgram
 {
-    public static void HujANieMain()
+    public static void HujANieMain(Player aPlayer, Enemy enemy)
     {
-        Console.WriteLine("Press alt+enter or f11");
-        Console.ReadLine();
-        Console.BufferWidth = Console.WindowWidth;
-        Console.BufferHeight = Console.WindowHeight;
-        Console.Clear();
 
         Application.Init();
         
-        Map cityMap = new Map(Sprites.city);
+/*        Map cityMap = new Map(Sprites.city);
         Enemy enemy = new Enemy(1, 1, cityMap);
         Player aPlayer = new Player(cityMap);
+*/
         var battleWindow = new BattleWindow(aPlayer,enemy);
         Application.Run(battleWindow);
 
