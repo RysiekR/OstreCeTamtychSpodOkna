@@ -86,7 +86,7 @@
             }
 
             // tutaj jak wykonaniu ze slownika mozna chodzic to zmienia pozycje row / col
-            if (!hitObstacle) 
+            if (!hitObstacle)
             {
                 switch (consoleKeyPressed)
                 {
@@ -181,7 +181,9 @@
                 }
                 else if (check == "2")
                 {
-                    // cos zrob
+                    //ChosePokemon();
+                    Console.WriteLine($"Chosen Pokemon: {ChosePokemon().Name}");
+                    Console.ReadLine();
                 }
                 else if (check == "3") { }
             }
@@ -202,15 +204,48 @@
             {
                 if (enemy.row == possibleRow && enemy.col == possibleCol)
                 {
-                    enemiesToRemove.Add(enemy);
+                    enemiesToRemove.Add(enemy);//tutaj wywolac walke, nie zabijac jeszcze !!!!
                 }
             }
             foreach (Enemy enemy in enemiesToRemove)
             {
-                TempGameState.tempArenaMap.enemyList.Remove(enemy);
+                TempGameState.tempArenaMap.enemyList.Remove(enemy);//tutaj zabic !!
             }
         }
+        private Pokemon ChosePokemon()
+        {
+            Console.WriteLine("Chose pokemon, this is your list");
+            for (int i = 0; i < pokemonList.Count; i++)
+            {
+                Console.WriteLine($"{i}. {pokemonList[i].Name}");
+            }
 
+            bool chosenWrong = true;
+            while (chosenWrong)
+            {
+                string toParse = Console.ReadLine();
+                if (int.TryParse(toParse, out int index))
+                {
+                    // Ensure the index is within the bounds of the pokemonList array
+                    if (index >= 0 && index < pokemonList.Count)
+                    {
+                        return pokemonList[index];
+                    }
+                    else
+                    {
+                        Console.WriteLine("Index is out of range.");
+                        chosenWrong = true;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid number.");
+                    chosenWrong = true;
+                }
+            }
+            Console.WriteLine("cos sie wyjebało wiec zwracam pierwszego pokemona");
+            return pokemonList[0];
+        }
     }
 }
 
