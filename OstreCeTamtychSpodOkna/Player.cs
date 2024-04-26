@@ -161,7 +161,7 @@
         {
             for (int i = 0; i < 4; i++)
             {
-                Console.SetCursorPosition(80, i + 5);
+                Console.SetCursorPosition(80 + i ,5);
                 Console.Write(" ");
             }
             Console.SetCursorPosition(80, 5);
@@ -171,10 +171,10 @@
         {
             for (int i = 0; i < 4; i++)
             {
-                Console.SetCursorPosition(81, i + 5);
+                Console.SetCursorPosition(80 + i,6);
                 Console.Write(" ");
             }
-            Console.SetCursorPosition(81, 5);
+            Console.SetCursorPosition(80, 6);
             Console.Write(tempIntFromNs);
         }
 

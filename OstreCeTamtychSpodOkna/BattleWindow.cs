@@ -8,7 +8,7 @@ using System.Security.Cryptography.X509Certificates;
 
 public class BattleProgram
 {
-    public static void Main()
+    public static void HujANieMain()
     {
         Console.WriteLine("Press alt+enter or f11");
         Console.ReadLine();
