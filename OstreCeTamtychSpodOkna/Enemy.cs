@@ -7,7 +7,7 @@
         public int col { get; private set; }
         string enemyAvatar;
         string enemyString = "123456789";
-        string obstacleString = "AC#P";
+        string obstacleString = "AC#PN";
         public Map currentMap;
         public List<Pokemon> pokemonList = new List<Pokemon>();
 
@@ -120,6 +120,12 @@
             //wstawienie enemy
             currentMap.mapAsList[row] = currentMap.mapAsList[row].Insert(col, enemyAvatar);
             currentMap.mapAsList[row] = currentMap.mapAsList[row].Remove(col + 1, 1);
+        }
+        public void GetRidOfThisAvatar()
+        {
+            currentMap.mapAsList[row] = currentMap.mapAsList[row].Insert(col, "N");
+            currentMap.mapAsList[row] = currentMap.mapAsList[row].Remove(col + 1, 1);
+
         }
     }
 }

@@ -4,11 +4,12 @@
     {
         public bool isOnArena = false;
         private int grassPoints = 0;
+        private int tempIntFromNs = 0;
         public int row = 7;
         public int col = 15;
-        string enemyString = "123456789";
         private int possibleRow;
         private int possibleCol;
+        string enemyString = "123456789";
         public Map currentMap;
 
         private bool hitObstacle = false;
@@ -35,6 +36,7 @@
                 {ConsoleKey.A, () => Movement(row, col - 1) },
                 {ConsoleKey.D, () => Movement(row, col + 1) },
                 {ConsoleKey.P, () => PrintPoints() },
+                {ConsoleKey.N, () => PrintNPoints() },
                 {ConsoleKey.M, () => ShowMenu() }
         };
 
@@ -43,6 +45,7 @@
                     //tutaj dodawac logike zwiazana z np sklepami i szpitalami
                     {'P', () => changeMapTo('P')},
                     {',', () => grassPoints++ },
+                    {'N', () => tempIntFromNs++ },
                     {'A', () => changeMapTo('A') },
                     {'C', () => changeMapTo('C') },
                     {'F', () => FightyFight() }
@@ -164,6 +167,16 @@
             Console.SetCursorPosition(80, 5);
             Console.Write(grassPoints);
         }
+        private void PrintNPoints()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                Console.SetCursorPosition(81, i + 5);
+                Console.Write(" ");
+            }
+            Console.SetCursorPosition(81, 5);
+            Console.Write(tempIntFromNs);
+        }
 
         private void ShowMenu()
         {
@@ -196,6 +209,7 @@
         //TODO miodek
         public void FightyFight()
         {
+
             hitObstacle = true;
             Console.Beep();
             List<Enemy> enemiesToRemove = new List<Enemy>();
@@ -208,6 +222,7 @@
             }
             foreach (Enemy enemy in enemiesToRemove)
             {
+                enemy.GetRidOfThisAvatar();
                 TempGameState.tempArenaMap.enemyList.Remove(enemy);//tutaj zabic !!
             }
         }
