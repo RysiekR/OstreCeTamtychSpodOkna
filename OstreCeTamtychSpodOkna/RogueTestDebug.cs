@@ -22,7 +22,13 @@
         public static void NewMain()
         {
             Player player = new(TempGameState.cityMap);
+            for (int i = 0; i < 10; i++)
+            {
+                TempGameState.cityMap.enemyList.Add(new Enemy(6,i+10,TempGameState.cityMap));
+            }
+
             Display.InitializeDisplay(TempGameState.cityMap);
+
             while (true)
             {
                 player.UpdatePos();

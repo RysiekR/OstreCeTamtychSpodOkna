@@ -41,7 +41,7 @@
         public static readonly string[] city =
         {
     "WWWWWWWWWWWWW",
-    "W    F      W",
+    "W           W",
     "W A         W",
     "W           W",
     "W           W",

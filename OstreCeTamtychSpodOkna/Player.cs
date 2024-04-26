@@ -48,7 +48,7 @@
                     {'N', () => tempIntFromNs++ },
                     {'A', () => changeMapTo('A') },
                     {'C', () => changeMapTo('C') },
-                    {'F', () => FightyFight() }
+                    //{'F', () => FightyFight() }
                 };
             //dodanie kazdego znaku przez ktory nie mozna przejsc
             foreach (char obstacleChar in Sprites.obstacle)
@@ -209,11 +209,10 @@
         //TODO miodek
         public void FightyFight()
         {
-
             hitObstacle = true;
             Console.Beep();
             List<Enemy> enemiesToRemove = new List<Enemy>();
-            foreach (Enemy enemy in TempGameState.tempArenaMap.enemyList)
+            foreach (Enemy enemy in currentMap.enemyList)
             {
                 if (enemy.row == possibleRow && enemy.col == possibleCol)
                 {
@@ -223,7 +222,7 @@
             foreach (Enemy enemy in enemiesToRemove)
             {
                 enemy.GetRidOfThisAvatar();
-                TempGameState.tempArenaMap.enemyList.Remove(enemy);//tutaj zabic !!
+                currentMap.enemyList.Remove(enemy);//tutaj zabic !!
             }
         }
         private Pokemon ChosePokemon()
