@@ -19,9 +19,6 @@
     internal class RogueTestDebug
     {
 
-/*        //TODO wrzucic liste do gamestate
-        public static List<Enemy> enemies = new List<Enemy>();
-*/
         public static void NewMain()
         {
             Player player = new(TempGameState.cityMap);

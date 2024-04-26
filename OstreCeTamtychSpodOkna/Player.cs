@@ -121,6 +121,7 @@
                     {
                         TempGameState.GenerateArena();
                         currentMap = TempGameState.tempArenaMap;
+                        InitializePlayerPosition();
                         Display.LoadArena();
 
                         int oldCol = col;
@@ -134,6 +135,7 @@
                 case 'C':
                     {
                         currentMap = TempGameState.cityMap;
+                        InitializePlayerPosition();
                         Display.LoadCityMap();
                         isOnArena = false;
                         break;
@@ -181,6 +183,10 @@
             }
             Console.Clear();
             Display.PrintToConsole();
+        }
+        public void PutAvatarOnMap(Map whichMap)
+        {
+
         }
         //TODO miodek
         public void FightyFight()
