@@ -19,9 +19,6 @@
     internal class RogueTestDebug
     {
 
-/*        //TODO wrzucic liste do gamestate
-        public static List<Enemy> enemies = new List<Enemy>();
-*/
         public static void NewMain()
         {
             Player player = new(TempGameState.cityMap);
@@ -31,9 +28,8 @@
                 player.UpdatePos();
                 if (player.isOnArena)
                 {
-                    //TODO uzywac listy z gamestate
                     foreach (Enemy enemi in TempGameState.tempArenaMap.enemyList)
-                    { enemi.UpdatePos(player.currentMap); }
+                    { enemi.UpdatePos(); }
                 }
                 Display.SetNewDisplay(player.currentMap);
                 Display.RenderDisplay();

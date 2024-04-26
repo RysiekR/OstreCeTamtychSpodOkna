@@ -7,7 +7,8 @@
         public int row = 7;
         public int col = 15;
         string enemyString = "123456789";
-
+        private int possibleRow;
+        private int possibleCol;
         public Map currentMap;
 
         private bool hitObstacle = false;
@@ -21,18 +22,18 @@
             this.currentMap = currentMap;
             InitializePlayerPosition();
             pokemonList.Clear();
-            pokemonList.Add(new Pokemon("Pikachu", 50));
-            pokemonList.Add(new Pokemon("Bulbazaur", 100));
-            pokemonList.Add(new Pokemon("Squirtle", 20));
-            pokemonList.Add(new Pokemon("Charmander", 80));
+            pokemonList.Add(new Pokemon("Pikachu"));
+            pokemonList.Add(new Pokemon("Bulbazaur"));
+            pokemonList.Add(new Pokemon("Squirtle"));
+            pokemonList.Add(new Pokemon("Charmander"));
 
             //slowniki
             movements = new Dictionary<ConsoleKey, Action>
             {
-                {ConsoleKey.W, () => Movement(this.currentMap.mapAsList[row - 1][col]) },
-                {ConsoleKey.S, () => Movement(this.currentMap.mapAsList[row + 1][col]) },
-                {ConsoleKey.A, () => Movement(this.currentMap.mapAsList[row][col - 1]) },
-                {ConsoleKey.D, () => Movement(this.currentMap.mapAsList[row][col + 1]) },
+                {ConsoleKey.W, () => Movement(row - 1,col) },
+                {ConsoleKey.S, () => Movement(row + 1, col) },
+                {ConsoleKey.A, () => Movement(row, col - 1) },
+                {ConsoleKey.D, () => Movement(row, col + 1) },
                 {ConsoleKey.P, () => PrintPoints() },
                 {ConsoleKey.M, () => ShowMenu() }
         };
@@ -69,10 +70,13 @@
 
         // bierze i sprawdza char w kierunku w ktorym chcemy sie poruszyc
         // i sprawdza co tam jest i robi co trzeba(mam nadzieje)(teraz dolozylem slownik to juz wcale nie mam pewnosci)
-        void Movement(char charInThisDirection)
+        void Movement(int futureRow, int futureCol)
         {
+            char charInThisDirection = this.currentMap.mapAsList[futureRow][futureCol];
             int oldCol = col;
             int oldRow = row;
+            possibleRow = futureRow;
+            possibleCol = futureCol;
 
             //sprawdz slownik i jezeli cos sie da zrobic to zrob
             if (logicFromChars.TryGetValue(charInThisDirection, out var action))
@@ -81,7 +85,7 @@
             }
 
             // tutaj jak wykonaniu ze slownika mozna chodzic to zmienia pozycje row / col
-            if (!hitObstacle) 
+            if (!hitObstacle)
             {
                 switch (consoleKeyPressed)
                 {
@@ -120,6 +124,7 @@
                     {
                         TempGameState.GenerateArena();
                         currentMap = TempGameState.tempArenaMap;
+                        InitializePlayerPosition();
                         Display.LoadArena();
 
                         int oldCol = col;
@@ -133,6 +138,7 @@
                 case 'C':
                     {
                         currentMap = TempGameState.cityMap;
+                        InitializePlayerPosition();
                         Display.LoadCityMap();
                         isOnArena = false;
                         break;
@@ -174,18 +180,70 @@
                 }
                 else if (check == "2")
                 {
-                    // cos zrob
+                    //ChosePokemon();
+                    Console.WriteLine($"Chosen Pokemon: {ChosePokemon().Name}");
+                    Console.ReadLine();
                 }
                 else if (check == "3") { }
             }
             Console.Clear();
             Display.PrintToConsole();
         }
+        public void PutAvatarOnMap(Map whichMap)
+        {
+
+        }
         //TODO miodek
         public void FightyFight()
         {
             hitObstacle = true;
             Console.Beep();
+            List<Enemy> enemiesToRemove = new List<Enemy>();
+            foreach (Enemy enemy in TempGameState.tempArenaMap.enemyList)
+            {
+                if (enemy.row == possibleRow && enemy.col == possibleCol)
+                {
+                    enemiesToRemove.Add(enemy);//tutaj wywolac walke, nie zabijac jeszcze !!!!
+                }
+            }
+            foreach (Enemy enemy in enemiesToRemove)
+            {
+                TempGameState.tempArenaMap.enemyList.Remove(enemy);//tutaj zabic !!
+            }
+        }
+        private Pokemon ChosePokemon()
+        {
+            Console.WriteLine("Chose pokemon, this is your list");
+            for (int i = 0; i < pokemonList.Count; i++)
+            {
+                Console.WriteLine($"{i}. {pokemonList[i].Name}");
+            }
+
+            bool chosenWrong = true;
+            while (chosenWrong)
+            {
+                string toParse = Console.ReadLine();
+                if (int.TryParse(toParse, out int index))
+                {
+                    // Ensure the index is within the bounds of the pokemonList array
+                    if (index >= 0 && index < pokemonList.Count)
+                    {
+                        return pokemonList[index];
+                    }
+                    else
+                    {
+                        Console.WriteLine("Index is out of range.");
+                        chosenWrong = true;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Please enter a valid number.");
+                    chosenWrong = true;
+                }
+            }
+            Console.WriteLine("cos sie wyjebało wiec zwracam pierwszego pokemona");
+            return pokemonList[0];
         }
     }
 }

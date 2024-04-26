@@ -6,7 +6,7 @@ public class Pokemon
     public Stats stats { get; set; }
     public List<SkillCategory> allSkills = new List<SkillCategory>(); 
  
-    public Pokemon(string name, int hp)
+    public Pokemon(string name)
     {
         level = new PokemonLevel(this);
         Random random = new Random();
