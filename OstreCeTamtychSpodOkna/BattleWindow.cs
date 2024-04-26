@@ -25,14 +25,14 @@ public class BattleProgram
 }
 internal class BattleWindow : Window
 {
-    private Pokemon playerPokemon;
-    private Pokemon enemyPokemon;
+    private Pokemon? playerPokemon;
+    private Pokemon? enemyPokemon;
     private Player aPlayer;
     private Enemy enemy;
-    private ProgressBar playerHPBar;
-    private ProgressBar enemyHPBar;
-    private Label playerHPLabel;
-    private Label enemyHPLabel;
+    private ProgressBar? playerHPBar;
+    private ProgressBar? enemyHPBar;
+    private Label? playerHPLabel;
+    private Label? enemyHPLabel;
 
     public void ChoosePokemon(HasPokemonList entity)
     {
@@ -52,6 +52,11 @@ internal class BattleWindow : Window
             else
             {
                 Console.WriteLine("Error: Wszystkie Pokemony są niezdolne do walki.");
+            }
+            if (playerPokemon == null || enemyPokemon == null)
+            {
+                Console.WriteLine("Error: All Pokemon are unable to fight.");
+                Application.RequestStop(); // This will close the application if no Pokemon can fight
             }
         }
     }

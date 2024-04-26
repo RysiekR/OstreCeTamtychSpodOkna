@@ -218,6 +218,7 @@ public class Player : HasPokemonList
                 if (enemy.row == possibleRow && enemy.col == possibleCol)
                 {
                     BattleProgram.HujANieMain(this, enemy);
+
                     enemiesToRemove.Add(enemy);//tutaj wywolac walke, nie zabijac jeszcze !!!!
                 }
             }

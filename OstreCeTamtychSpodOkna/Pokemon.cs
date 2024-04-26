@@ -14,6 +14,10 @@ public class Pokemon
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
         stats = new Stats(5,5,this);
         allSkills.Add(new OffensiveSkill("Fireball",this));
+        allSkills.Add(new OffensiveSkill("Fireball2",this));
+        allSkills.Add(new OffensiveSkill("Fireball3",this));
+        allSkills.Add(new OffensiveSkill("Fireball4",this));
+        allSkills.Add(new OffensiveSkill("Not Fireball",this));
 
     }
 /*    public void GainExperience(int experiencePoints)
