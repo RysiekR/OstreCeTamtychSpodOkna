@@ -28,7 +28,6 @@
                 player.UpdatePos();
                 if (player.isOnArena)
                 {
-                    //TODO uzywac listy z gamestate
                     foreach (Enemy enemi in TempGameState.tempArenaMap.enemyList)
                     { enemi.UpdatePos(); }
                 }

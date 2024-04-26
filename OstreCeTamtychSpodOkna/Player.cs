@@ -7,7 +7,8 @@
         public int row = 7;
         public int col = 15;
         string enemyString = "123456789";
-
+        private int possibleRow;
+        private int possibleCol;
         public Map currentMap;
 
         private bool hitObstacle = false;
@@ -30,10 +31,10 @@
             //slowniki
             movements = new Dictionary<ConsoleKey, Action>
             {
-                {ConsoleKey.W, () => Movement(this.currentMap.mapAsList[row - 1][col]) },
-                {ConsoleKey.S, () => Movement(this.currentMap.mapAsList[row + 1][col]) },
-                {ConsoleKey.A, () => Movement(this.currentMap.mapAsList[row][col - 1]) },
-                {ConsoleKey.D, () => Movement(this.currentMap.mapAsList[row][col + 1]) },
+                {ConsoleKey.W, () => Movement(row - 1,col) },
+                {ConsoleKey.S, () => Movement(row + 1, col) },
+                {ConsoleKey.A, () => Movement(row, col - 1) },
+                {ConsoleKey.D, () => Movement(row, col + 1) },
                 {ConsoleKey.P, () => PrintPoints() },
                 {ConsoleKey.M, () => ShowMenu() }
         };
@@ -70,10 +71,13 @@
 
         // bierze i sprawdza char w kierunku w ktorym chcemy sie poruszyc
         // i sprawdza co tam jest i robi co trzeba(mam nadzieje)(teraz dolozylem slownik to juz wcale nie mam pewnosci)
-        void Movement(char charInThisDirection)
+        void Movement(int futureRow, int futureCol)
         {
+            char charInThisDirection = this.currentMap.mapAsList[futureRow][futureCol];
             int oldCol = col;
             int oldRow = row;
+            possibleRow = futureRow;
+            possibleCol = futureCol;
 
             //sprawdz slownik i jezeli cos sie da zrobic to zrob
             if (logicFromChars.TryGetValue(charInThisDirection, out var action))
@@ -193,6 +197,18 @@
         {
             hitObstacle = true;
             Console.Beep();
+            List<Enemy> enemiesToRemove = new List<Enemy>();
+            foreach (Enemy enemy in TempGameState.tempArenaMap.enemyList)
+            {
+                if (enemy.row == possibleRow && enemy.col == possibleCol)
+                {
+                    enemiesToRemove.Add(enemy);
+                }
+            }
+            foreach (Enemy enemy in enemiesToRemove)
+            {
+                TempGameState.tempArenaMap.enemyList.Remove(enemy);
+            }
         }
 
     }

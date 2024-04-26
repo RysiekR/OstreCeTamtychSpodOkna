@@ -3,8 +3,8 @@
     //enemy class with movement logic, in the future will be holding pokemons 
     internal class Enemy
     {
-        private int row;
-        private int col;
+        public int row { get; private set; }
+        public int col { get; private set; }
         string enemyAvatar;
         string enemyString = "123456789";
         string obstacleString = "AC#P";
