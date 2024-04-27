@@ -1,8 +1,10 @@
 ﻿public struct Stats
 {
     Pokemon owner;
-    private int strenght;
+    private int vitality;
     private float hp;
+    private float strength;
+    public float damageModifier { get; private set; }
     public float maxHp { get; private set; }
     private bool isAlive = true;
 
@@ -16,10 +18,10 @@
 
     //Add vittality stat and regen method zamienic strenght na vitality i zrobic cos nowego ze strenght
 
-    public Stats(int str, int def, Pokemon ownerPokemon)
+    public Stats(int vit, int def, Pokemon ownerPokemon)
     {
         owner = ownerPokemon;
-        strenght = str;
+        vitality = vit;
         defense = def;
         UpdateStats();
         hp = 0.5f * maxHp;
@@ -97,20 +99,23 @@
     public void UpdateStats()
     {
         float tempMaxHp = maxHp;
-        maxHp = strenght * 2.0f * owner.level.level;
+        maxHp = vitality * 20.0f * owner.level.level;
         hp = (hp * maxHp) / tempMaxHp;
 
-        maxShield = (defense * 1.5f + strenght * 1.5f) * 1.2f * owner.level.level;
+        maxShield = (defense * 1.5f + vitality * 1.5f) * 1.2f * owner.level.level;
         shield = maxShield;
         isShielded = true;
+
+        damageModifier = strength * 1.01f * owner.level.level;
 
         armorFromDefense = (defense) * owner.level.level * 0.5f;
     }
     public void LevelUp()
     {
         Console.WriteLine("LevelUp");
-        strenght += 5;
+        vitality += 5;
         defense += 5;
+        strength += 5;
     }
 
 }

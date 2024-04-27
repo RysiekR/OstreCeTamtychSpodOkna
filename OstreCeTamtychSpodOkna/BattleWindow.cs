@@ -11,7 +11,7 @@ public class BattleProgram
     public static void HujANieMain(Player aPlayer, Enemy enemy)
     {
 
-        Application.Init();
+        //Application.Init();
         
 /*        Map cityMap = new Map(Sprites.city);
         Enemy enemy = new Enemy(1, 1, cityMap);
@@ -108,7 +108,7 @@ internal class BattleWindow : Window
             Y = Pos.Percent(90),
             ColorScheme = new ColorScheme()
             {
-                Normal = Terminal.Gui.Attribute.Make(Color.BrightMagenta, Color.Red)
+              
             }
         };
         var skillsButton = new Button("Skills")
@@ -139,7 +139,10 @@ internal class BattleWindow : Window
 
     private void ConfigureButtonEvents(Button attackButton, Button skillsButton, Button itemsButton, Button fleeButton)
     {
-        //menuButton.Clicked += () =>
+        fleeButton.Clicked += () =>
+        {
+            Application.RequestStop();
+        };
 
         skillsButton.Clicked += () =>
         {
@@ -179,7 +182,17 @@ internal class BattleWindow : Window
                     {
                         X = j * 20,
                         Y = i * 2,
-                       // ColorScheme = GetColorSchemeForSkillType(skill.Type)
+                        //ColorScheme = GetColorSchemeForSkillType(skill.Type)
+                    };
+                    skillButton.Clicked += () =>
+                    {
+                        if (skill is OffensiveSkill offensiveSkill)
+                        {
+                            var currentHp = enemyPokemon.stats.Hp;
+                                currentHp -= offensiveSkill.damage;
+                                UpdateHPBars();
+                                //CheckForBattleEnd();
+                        };
                     };
                     skillsDialog.Add(skillButton);
                 }
