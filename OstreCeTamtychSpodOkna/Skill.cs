@@ -44,7 +44,12 @@ public class OffensiveSkill : SkillCategory
     }
     public void UpdateSkill()
     {
-        damage = owner.stats.damageModifier * initialDamageValue;  //to do level 
+        damage = owner.stats.damageModifier * initialDamageValue * 1.0f;  //to do level 
+    }
+    public void DealDamage(Pokemon pokemonToHit)
+    {
+        pokemonToHit.stats.Hp = - damage;
+        Console.Beep();
     }
 }
     public class HealSkill : SkillCategory

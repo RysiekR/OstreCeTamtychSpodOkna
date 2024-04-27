@@ -11,7 +11,7 @@ public class BattleProgram
     public static void HujANieMain(Player aPlayer, Enemy enemy)
     {
 
-        //Application.Init();
+        Application.Init();
         
 /*        Map cityMap = new Map(Sprites.city);
         Enemy enemy = new Enemy(1, 1, cityMap);
@@ -23,7 +23,7 @@ public class BattleProgram
         Application.Shutdown();
     }
 }
-internal class BattleWindow : Window
+public class BattleWindow : Window
 {
     private Pokemon? playerPokemon;
     private Pokemon? enemyPokemon;
@@ -156,6 +156,23 @@ internal class BattleWindow : Window
 
             Application.Run(skillsDialog);
         };
+
+        attackButton.Clicked += () =>
+        {
+            if (playerPokemon.allSkills[0] is OffensiveSkill)
+            {
+                /*var currentHp = enemyPokemon.stats.Hp;
+                    currentHp -= offensiveSkill.damage;*/
+                OffensiveSkill skillConverted = (OffensiveSkill)playerPokemon.allSkills[0];
+                skillConverted.DealDamage(enemyPokemon);
+                UpdateHPBars();
+                if (!enemyPokemon.stats.IsAlive)
+                {
+                    Application.RequestStop();
+                }
+                //CheckForBattleEnd();
+            };
+        };
     }
 
     private void UpdateHPBars()
@@ -186,11 +203,19 @@ internal class BattleWindow : Window
                     };
                     skillButton.Clicked += () =>
                     {
-                        if (skill is OffensiveSkill offensiveSkill)
+                        if (skill is OffensiveSkill)
                         {
-                            var currentHp = enemyPokemon.stats.Hp;
-                                currentHp -= offensiveSkill.damage;
+                            /*var currentHp = enemyPokemon.stats.Hp;
+                                currentHp -= offensiveSkill.damage;*/
+                            OffensiveSkill skillConverted = (OffensiveSkill) skill;
+                            skillConverted.DealDamage(enemyPokemon);
                                 UpdateHPBars();
+                            //tymczasowo po jednym zabityom pokemonie zamknac battle window
+                            if (!enemyPokemon.stats.IsAlive)
+                            {
+                                Application.RequestStop(); //troche dziala troche nie xd
+                                //Application.Shutdown();
+                            }
                                 //CheckForBattleEnd();
                         };
                     };
@@ -237,7 +262,7 @@ internal class BattleWindow : Window
             Focus = focusAttribute
         };
     }
-    internal static void BattleStart(Player aPlayer, Enemy aEnemy)
+    public static void BattleStart(Player aPlayer, Enemy aEnemy)
     {
         Application.Init();
 

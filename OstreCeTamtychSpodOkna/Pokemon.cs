@@ -3,7 +3,7 @@ public class Pokemon
     public PokemonLevel level;
     public string Name { get; set; }
     public Type type { get; private set; }
-    public Stats stats { get; set; }
+    public Stats stats; //{ get; set; }
     public List<SkillCategory> allSkills = new List<SkillCategory>(); 
  
     public Pokemon(string name)

@@ -8,7 +8,7 @@ public class Program
 {
     public static void Main()
     {
-        Application.Init();
+        //Application.Init();
         Console.WriteLine("Press alt+enter or f11");
         Console.ReadLine();
         Console.Clear();

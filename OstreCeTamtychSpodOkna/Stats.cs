@@ -18,11 +18,12 @@
 
     //Add vittality stat and regen method zamienic strenght na vitality i zrobic cos nowego ze strenght
 
-    public Stats(int vit, int def, Pokemon ownerPokemon)
+    public Stats( int vit, int def, Pokemon ownerPokemon) //trzeba dodac strength i wywogle wszystko zrobic na random
     {
         owner = ownerPokemon;
         vitality = vit;
         defense = def;
+        strength = 10;
         UpdateStats();
         hp = 0.5f * maxHp;
     }
