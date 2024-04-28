@@ -33,7 +33,7 @@ public class BattleWindow : Window
     private ProgressBar? enemyHPBar;
     private Label? playerHPLabel;
     private Label? enemyHPLabel;
-
+    
     public void ChoosePokemon(HasPokemonList entity)
     {
         foreach(Pokemon pokemon in entity.pokemonList)
@@ -168,7 +168,7 @@ public class BattleWindow : Window
                 UpdateHPBars();
                 if (!enemyPokemon.stats.IsAlive)
                 {
-                    Application.RequestStop();
+                    Application.Top.Running = false;
                 }
                 //CheckForBattleEnd();
             };
@@ -205,18 +205,17 @@ public class BattleWindow : Window
                     {
                         if (skill is OffensiveSkill)
                         {
-                            /*var currentHp = enemyPokemon.stats.Hp;
-                                currentHp -= offensiveSkill.damage;*/
                             OffensiveSkill skillConverted = (OffensiveSkill) skill;
                             skillConverted.DealDamage(enemyPokemon);
                                 UpdateHPBars();
                             //tymczasowo po jednym zabityom pokemonie zamknac battle window
                             if (!enemyPokemon.stats.IsAlive)
                             {
-                                Application.RequestStop(); //troche dziala troche nie xd
-                                //Application.Shutdown();
+                                Application.RequestStop();
+                                Application.Top.Running = false;
                             }
                                 //CheckForBattleEnd();
+
                         };
                     };
                     skillsDialog.Add(skillButton);
@@ -270,6 +269,10 @@ public class BattleWindow : Window
         Application.Run(battleWindow);
 
         Application.Shutdown();
+    }
+    public void EndBattle()
+    {
+        Application.RequestStop();
     }
 }
 public enum GameMode

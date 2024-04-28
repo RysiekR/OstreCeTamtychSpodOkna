@@ -48,7 +48,10 @@ public class OffensiveSkill : SkillCategory
     }
     public void DealDamage(Pokemon pokemonToHit)
     {
-        pokemonToHit.stats.Hp = - damage;
+        var stats = pokemonToHit.stats;
+        stats.Hp -= damage;
+        if (stats.Hp < 0) stats.Hp = 0;
+        pokemonToHit.stats = stats;
         Console.Beep();
     }
 }
