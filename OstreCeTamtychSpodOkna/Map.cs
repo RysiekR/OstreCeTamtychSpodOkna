@@ -9,6 +9,8 @@ public class Map
     private readonly int spriteHeight = Sprites.spriteHeight;
     public List<string> mapAsList = new List<string>();
     public List<Enemy> enemyList = new List<Enemy>();
+
+    //chyba trzeba zrobic rozmiar mapy int vert;int horr; i w konstruktorze foreachem przeiterowac te vert++ i horr++ na ostatnim row
     public Map(string[] miniMapa)
     {
         CreateFinallMap(mapAsList, miniMapa);
@@ -68,8 +70,8 @@ public class Map
         {
             do
             {
-                tempCol = rnd.Next(5, 35);
-                tempRow = rnd.Next(5, 35);
+                tempRow = rnd.Next(spriteHeight,35); //tempRow = rnd.Next(spriteHeight,mapAsList.Count-spriteHeight);
+                tempCol = rnd.Next(spriteHeight,35); //tempCol = rnd.Next(spriteHeight, mapAsList[tempRow].Length-spriteHeight);
             } while (!IsFreeSpace(tempRow, tempCol));
 
             this.enemyList.Add(new Enemy(tempRow, tempCol, this));
