@@ -31,10 +31,10 @@
         {
     "WWWWWWWWWWWWW",
     "W           W",
+    "W   C       W",
     "W           W",
     "W           W",
     "W           W",
-    "W         C W",
     "W           W",
     "WWWWWWWWWWWWW",
 };
