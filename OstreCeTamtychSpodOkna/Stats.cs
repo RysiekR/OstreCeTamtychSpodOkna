@@ -93,6 +93,7 @@
             shield += damage;
             if (shield <= 0)
             {
+                shield = 0;
                 isShielded = false;
             }
         }
@@ -106,6 +107,10 @@
         maxShield = (defense * 1.5f + vitality * 1.5f) * 1.2f * owner.level.level;
         shield = maxShield;
         isShielded = true;
+        if (shield < 0)
+        {
+            shield = 0;
+        }
 
         damageModifier = strength * 1.01f * owner.level.level;
 
