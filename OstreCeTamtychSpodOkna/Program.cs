@@ -32,11 +32,8 @@ public class Program
             }
             Display.SetNewDisplay(player.currentMap);
             Display.RenderDisplay();
-
         }
     }
-
-
 }
 public class HasPokemonList
 {

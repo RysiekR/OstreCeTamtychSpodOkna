@@ -1,9 +1,9 @@
-using System;
-
 public interface SkillCategory
 {
     public Category category { get; }
     public string name { get; }
+    bool CanUse { get; }
+    void Use(Pokemon target);
 }
 
 public enum Category
@@ -31,14 +31,19 @@ public class OffensiveSkill : SkillCategory
     public float damage { get; private set; }
     public int accuracy { get; private set; }
     private Pokemon owner;
-    public OffensiveSkill(string skillName, Pokemon ownerA)
+    public bool CanUse => true;
+    public void Use(Pokemon target)
+    {
+        DealDamage(target);
+    }
+    public OffensiveSkill(string skillName, Type skillType, Pokemon ownerA)
     {
         Random random = new Random();
         name = skillName;
         owner = ownerA;
-        type = owner.type;
+        type = skillType;
         initialDamageValue = random.Next(10, 20);
-        
+
         accuracy = random.Next(0, 100);
         UpdateSkill();
     }
@@ -56,18 +61,33 @@ public class OffensiveSkill : SkillCategory
         return damage;
     }
 }
-    public class HealSkill : SkillCategory
+public class HealSkill : SkillCategory
+{
+    public Category category { get; private set; } = Category.Heal;
+    public string name { get; private set; }
+    public float HealValue { get; private set; }
+    private Pokemon owner;
+    public bool CanUse { get; private set; } = true;
+    public void Use(Pokemon target)
     {
-        public Category category { get; private set; } = Category.Heal;
-        public string name { get; private set;}
-        public float healValue;
-        private Pokemon owner;
-        public bool canUse = true;
-        public HealSkill(string skillName, Pokemon ownerA)
+        Heal(target);
+    }
+    public HealSkill(string skillName, Pokemon ownerA)
+    {
+        name = skillName;
+        owner = ownerA;
+        Random random = new Random();
+        HealValue = random.Next(0, 40 * owner.level.level);
+    }
+    public void Heal(Pokemon target)
+    {
+        if (target.IsAlive)
         {
-            name = skillName;
-            owner = ownerA;
-            Random random = new Random();
-            healValue = random.Next(0,40*owner.level.level);
+            target.stats.Hp += HealValue;
+            if (target.stats.Hp > target.stats.maxHp)
+            {
+                target.stats.Hp = target.stats.maxHp;
+            }
         }
     }
+}

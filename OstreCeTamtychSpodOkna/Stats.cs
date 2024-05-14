@@ -9,7 +9,7 @@
     private bool isAlive = true;
 
     private int defense;
-    public float shield { get; private set; }
+    public float shield { get; set; }
     public float maxShield { get; private set; }
     private bool isShielded = true;
 
