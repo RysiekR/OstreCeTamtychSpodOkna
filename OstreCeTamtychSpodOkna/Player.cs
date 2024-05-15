@@ -19,6 +19,7 @@ public class Player : HasPokemonList
 
     private Dictionary<ConsoleKey, Action> movements;
     private Dictionary<char, Action> logicFromChars;
+    private Item[] inventory = new Item[20];
 
     public Player(Map currentMap)
     {
