@@ -1,22 +1,20 @@
-﻿using Microsoft.VisualBasic;
-using Terminal.Gui;
+﻿using OstreCeTamtychSpodOkna;
 using System.Data;
-using OstreCeTamtychSpodOkna;
-using System.Linq;
-using System;
+using System.Text;
+using Terminal.Gui;
 
 public class BattleProgram
 {
     public static void HujANieMain(Player aPlayer, Enemy enemy)
     {
-      
+
         Application.Init();
-        
-       Map cityMap = new Map(Sprites.city);
+
+        Map cityMap = new Map(Sprites.city);
         Enemy bEnemy = new Enemy(1, 1, cityMap);
         Player bPlayer = new Player(cityMap);
 
-        var battleWindow = new BattleWindow(aPlayer,enemy);
+        var battleWindow = new BattleWindow(aPlayer, enemy);
         Application.Run(battleWindow);
         Application.Shutdown();
     }
@@ -39,6 +37,7 @@ public class BattleWindow : Window
     private Label? enemyShieldLabel;
     private Label? playerPokemonNameLabel;
     private TextView battleLog;
+    private List<string> battleLogMessages = new List<string>();
     private bool playerTurn = true;
     private Button attackButton;
     private Button skillsButton;
@@ -314,32 +313,29 @@ public class BattleWindow : Window
         };
         Add(playerPokemonNameLabel, enemyPokemonNameLabel);
 
-        Add(playerHPLabel, enemyHPLabel, enemyShieldLabel,playerShieldLabel);
-
-        
+        Add(playerHPLabel, enemyHPLabel, enemyShieldLabel, playerShieldLabel);
 
         battleLog = new TextView()
         {
-            X = Pos.Right(this) - 44,
-            Y = Pos.Bottom(this) - 14,
-            Width = 40,
-            Height = 10,
+            X = Pos.Right(this) - 54,
+            Y = Pos.Bottom(this) - 24,
+            Width = 50,
+            Height = 20,
             ReadOnly = true,
             Text = "Battle started!\n",
+            CanFocus = false,
             ColorScheme = new ColorScheme()
             {
                 Normal = Terminal.Gui.Attribute.Make(Color.White, Color.DarkGray)
+            },
+            Border = new Border() // Dodano ramkę
+            {
+                BorderStyle = BorderStyle.Double,
+                BorderThickness = new Thickness(1, 1, 1, 1),
+                BorderBrush = ColorScheme.Normal.Foreground,
             }
         };
-        var logFrame = new FrameView("Event Log")
-        {
-            X = Pos.Left(battleLog) - 1,
-            Y = Pos.Top(battleLog) - 1,
-            Width = Dim.Width(battleLog) + 2,
-            Height = Dim.Height(battleLog) + 2
-        };
-        logFrame.Add(battleLog);
-        Add(logFrame);
+        Add(battleLog);
     }
 
 
@@ -425,7 +421,7 @@ public class BattleWindow : Window
         }
         else
         {
-            playerShieldBar.Fraction = 0; 
+            playerShieldBar.Fraction = 0;
             playerShieldBar.ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Black, Color.Black) };
         }
         //UpdateShield for enemy
@@ -436,7 +432,7 @@ public class BattleWindow : Window
         }
         else
         {
-            enemyShieldBar.Fraction = 0; 
+            enemyShieldBar.Fraction = 0;
             enemyShieldBar.ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Black, Color.Black) };
         }
     }
@@ -449,7 +445,6 @@ public class BattleWindow : Window
             {
                 int skillIndex = i * 2 + j;
                 if (skillIndex < playerPokemon.allSkills.Count)
-                   // foreach(SkillCategory skill in playerPokemon.allSkills)
                 {
                     SkillCategory skill = playerPokemon.allSkills[skillIndex];
                     var skillButton = new Button(skill.name)
@@ -470,7 +465,8 @@ public class BattleWindow : Window
                             UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name}, zadając {damageDealt} obrażeń!");
                             if (!enemyPokemon.stats.IsAlive)
                             {
-                                EndBattle();
+                                Application.RequestStop();
+                                Application.Top.Running = false;
                             }
                             else
                             {
@@ -528,21 +524,25 @@ public class BattleWindow : Window
     {
         Application.RequestStop();
     }
-    private void UpdateBattleLog(string message)
+    private StringBuilder battleLogBuffer = new StringBuilder();
+    void UpdateBattleLog(string message)
     {
-        if (battleLog != null)
+        Application.MainLoop.Invoke(() =>
         {
-            battleLog.Text += message + "\n";
-            battleLog.TopRow = Math.Max(0, battleLog.Lines - battleLog.Bounds.Height);
-            battleLog.SetNeedsDisplay();
-        }
+            if (battleLog != null)
+            {
+                battleLog.Text += message + "\n";
+                battleLog.ScrollTo(battleLog.Lines -3);
+                battleLog.SetNeedsDisplay();
+            }
+        });
     }
     private void AddAsciiPokemonArt()
     {
         var playerPokemonArt = new Label(GetAsciiArtForPokemon(playerPokemon))
         {
             X = 2,
-            Y = Pos.Bottom(playerHPBar) +6,
+            Y = Pos.Bottom(playerHPBar) + 6,
             Width = 30,
             Height = 14
         };
