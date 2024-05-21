@@ -1,5 +1,7 @@
 ﻿
 using OstreCeTamtychSpodOkna;
+using System.Numerics;
+using Terminal.Gui;
 
 public class Player : HasPokemonList
 {
@@ -13,6 +15,7 @@ public class Player : HasPokemonList
     string enemyString = "123456789";
     public Map currentMap;
     public Pokemon Pokemon { get; set; }
+
 
     private bool hitObstacle = false;
     ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
@@ -211,6 +214,40 @@ public class Player : HasPokemonList
     //TODO miodek
     public void FightyFight()
     {
+        // Sprawdzenie, czy gracz ma jakiekolwiek żywe Pokemony przed rozpoczęciem walki
+        if (!pokemonList.Any(p => p.stats.IsAlive))
+        {
+            Application.Init();
+            var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
+
+            var surrenderButton = new Button("Poddaj się")
+            {
+                X = Pos.Percent(20),
+                Y = Pos.Center(),
+            };
+            surrenderButton.Clicked += () =>
+            {
+                Application.RequestStop();
+                Environment.Exit(0); //Zakończenie aplikacji
+            };
+
+            var tryAgainButton = new Button("Spróbuj ponownie")
+            {
+                X = Pos.Percent(60),
+                Y = Pos.Center(),
+            };
+            tryAgainButton.Clicked += () =>
+            {
+                Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
+            };
+
+            messageDialog.AddButton(surrenderButton);
+            messageDialog.AddButton(tryAgainButton);
+            Application.Run(messageDialog);
+            Application.Shutdown();
+            return; //Zakończenie metody, jeśli gracz nie ma Pokemonów
+        }
+
         hitObstacle = true;
         Console.Beep();
         List<Enemy> enemiesToRemove = new List<Enemy>();
@@ -219,14 +256,13 @@ public class Player : HasPokemonList
             if (enemy.row == possibleRow && enemy.col == possibleCol)
             {
                 BattleProgram.HujANieMain(this, enemy);
-
-                enemiesToRemove.Add(enemy);//tutaj wywolac walke, nie zabijac jeszcze !!!!
+                enemiesToRemove.Add(enemy); // Tutaj wywołać walkę, nie zabijać jeszcze !!!!
             }
         }
         foreach (Enemy enemy in enemiesToRemove)
         {
             enemy.GetRidOfThisAvatar();
-            currentMap.enemyList.Remove(enemy);//tutaj zabic !!
+            currentMap.enemyList.Remove(enemy); // Tutaj zabić !!
         }
     }
     private Pokemon ChosePokemon()

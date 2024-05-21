@@ -1,6 +1,5 @@
 ﻿using OstreCeTamtychSpodOkna;
 using System.Data;
-using System.Text;
 using Terminal.Gui;
 
 public class BattleProgram
@@ -37,7 +36,7 @@ public class BattleWindow : Window
     private Label? enemyShieldLabel;
     private TextView battleLog;
     private bool playerTurn = true;
-    private Button attackButton;
+    private Button changeButton;
     private Button skillsButton;
     private Button itemsButton;
     private Button fleeButton;
@@ -66,7 +65,6 @@ public class BattleWindow : Window
         var pokemons = player.pokemonList.Where(p => p.stats.IsAlive).ToList();
         var names = pokemons.Select(p => p.Name).ToArray();
 
-        Application.Init();
         var dialog = new Dialog("Wybierz pokemona", 60, 20);
         var listView = new ListView(new Rect(0, 0, 50, 14), names);
         listView.OpenSelectedItem += (args) =>
@@ -75,13 +73,13 @@ public class BattleWindow : Window
             if (index >= 0 && index < pokemons.Count)
             {
                 playerPokemon = pokemons[index];
-                Application.RequestStop();
                 InitializeUI();
                 UpdateHPBars();
+                Application.RequestStop(dialog);
+                playerTurn = true;
             }
         };
         dialog.Add(listView);
-
         Application.Run(dialog);
     }
 
@@ -113,40 +111,86 @@ public class BattleWindow : Window
     }
     private void EndEnemyTurn()
     {
-        EnableButtons();
+        if (!enemy.Pokemon.IsAlive)
+        {
+            EndBattle();
+        }
+        else
+        {
+            EnableButtons();
+        }
     }
 
     private void NextTurn()
     {
-        if (!player.Pokemon.IsAlive || !enemy.Pokemon.IsAlive)
+        if (playerPokemon != null && playerPokemon.stats.Hp == 0)
+        {
+            if (player.pokemonList.Any(p => p.stats.IsAlive))
+            {
+                ChoosePokemonDirectly(player);
+                EnableButtons();
+            }
+            else
+            {
+                battleLog.Text = "Przegrałeś walkę!";
+                Application.RequestStop();
+            }
+        }
+        else if (!enemy.Pokemon.IsAlive)
         {
             EndBattle();
-            return;
-        }
-
-        if (playerTurn)
-        {
-            PlayerTurn();
         }
         else
         {
-            Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(1), (_) =>
+            if (playerTurn)
             {
-                EnemyTurn();
-                return false;
-            });
+                PlayerTurn();
+            }
+            else
+            {
+                Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(1), (_) =>
+                {
+                    EnemyTurn();
+                    return false;
+                });
+            }
         }
     }
-
+    private void PlayerTurn()
+    {
+        InitializeButtons();
+        EnableButtons();
+    }
+    private void EnemyTurn()
+    {
+        var enemySkill = enemyPokemon.ChooseOffensiveSkill();
+        if (enemySkill is OffensiveSkill offensiveSkill)
+        {
+            float damageDealt = offensiveSkill.DealDamage(playerPokemon);
+            UpdateHPBars();
+            UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name}, zadając {damageDealt} obrażenia!");
+            if (!playerPokemon.stats.IsAlive)
+            {
+                playerTurn = false;
+                Application.MainLoop.Invoke(NextTurn);
+            }
+            else
+            {
+                EnableButtons();
+                playerTurn = true;
+                Application.MainLoop.Invoke(NextTurn);
+            }
+        }
+    }
     private void InitializeButtons()
     {
-        attackButton = new Button("Atak")
+        skillsButton = new Button("Umiejętności")
         {
             X = Pos.Percent(5),
             Y = Pos.Percent(20)
         };
 
-        skillsButton = new Button("Umiejętności")
+        changeButton = new Button("Zmień Pokemona")
         {
             X = Pos.Percent(5),
             Y = Pos.Percent(90)
@@ -171,35 +215,9 @@ public class BattleWindow : Window
             Width = Dim.Percent(20),
             Height = 6
         };
-        buttonsTable.Add(attackButton, skillsButton, itemsButton, fleeButton);
-        ConfigureButtonEvents(attackButton, skillsButton, itemsButton, fleeButton);
+        buttonsTable.Add(skillsButton, changeButton, itemsButton, fleeButton);
+        ConfigureButtonEvents(changeButton, skillsButton, itemsButton, fleeButton);
         Add(buttonsTable);
-    }
-    private void PlayerTurn()
-    {
-        InitializeButtons();
-        EnableButtons();
-    }
-    private void EnemyTurn()
-    {
-        var enemySkill = enemyPokemon.ChooseOffensiveSkill();
-        if (enemySkill is OffensiveSkill offensiveSkill)
-        {
-            float damageDealt = offensiveSkill.DealDamage(playerPokemon);
-            UpdateHPBars();
-            UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name}, zadając {damageDealt} obrażenia!");
-            if (!playerPokemon.stats.IsAlive)
-            {
-                EndBattle();
-            }
-            else
-            {
-                EnableButtons();
-            }
-            UpdateHPBars();
-            playerTurn = true;
-            Application.MainLoop.Invoke(NextTurn);
-        }
     }
 
     private void InitializeUI()
@@ -300,7 +318,7 @@ public class BattleWindow : Window
             X = Pos.Percent(80),
             Y = Pos.Percent(60),
             Width = 52,
-            Height = 22,
+            Height = 20,
             CanFocus = false,
 
         };
@@ -308,9 +326,9 @@ public class BattleWindow : Window
         battleLog = new TextView()
         {
             X = Pos.Percent(5),
-            Y = Pos.Percent(5),
-            Width = Dim.Fill() - 2,
-            Height = Dim.Fill() - 2,
+            Y = Pos.Percent(10),
+            Width = Dim.Fill() -1,
+            Height = Dim.Fill() - 1,
             ReadOnly = true,
             Text = "Battle started!\n",
             CanFocus = false,
@@ -323,8 +341,7 @@ public class BattleWindow : Window
         battleLogFrame.Add(battleLog);
     }
 
-
-    private void ConfigureButtonEvents(Button attackButton, Button skillsButton, Button itemsButton, Button fleeButton)
+    private void ConfigureButtonEvents(Button changeButton, Button skillsButton, Button itemsButton, Button fleeButton)
     {
         fleeButton.Clicked += () =>
         {
@@ -344,44 +361,31 @@ public class BattleWindow : Window
             Application.Run(skillsDialog);
         };
 
-        attackButton.Clicked += () =>
+        changeButton.Clicked += () =>
         {
-            if (playerPokemon.allSkills[0] is OffensiveSkill skillConverted)
+            ChoosePokemonDirectly(player);
+
+            if (playerPokemon != null)
             {
-                skillConverted.DealDamage(enemyPokemon);
                 UpdateHPBars();
-                UpdateBattleLog($"{playerPokemon.Name} używa ataku!");
-                DisableButtons();
-                if (!enemyPokemon.stats.IsAlive)
-                {
-                    EndBattle();
-                }
-                else
-                {
-                    Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(1), (_) =>
-                    {
-                        EnemyTurn();
-                        return false;
-                    });
-                }
+                UpdateBattleLog($"{playerPokemon.Name} jest teraz gotowy do walki!");
             }
         };
     }
     private void DisableButtons()
     {
-        attackButton.Enabled = false;
+        changeButton.Enabled = false;
         skillsButton.Enabled = false;
         itemsButton.Enabled = false;
         fleeButton.Enabled = false;
     }
     private void EnableButtons()
     {
-        attackButton.Enabled = true;
+        changeButton.Enabled = true;
         skillsButton.Enabled = true;
         itemsButton.Enabled = true;
         fleeButton.Enabled = true;
     }
-
 
     private void UpdateHPBars()
     {
@@ -507,9 +511,9 @@ public class BattleWindow : Window
     }
     public void EndBattle()
     {
+        UpdateBattleLog("Walka zakończona!");
         Application.RequestStop();
     }
-    private StringBuilder battleLogBuffer = new StringBuilder();
     void UpdateBattleLog(string message)
     {
         Application.MainLoop.Invoke(() =>
