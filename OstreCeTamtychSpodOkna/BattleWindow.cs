@@ -35,9 +35,7 @@ public class BattleWindow : Window
     private Label? playerShieldLabel;
     private Label? enemyHPLabel;
     private Label? enemyShieldLabel;
-    private Label? playerPokemonNameLabel;
     private TextView battleLog;
-    private List<string> battleLogMessages = new List<string>();
     private bool playerTurn = true;
     private Button attackButton;
     private Button skillsButton;
@@ -87,7 +85,6 @@ public class BattleWindow : Window
         Application.Run(dialog);
     }
 
-
     public BattleWindow(Player player, Enemy enemy) : base("Battle")
     {
         this.player = player;
@@ -109,7 +106,7 @@ public class BattleWindow : Window
             });
         };
         battleState.StartBattle();
-        //AddAsciiPokemonArt();
+        AddAsciiPokemonArt();
         InitializeButtons();
         InitializeUI();
         UpdateHPBars();
@@ -145,31 +142,34 @@ public class BattleWindow : Window
     {
         attackButton = new Button("Atak")
         {
-            X = Pos.Percent(10),
-            Y = Pos.Percent(95)
+            X = Pos.Percent(5),
+            Y = Pos.Percent(20)
         };
+
         skillsButton = new Button("Umiejętności")
         {
-            X = Pos.Right(attackButton) + 2,
-            Y = Pos.Percent(95)
+            X = Pos.Percent(5),
+            Y = Pos.Percent(90)
         };
+
         itemsButton = new Button("Przedmioty")
         {
-            X = Pos.Right(skillsButton) + 2,
-            Y = Pos.Percent(95)
+            X = Pos.Percent(60),
+            Y = Pos.Percent(20)
         };
+
         fleeButton = new Button("Ucieczka")
         {
-            X = Pos.Right(itemsButton) + 2,
-            Y = Pos.Percent(95)
+            X = Pos.Percent(60),
+            Y = Pos.Percent(90)
         };
 
         var buttonsTable = new FrameView("Akcje")
         {
             X = Pos.Percent(10),
-            Y = Pos.Percent(90),
-            Width = Dim.Percent(80),
-            Height = 5
+            Y = Pos.Percent(80),
+            Width = Dim.Percent(20),
+            Height = 6
         };
         buttonsTable.Add(attackButton, skillsButton, itemsButton, fleeButton);
         ConfigureButtonEvents(attackButton, skillsButton, itemsButton, fleeButton);
@@ -177,104 +177,57 @@ public class BattleWindow : Window
     }
     private void PlayerTurn()
     {
-        var attackButton = new Button("Atak")
-        {
-            X = Pos.Percent(10),
-            Y = Pos.Percent(95)
-        };
-
-        var skillsButton = new Button("Umiejętności")
-        {
-            X = Pos.Right(attackButton) + 2,
-            Y = Pos.Percent(95)
-        };
-
-        var itemsButton = new Button("Przedmioty")
-        {
-            X = Pos.Right(skillsButton) + 2,
-            Y = Pos.Percent(95)
-        };
-
-        var fleeButton = new Button("Ucieczka")
-        {
-            X = Pos.Right(itemsButton) + 2,
-            Y = Pos.Percent(95)
-        };
-
-        var buttonsTable = new FrameView("Akcje")
-        {
-            X = Pos.Percent(10),
-            Y = Pos.Percent(90),
-            Width = Dim.Percent(30),
-            Height = 5
-        };
-        buttonsTable.Add(attackButton, skillsButton, itemsButton, fleeButton);
-        Add(buttonsTable);
-        ConfigureButtonEvents(attackButton, skillsButton, itemsButton, fleeButton);
-        attackButton.Enabled = true;
-        skillsButton.Enabled = true;
-        itemsButton.Enabled = true;
-        fleeButton.Enabled = true;
+        InitializeButtons();
+        EnableButtons();
     }
-
     private void EnemyTurn()
     {
         var enemySkill = enemyPokemon.ChooseOffensiveSkill();
-        enemySkill.DealDamage(playerPokemon);
-        UpdateHPBars();
-        UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name}, zadając obrażenia!");
-        if (!playerPokemon.stats.IsAlive)
+        if (enemySkill is OffensiveSkill offensiveSkill)
         {
-            EndBattle();
+            float damageDealt = offensiveSkill.DealDamage(playerPokemon);
+            UpdateHPBars();
+            UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name}, zadając {damageDealt} obrażenia!");
+            if (!playerPokemon.stats.IsAlive)
+            {
+                EndBattle();
+            }
+            else
+            {
+                EnableButtons();
+            }
+            UpdateHPBars();
+            playerTurn = true;
+            Application.MainLoop.Invoke(NextTurn);
         }
-        else
-        {
-            EnableButtons();
-        }
-        UpdateHPBars();
-        playerTurn = true;
-        Application.MainLoop.Invoke(NextTurn);
     }
 
     private void InitializeUI()
     {
+        var playerFrame = new FrameView("Gracz")
+        {
+            X = Pos.Percent(5),
+            Y = Pos.Percent(5),
+            Width = Dim.Percent(40),
+            Height = 8
+        };
         playerHPBar = new ProgressBar()
         {
-            X = Pos.Percent(10),
-            Y = Pos.Percent(80),
-            Width = Dim.Percent(70),
+            X = Pos.Percent(15),
+            Y = Pos.Percent(30),
+            Width = Dim.Percent(80),
             Height = 1,
             ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Green, Color.Black) }
         };
 
         playerShieldBar = new ProgressBar()
         {
-            X = Pos.Percent(10),
-            Y = Pos.Percent(80),
-            Width = Dim.Percent(35),
+            X = Pos.Left(playerHPBar),
+            Y = Pos.Bottom(playerHPBar) + 2,
+            Width = Dim.Percent(80),
             Height = 1,
-            ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Red, Color.Black) }
+            ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.BrightCyan, Color.Black) }
         };
-
-        enemyHPBar = new ProgressBar()
-        {
-            X = Pos.Percent(10),
-            Y = Pos.Percent(10),
-            Width = Dim.Percent(70),
-            Height = 1,
-            ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Green, Color.Black) }
-        };
-
-        enemyShieldBar = new ProgressBar()
-        {
-            X = Pos.Percent(10),
-            Y = Pos.Percent(10),
-            Width = Dim.Percent(35),
-            Height = 1,
-            ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Cyan, Color.Black) }
-        };
-        Add(playerShieldBar, enemyShieldBar);
-        Add(playerHPBar, enemyHPBar);
 
         playerHPLabel = new Label($"HP: {playerPokemon.stats.Hp}/{playerPokemon.stats.maxHp}")
         {
@@ -284,8 +237,42 @@ public class BattleWindow : Window
 
         playerShieldLabel = new Label($"Shield: {playerPokemon.stats.shield}/{playerPokemon.stats.maxShield}")
         {
-            X = Pos.Left(playerHPBar),
-            Y = Pos.Top(playerHPBar) + 1,
+            X = Pos.Left(playerShieldBar),
+            Y = Pos.Top(playerShieldBar) - 1,
+        };
+
+        var playerPokemonNameLabel = new Label($"{playerPokemon.Name}")
+        {
+            X = Pos.Percent(1),
+            Y = Pos.Top(playerHPBar),
+        };
+        Add(playerFrame);
+        playerFrame.Add(playerHPBar, playerShieldBar, playerHPLabel, playerShieldLabel, playerPokemonNameLabel);
+
+        var enemyFrame = new FrameView("Przeciwnik")
+        {
+            X = Pos.Percent(55),
+            Y = Pos.Percent(5),
+            Width = Dim.Percent(40),
+            Height = 8
+        };
+
+        enemyHPBar = new ProgressBar()
+        {
+            X = Pos.Percent(15),
+            Y = Pos.Percent(30),
+            Width = Dim.Percent(80),
+            Height = 1,
+            ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Green, Color.Black) }
+        };
+
+        enemyShieldBar = new ProgressBar()
+        {
+            X = Pos.Left(enemyHPBar),
+            Y = Pos.Bottom(enemyHPBar) + 2,
+            Width = Dim.Percent(80),
+            Height = 1,
+            ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.BrightCyan, Color.Black) }
         };
 
         enemyHPLabel = new Label($"HP: {enemyPokemon.stats.Hp}/{enemyPokemon.stats.maxHp}")
@@ -296,46 +283,44 @@ public class BattleWindow : Window
 
         enemyShieldLabel = new Label($"Shield: {enemyPokemon.stats.shield}/{enemyPokemon.stats.maxShield}")
         {
-            X = Pos.Left(enemyHPBar),
-            Y = Pos.Top(enemyHPBar) + 1,
+            X = Pos.Left(enemyShieldBar),
+            Y = Pos.Top(enemyShieldBar) - 1,
         };
 
-        var playerPokemonNameLabel = new Label($"Nazwa: {playerPokemon.Name}")
+        var enemyPokemonNameLabel = new Label($"{enemyPokemon.Name}")
         {
-            X = Pos.Left(playerHPBar),
-            Y = Pos.Top(playerHPBar) - 2,
+            X = Pos.Percent(1),
+            Y = Pos.Top(enemyHPBar),
         };
+        Add(enemyFrame);
+        enemyFrame.Add(enemyHPBar, enemyShieldBar, enemyHPLabel, enemyShieldLabel, enemyPokemonNameLabel);
 
-        var enemyPokemonNameLabel = new Label($"Nazwa: {enemyPokemon.Name}")
+        var battleLogFrame = new FrameView("Battle Log")
         {
-            X = Pos.Left(enemyHPBar),
-            Y = Pos.Top(enemyHPBar) - 2,
-        };
-        Add(playerPokemonNameLabel, enemyPokemonNameLabel);
+            X = Pos.Percent(80),
+            Y = Pos.Percent(60),
+            Width = 52,
+            Height = 22,
+            CanFocus = false,
 
-        Add(playerHPLabel, enemyHPLabel, enemyShieldLabel, playerShieldLabel);
+        };
 
         battleLog = new TextView()
         {
-            X = Pos.Right(this) - 54,
-            Y = Pos.Bottom(this) - 24,
-            Width = 50,
-            Height = 20,
+            X = Pos.Percent(5),
+            Y = Pos.Percent(5),
+            Width = Dim.Fill() - 2,
+            Height = Dim.Fill() - 2,
             ReadOnly = true,
             Text = "Battle started!\n",
             CanFocus = false,
             ColorScheme = new ColorScheme()
             {
                 Normal = Terminal.Gui.Attribute.Make(Color.White, Color.DarkGray)
-            },
-            Border = new Border() // Dodano ramkę
-            {
-                BorderStyle = BorderStyle.Double,
-                BorderThickness = new Thickness(1, 1, 1, 1),
-                BorderBrush = ColorScheme.Normal.Foreground,
             }
         };
-        Add(battleLog);
+        Add(battleLogFrame);
+        battleLogFrame.Add(battleLog);
     }
 
 
@@ -417,7 +402,7 @@ public class BattleWindow : Window
         if (playerPokemon.stats.shield > 0)
         {
             playerShieldBar.Fraction = playerPokemon.stats.shield / playerPokemon.stats.maxShield;
-            playerShieldBar.ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Red, Color.Black) };
+            playerShieldBar.ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.BrightCyan, Color.Black) };
         }
         else
         {
@@ -532,7 +517,7 @@ public class BattleWindow : Window
             if (battleLog != null)
             {
                 battleLog.Text += message + "\n";
-                battleLog.ScrollTo(battleLog.Lines -3);
+                battleLog.ScrollTo(battleLog.Lines - 3);
                 battleLog.SetNeedsDisplay();
             }
         });
@@ -541,8 +526,8 @@ public class BattleWindow : Window
     {
         var playerPokemonArt = new Label(GetAsciiArtForPokemon(playerPokemon))
         {
-            X = 2,
-            Y = Pos.Bottom(playerHPBar) + 6,
+            X = Pos.Percent(10),
+            Y = Pos.Percent(25),
             Width = 30,
             Height = 14
         };
@@ -550,8 +535,8 @@ public class BattleWindow : Window
 
         var enemyPokemonArt = new Label(GetAsciiArtForPokemon(enemyPokemon))
         {
-            X = Pos.Right(enemyHPBar) - 14,
-            Y = Pos.Top(enemyHPBar) - 8,
+            X = Pos.Percent(60),
+            Y = Pos.Percent(25),
             Width = 30,
             Height = 14
         };
