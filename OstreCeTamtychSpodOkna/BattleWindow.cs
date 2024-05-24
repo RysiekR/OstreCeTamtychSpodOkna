@@ -1,18 +1,12 @@
-﻿using OstreCeTamtychSpodOkna;
-using System.Data;
+﻿using System.Data;
 using Terminal.Gui;
 
 public class BattleProgram
 {
-    public static void HujANieMain(Player aPlayer, Enemy enemy)
+    public static void BattleWindowHolder(Player aPlayer, Enemy enemy)
     {
 
         Application.Init();
-
-        Map cityMap = new Map(Sprites.city);
-        Enemy bEnemy = new Enemy(1, 1, cityMap);
-        Player bPlayer = new Player(cityMap);
-
         var battleWindow = new BattleWindow(aPlayer, enemy);
         Application.Run(battleWindow);
         Application.Shutdown();
@@ -327,7 +321,7 @@ public class BattleWindow : Window
         {
             X = Pos.Percent(5),
             Y = Pos.Percent(10),
-            Width = Dim.Fill() -1,
+            Width = Dim.Fill() - 1,
             Height = Dim.Fill() - 1,
             ReadOnly = true,
             Text = "Battle started!\n",

@@ -1,6 +1,5 @@
 ﻿
 using OstreCeTamtychSpodOkna;
-using System.Numerics;
 using Terminal.Gui;
 
 public class Player : HasPokemonList
@@ -220,7 +219,7 @@ public class Player : HasPokemonList
             Application.Init();
             var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
 
-            var surrenderButton = new Button("Poddaj się")
+            var surrenderButton = new Button("Don't Attack")
             {
                 X = Pos.Percent(20),
                 Y = Pos.Center(),
@@ -255,8 +254,11 @@ public class Player : HasPokemonList
         {
             if (enemy.row == possibleRow && enemy.col == possibleCol)
             {
-                BattleProgram.HujANieMain(this, enemy);
-                enemiesToRemove.Add(enemy); // Tutaj wywołać walkę, nie zabijać jeszcze !!!!
+                BattleProgram.BattleWindowHolder(this, enemy);
+                if (!(enemy.pokemonList.Any(p => p.stats.IsAlive)))
+                {
+                    enemiesToRemove.Add(enemy); // Tutaj wywołać walkę, nie zabijać jeszcze !!!!
+                }
             }
         }
         foreach (Enemy enemy in enemiesToRemove)

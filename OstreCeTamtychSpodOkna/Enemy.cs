@@ -19,10 +19,10 @@ public class Enemy : HasPokemonList
         this.col = colSpawn;
         pokemonList.Clear();
         pokemonList.Add(new Pokemon("Achu"));
-        pokemonList.Add(new Pokemon("Albazaur"));
+/*        pokemonList.Add(new Pokemon("Albazaur"));
         pokemonList.Add(new Pokemon("Irtle"));
         pokemonList.Add(new Pokemon("Barmander"));
-        enemyAvatar = pokemonList.Count.ToString();
+*/        enemyAvatar = pokemonList.Count.ToString();
         Pokemon = pokemonList[0];
         InitializeEnemyPosition();
     }
