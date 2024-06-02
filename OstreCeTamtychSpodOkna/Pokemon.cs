@@ -71,4 +71,9 @@ public class Pokemon
         //TOmfDO stats.levelup()
         Console.WriteLine("No Level up logic implemented !!!!!!!!!!!!!");
     }
+
+    public void HealPokemon()
+    {
+
+    }
 }
