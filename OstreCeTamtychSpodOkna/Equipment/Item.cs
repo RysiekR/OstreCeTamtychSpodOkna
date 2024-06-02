@@ -21,23 +21,8 @@ namespace Equipment
  
     }
 
-    class SmallPotion : Item
+    class Potion(string name, int minPower, int maxPower) : Item(name, minPower, maxPower)
     {
-        public SmallPotion() : base("SmallPotion",10, 20) { }
-
-        public override void UseItem(Pokemon pokemon)
-        {
-            var value = random.Next(minPower, maxPower);
-            pokemon.stats.Heal(value);
-            Console.WriteLine("Pokemon {0} wyleczony o {1}", pokemon.Name, value);
-        }
-
-    }
-
-    class MediumPotion : Item
-    {
-        public MediumPotion() : base("MediumPotion", 20, 40) { }
-
         public override void UseItem(Pokemon pokemon)
         {
             var value = random.Next(minPower, maxPower);
@@ -53,17 +38,14 @@ namespace Equipment
 
         public override void UseItem(Pokemon pokemon)
         {
-            var value = random.Next(minPower, maxPower);
-            pokemon.stats.Heal(value);
-            Console.WriteLine("Pokemon {0} wyleczony o {1}", pokemon.Name, value);
+            pokemon.stats.RestoreFullHP();
+            Console.WriteLine("Pokemon {0} wyleczony do max", pokemon.Name);
         }
 
     }
 
-    class SmallShield : Item
+    class Shield(string name, int minPower, int maxPower) : Item(name, minPower, maxPower)
     {
-        public SmallShield() : base("SmallShield", 5, 10) { }
-
         public override void UseItem(Pokemon pokemon)
         {
             var value = random.Next(minPower, maxPower);
@@ -73,36 +55,8 @@ namespace Equipment
 
     }
 
-    class BigShield : Item
+    class Bomb(string name, int minPower, int maxPower) : Item(name, minPower, maxPower)
     {
-        public BigShield() : base("BigShield", 10, 20) { }
-
-        public override void UseItem(Pokemon pokemon)
-        {
-            var value = random.Next(minPower, maxPower);
-            pokemon.stats.IncreaseShield(value);
-            Console.WriteLine("Pokemon {0} dostał punkty tarczy o {1}", pokemon.Name, value);
-        }
-
-    }
-
-    class SmallBomb : Item
-    {
-        public SmallBomb() : base("SmallBomb", 5, 10) { }
-
-        public override void UseItem(Pokemon enemyPokemon)
-        {
-            var value = random.Next(minPower, maxPower);
-            enemyPokemon.stats.HitWithItem(value);
-            Console.WriteLine("Pokemon przeciwnika {0} dostał {1} punktow obrazen", enemyPokemon.Name, value);
-        }
-
-    }
-
-    class BigBomb : Item
-    {
-        public BigBomb() : base("BigBomb", 10, 20) { }
-
         public override void UseItem(Pokemon enemyPokemon)
         {
             var value = random.Next(minPower, maxPower);

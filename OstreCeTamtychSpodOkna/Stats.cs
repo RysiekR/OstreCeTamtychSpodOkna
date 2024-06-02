@@ -136,6 +136,11 @@
         }
     }
 
+    public void RestoreFullHP()
+    {
+        hp = maxHp;
+    }
+
     public void IncreaseShield(int value)
     {
         var tempCurrentShield = shield + value;
