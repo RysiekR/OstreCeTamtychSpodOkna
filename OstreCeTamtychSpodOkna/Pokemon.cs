@@ -7,20 +7,38 @@ public class Pokemon
     public Stats stats; //{ get; set; }
     public List<SkillCategory> allSkills = new List<SkillCategory>(); 
  
-    public Pokemon(string name)
+    public Pokemon()
     {
         level = new PokemonLevel(this);
         Random random = new Random();
-        Name = name;
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
+        Name = PokemonNameGenerator.GenerateName(type);
         stats = new Stats(5,5,this);
-        allSkills.Add(new OffensiveSkill("Fireball",Type.Lava, this));
-        allSkills.Add(new OffensiveSkill("Fireball2", Type.Lava, this));
-        allSkills.Add(new OffensiveSkill("Fireball3",Type.Lava, this));
-        allSkills.Add(new OffensiveSkill("Fireball4",Type.Lava, this));
-        allSkills.Add(new OffensiveSkill("Not Fireball",Type.Lava, this));
-
+        /*
+                allSkills.Add(new OffensiveSkill("Fireball",Type.Lava, this));
+                allSkills.Add(new OffensiveSkill("Fireball2", Type.Lava, this));
+                allSkills.Add(new OffensiveSkill("Fireball3",Type.Lava, this));
+                allSkills.Add(new OffensiveSkill("Fireball4",Type.Lava, this));
+                allSkills.Add(new OffensiveSkill("Not Fireball",Type.Lava, this));
+        */
+        GenerateSkills(5);
     }
+
+    private void GenerateSkills(int howMany)
+    {
+        Random random = new Random();
+        int offSkills = random.Next(1, howMany);
+        int healSkills = howMany-offSkills;
+        for (int i = 0; i < offSkills; i++)
+        {
+            allSkills.Add(new OffensiveSkill(this));
+        }
+        for (int i = 0;i < healSkills; i++)
+        {
+            allSkills.Add(new HealSkill(this));
+        }
+    }
+
     public bool IsAlive => stats.Hp > 0;
     public void ResetStats()
     {

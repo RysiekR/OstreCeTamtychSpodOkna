@@ -9,12 +9,12 @@
 
     public void TakeTurn()
     {
-        if (battleState.EnemyPokemon.stats.Hp < battleState.EnemyPokemon.stats.maxHp * 0.3)
+        if (battleState.EnemyPokemon.stats.Hp < battleState.EnemyPokemon.stats.maxHp * 0.3f)
         {
             HealSkill healSkill = battleState.EnemyPokemon.ChooseHealSkill();
             if (healSkill != null && healSkill.CanUse)
             {
-                healSkill.Use(battleState.PlayerPokemon);
+                healSkill.Use(battleState.EnemyPokemon);
                 return;
             }
         }

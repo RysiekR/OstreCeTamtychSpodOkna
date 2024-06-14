@@ -15,4 +15,17 @@ public static class MapHolder
         tempArenaMap.enemyList.Add(new Enemy(9, 9, tempArenaMap));
         tempArenaMap.enemyList.Add(new Enemy(15, 15, tempArenaMap));*/
     }
+    public static Enemy FindEnemyOnArenaAt(int row, int col)
+    {
+        Enemy enemy = null;
+        foreach (Enemy enemi in tempArenaMap.enemyList)
+        {
+            if (enemi.row == row && enemi.col == col) 
+            {
+                return enemi;
+            }
+        }
+        return enemy;
+    }
+
 }

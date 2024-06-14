@@ -27,10 +27,14 @@ public class Player : HasPokemonList
         this.currentMap = currentMap;
         InitializePlayerPosition();
         pokemonList.Clear();
-        pokemonList.Add(new Pokemon("Pikachu"));
-        pokemonList.Add(new Pokemon("Bulbazaur"));
-        pokemonList.Add(new Pokemon("Squirtle"));
-        pokemonList.Add(new Pokemon("Charmander"));
+        pokemonList.Add(new Pokemon());
+        pokemonList.Add(new Pokemon());
+        pokemonList.Add(new Pokemon());
+        pokemonList.Add(new Pokemon());
+        pokemonList.Add(new Pokemon());
+        pokemonList.Add(new Pokemon());
+        pokemonList.Add(new Pokemon());
+        pokemonList.Add(new Pokemon());
         Pokemon = pokemonList[0];
         //slowniki
         movements = new Dictionary<ConsoleKey, Action>
@@ -64,6 +68,7 @@ public class Player : HasPokemonList
         {
             logicFromChars[enemy] = () => FightyFight(); //TODO MIODEK walka
         }
+        PrawieSingleton.player = this;
     }
     public void UpdatePos()
     {
@@ -301,6 +306,11 @@ public class Player : HasPokemonList
         Console.WriteLine("cos sie wyjebało wiec zwracam pierwszego pokemona");
         return pokemonList[0];
     }
+}
+
+public static class PrawieSingleton
+{
+    public static Player player;
 }
 
 

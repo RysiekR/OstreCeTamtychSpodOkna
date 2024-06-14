@@ -4,7 +4,7 @@
     {
         private static List<string> display = new List<string>(); // ten ktory powinien juz byc wyswietlony, stary
         private static List<string> newDisplay = new List<string>(); // temp do ktorego trzeba wrzucic zaktualizowana mape do wyswietlenia
-        
+
         private static readonly int spriteWidth = Sprites.spriteWall[0].Length;
         private static readonly int miniMapWidth = Sprites.map[0].Length;
         private static readonly int mapDisplayWidth = spriteWidth*miniMapWidth;
@@ -32,7 +32,34 @@
                             if (Enemy.enemyString.Contains(newDisplay[row][col]))//jezeli rysujesz przeciwnika to rysuj uzywajac koloru czerwonego
                             {
                                 // Set the color of the console output
-                                Console.ForegroundColor = ConsoleColor.Red;
+                                // kolorki tutaj znajdz enemy w map holder masz metode do szukania
+
+                                /*switch (MapHolder.FindEnemyOnArenaAt(row, col).pokemonList[0].type)
+                                {
+                                    case Type.Moist: Console.ForegroundColor = ConsoleColor.Blue; break;
+                                    case Type.Lava: Console.ForegroundColor = ConsoleColor.Red; break;
+                                    case Type.Mud: Console.ForegroundColor = ConsoleColor.DarkYellow; break;
+                                    default: Console.ForegroundColor = ConsoleColor.Cyan; break;
+                                }*/
+                                if(MapHolder.FindEnemyOnArenaAt(row,col) == null)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Cyan;
+                                }
+                                else if (MapHolder.FindEnemyOnArenaAt(row, col).Pokemon.type == Type.Moist)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                }
+                                else if (MapHolder.FindEnemyOnArenaAt(row, col).Pokemon.type == Type.Lava)
+                                {
+                                    Console.ForegroundColor = ConsoleColor.Red;
+                                }
+                                else
+                                {
+                                    Console.ForegroundColor = ConsoleColor.DarkYellow;
+                                }
+
+                                //Console.ForegroundColor = ConsoleColor.Red;
+                                
                                 Console.SetCursorPosition(col, row);
                                 Console.Write(newDisplay[row][col]);
                                 Console.CursorVisible = false;

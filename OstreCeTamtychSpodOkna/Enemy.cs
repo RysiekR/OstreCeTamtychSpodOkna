@@ -7,7 +7,7 @@ public class Enemy : HasPokemonList
     public int row { get; private set; }
     public int col { get; private set; }
     string enemyAvatar;
-    public static string enemyString = "123456789";
+    public static string enemyString = "123456789%";
     string obstacleString = "AC#PN";
     public Map currentMap;
     public Pokemon Pokemon { get; set; }
@@ -18,11 +18,16 @@ public class Enemy : HasPokemonList
         this.row = rowSpawn;
         this.col = colSpawn;
         pokemonList.Clear();
-        pokemonList.Add(new Pokemon("Achu"));
-/*        pokemonList.Add(new Pokemon("Albazaur"));
-        pokemonList.Add(new Pokemon("Irtle"));
-        pokemonList.Add(new Pokemon("Barmander"));
-*/        enemyAvatar = pokemonList.Count.ToString();
+        GeneratePokemonsInList(PrawieSingleton.player.pokemonList.Count());
+        if (pokemonList.Count > 9)
+        {
+            enemyAvatar = "%";
+        }
+        else
+        {
+
+            enemyAvatar = pokemonList.Count.ToString();
+        }
         Pokemon = pokemonList[0];
         InitializeEnemyPosition();
     }
@@ -32,6 +37,22 @@ public class Enemy : HasPokemonList
     Random rnd = new Random();
     private bool hitObstacle = false;
     int randomMove;
+
+    private void GeneratePokemonsInList(int howMany)
+    {
+        if (howMany <= 1)
+        {
+            howMany = 1;
+        }
+        else
+        {
+            howMany += rnd.Next(-1, 2);
+        }
+        for (int i = 0; i < howMany; i++)
+        {
+            pokemonList.Add(new Pokemon());
+        }
+    }
 
     public void UpdatePos()
     {

@@ -36,12 +36,12 @@ public class OffensiveSkill : SkillCategory
     {
         DealDamage(target);
     }
-    public OffensiveSkill(string skillName, Type skillType, Pokemon ownerA)
+    public OffensiveSkill(Pokemon ownerA)
     {
         Random random = new Random();
-        name = skillName;
         owner = ownerA;
-        type = skillType;
+        type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
+        name = SkillNameGenerator.GenerateName(type, Category.Offensive);
         initialDamageValue = random.Next(10, 20);
 
         accuracy = random.Next(0, 100);
@@ -71,11 +71,12 @@ public class HealSkill : SkillCategory
     public void Use(Pokemon target)
     {
         Heal(target);
+        CanUse = false;
     }
-    public HealSkill(string skillName, Pokemon ownerA)
+    public HealSkill(Pokemon ownerA)
     {
-        name = skillName;
         owner = ownerA;
+        name = SkillNameGenerator.GenerateName(ownerA.type, Category.Defensive);
         Random random = new Random();
         HealValue = random.Next(0, 40 * owner.level.level);
     }
