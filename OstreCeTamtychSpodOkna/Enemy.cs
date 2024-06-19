@@ -19,11 +19,15 @@ public class Enemy : HasPokemonList
         this.col = colSpawn;
         pokemonList.Clear();
         pokemonList.Add(new Pokemon("Achu"));
-/*        pokemonList.Add(new Pokemon("Albazaur"));
-        pokemonList.Add(new Pokemon("Irtle"));
-        pokemonList.Add(new Pokemon("Barmander"));
-*/        enemyAvatar = pokemonList.Count.ToString();
-        Pokemon = pokemonList[0];
+        pokemonList.Add(new Pokemon("Snali"));
+        pokemonList.Add(new Pokemon("Squirtle"));
+        pokemonList.Add(new Pokemon("Charmander"));
+        enemyAvatar = pokemonList.Count.ToString();
+
+        Random rnd = new Random();
+        
+
+        Pokemon = pokemonList[rnd.Next(0, 3)];
         InitializeEnemyPosition();
     }
     private int oldCol;

@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using OstreCeTamtychSpodOkna;
+using System.Data;
 using Terminal.Gui;
 
 public class BattleProgram
@@ -68,6 +69,7 @@ public class BattleWindow : Window
             {
                 playerPokemon = pokemons[index];
                 InitializeUI();
+                AddAsciiPokemonArt();
                 UpdateHPBars();
                 Application.RequestStop(dialog);
                 playerTurn = true;
@@ -522,7 +524,8 @@ public class BattleWindow : Window
     }
     private void AddAsciiPokemonArt()
     {
-        var playerPokemonArt = new Label(GetAsciiArtForPokemon(playerPokemon))
+
+        var playerPokemonArt = new Label(PokemonAscii.GetPokemonAsciByName(playerPokemon.Name))
         {
             X = Pos.Percent(10),
             Y = Pos.Percent(25),
@@ -531,7 +534,7 @@ public class BattleWindow : Window
         };
         Add(playerPokemonArt);
 
-        var enemyPokemonArt = new Label(GetAsciiArtForPokemon(enemyPokemon))
+        var enemyPokemonArt = new Label(PokemonAscii.GetPokemonAsciByName(enemyPokemon.Name))
         {
             X = Pos.Percent(60),
             Y = Pos.Percent(25),
@@ -539,35 +542,6 @@ public class BattleWindow : Window
             Height = 14
         };
         Add(enemyPokemonArt);
-    }
-    private string GetAsciiArtForPokemon(Pokemon pokemon)
-    {
-        //Return ASCII 
-        return @"
-*%#=..........      .. .   ....  .      . ... 
-.#@%-:-:.                        ..:-#@@@:    
-..#@=::::=..  ..       .      ..--:::%@%.  ...
-.  -*:::::-=..      ..      .:-:::::=@*....   
-.   .=-:::::=:....:::::.....-:::::::=... .::-=
-.     .--:::::=::::::::::::::::::--..:==:::::=
-.       .:--:::::::::::::::::---.--=:::::::::-
-.        ..=::::::::::::::::::+-::::::::::::-.
-.       ..=::::::::::::::::::::-::::::::::::-.
-.       ..-:-@*:+::::::::+:@*:--::::::::::::-.
-.       ..+::*##:::::::::=##=:--:::::::+=...  
-.       .-***-::::::::::::::-++*::=:..   ..   
-.        -****=::::::::::::-****::::=..  ... .
-.       ..:#**:::::::::::::-****::::::-..     
-.          :==::::::::::::::-=-::-:::=-:.    .
-.         .-::::-::::::::--:::=::-=...   ..   
-.        .=::::::::::::::::::::+**=.          
-.       .-::::::::::::--:::::::-+..      ..  .
-.      .*::::::::::+::--:::::::::-.      ..   
-.  ..--=:::-:::::::=::-:::::::=::-:......     
-.  .:=-:-::-:::::::-::+::::::+::-=--=.        
-.   ..===-::=::::::===+:::::-:::-===..        
-.     .:+====+-::::*++=::::+=--===...         
-.. .. . .-==-----=-...:-:--=+===..   .  .     ";
     }
 }
 public enum GameMode
