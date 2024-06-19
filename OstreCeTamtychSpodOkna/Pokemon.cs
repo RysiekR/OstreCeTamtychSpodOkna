@@ -75,8 +75,4 @@ public class Pokemon
         Console.WriteLine("No Level up logic implemented !!!!!!!!!!!!!");
     }
 
-    public void HealPokemon()
-    {
-
-    }
 }
