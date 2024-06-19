@@ -254,6 +254,7 @@ namespace OstreCeTamtychSpodOkna
             mapAscii.Add("Bulbazaur", bird);
             mapAscii.Add("Squirtle", goose);
             mapAscii.Add("Snali", snail);
+            mapAscii.Add("Tentacruel", octopus);
 
 
 
