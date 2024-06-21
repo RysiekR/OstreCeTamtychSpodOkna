@@ -29,12 +29,6 @@ public class Player : HasPokemonList
         pokemonList.Clear();
         pokemonList.Add(new Pokemon());
         pokemonList.Add(new Pokemon());
-        pokemonList.Add(new Pokemon());
-        pokemonList.Add(new Pokemon());
-        pokemonList.Add(new Pokemon());
-        pokemonList.Add(new Pokemon());
-        pokemonList.Add(new Pokemon());
-        pokemonList.Add(new Pokemon());
         Pokemon = pokemonList[0];
         //slowniki
         movements = new Dictionary<ConsoleKey, Action>
@@ -51,11 +45,12 @@ public class Player : HasPokemonList
         logicFromChars = new Dictionary<char, Action>
                 {
                     //tutaj dodawac logike zwiazana z np sklepami i szpitalami
-                    {'P', () => changeMapTo('P')},
+                    {'P', () => ChangeMapTo('P')},
                     {',', () => grassPoints++ },
                     {'N', () => tempIntFromNs++ },
-                    {'A', () => changeMapTo('A') },
-                    {'C', () => changeMapTo('C') },
+                    {'A', () => ChangeMapTo('A') },
+                    {'C', () => ChangeMapTo('C') },
+                    {'H', () => UseHospital() }
                     //{'F', () => FightyFight() }
                 };
         //dodanie kazdego znaku przez ktory nie mozna przejsc
@@ -127,7 +122,7 @@ public class Player : HasPokemonList
 
     }
 
-    void changeMapTo(char letterOfTheMap)
+    void ChangeMapTo(char letterOfTheMap)
     {
         hitObstacle = true;
         switch (letterOfTheMap)
@@ -157,6 +152,11 @@ public class Player : HasPokemonList
                 }
         }
 
+    }
+    void UseHospital()
+    {
+        hitObstacle = true;
+        Hospital.HealPokemons();
     }
 
     private void InitializePlayerPosition()
@@ -193,7 +193,8 @@ public class Player : HasPokemonList
         bool condition = true;
         while (condition)
         {
-            Console.WriteLine("Menu text, 1 to get back to game");
+            Console.Clear();
+            Console.WriteLine("Menu text, 1 to get back to game, 2 pokemon menu");
             string? check = Console.ReadLine();
             if (check == "1")
             {
@@ -202,9 +203,17 @@ public class Player : HasPokemonList
             }
             else if (check == "2")
             {
-                //ChosePokemon();
-                Console.WriteLine($"Chosen Pokemon: {ChosePokemon().Name}");
-                Console.ReadLine();
+                Console.Clear();
+                Console.WriteLine("Lista Pokemonow:");
+                foreach (Pokemon p in pokemonList)
+                {
+                    Console.WriteLine(p.Name + "skills: ");
+                    foreach(SkillCategory s in p.allSkills)
+                    {
+                        Console.WriteLine(s.name + " number of uses left:" + s.numberOfUses + "/" + s.maxNumberOfUses);
+                    }
+                }
+                Console.ReadKey();
             }
             else if (check == "3") { }
         }
@@ -311,6 +320,16 @@ public class Player : HasPokemonList
 public static class PrawieSingleton
 {
     public static Player player;
+}
+public static class Hospital
+{
+    public static void HealPokemons()
+    {
+        foreach (Pokemon p in PrawieSingleton.player.pokemonList)
+        {
+            p.ResetStats();
+        }
+    }
 }
 
 

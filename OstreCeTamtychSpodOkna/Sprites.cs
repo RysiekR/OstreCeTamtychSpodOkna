@@ -2,9 +2,9 @@
 {
     public class Sprites
     {
-        public static readonly string obstacle = "╬┼╦╩╣╠";
+        public static readonly string obstacle = "╬┼╦╩╣╠│║╤";
         //minimapy
-        public static readonly string[] map =
+/*        public static readonly string[] map =
         {
     "WWWWWWWWWWWWW",
     "W           W",
@@ -26,7 +26,7 @@
     "W           W",
     "WWWWWWWWWWWWW",
 };
-
+*/
         public static readonly string[] arena =
         {
     "WWWWWWWWWWWWW",
@@ -44,7 +44,7 @@
     "W           W",
     "W A         W",
     "W           W",
-    "W           W",
+    "W H         W",
     "W           W",
     "W           W",
     "WWWWWWWWWWWWW",
@@ -93,6 +93,14 @@
             "     ",
 
         };
+        public static readonly string[] spriteHospital =
+        {
+            "╔╤╤╤╗",
+            "║│││║",
+            "║│+│║",
+            "║│││║",
+            "║│H│║",
+        };
         public static readonly string[] wall =
         {
             "+---+",
@@ -117,14 +125,15 @@
             "     ",
             "     ",
         };
-        public static readonly string[] debugFight =
+
+        /*public static readonly string[] debugFight =
         {
             "     ",
             " .F. ",
             " FFF ",
             " .F. ",
             "     ",
-        };
+        };*/
         //wysokosc sprita potrzebna w map.spriteheight
         public static readonly int spriteHeight = spriteWall.Length;
 
@@ -138,7 +147,8 @@
                 case 'P': bigSprite = spritePortal; break;
                 case 'A': bigSprite = spritePortalToArena; break;
                 case 'C': bigSprite = spritePortalToCity; break;
-                case 'F': bigSprite = debugFight; break;
+                case 'H': bigSprite = spriteHospital; break;
+                //case 'F': bigSprite = debugFight; break;
                 default: bigSprite = spriteAir; break;
             }
             return bigSprite;

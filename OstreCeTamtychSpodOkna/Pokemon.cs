@@ -44,6 +44,10 @@ public class Pokemon
     {
         stats.Hp = stats.maxHp;
         stats.shield = stats.maxShield;
+        foreach (var skill in allSkills)
+        {
+            skill.ResetUses();
+        }
     }
     public OffensiveSkill ChooseOffensiveSkill()
     {

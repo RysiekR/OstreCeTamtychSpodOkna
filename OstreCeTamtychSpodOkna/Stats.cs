@@ -118,6 +118,7 @@
     }
     public void LevelUp()
     {
+        //kazdy type pokemona mialo mu dodawac inne staty
         Console.WriteLine("LevelUp");
         vitality += 5;
         defense += 5;

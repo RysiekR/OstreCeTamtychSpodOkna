@@ -5,14 +5,14 @@
         private static List<string> display = new List<string>(); // ten ktory powinien juz byc wyswietlony, stary
         private static List<string> newDisplay = new List<string>(); // temp do ktorego trzeba wrzucic zaktualizowana mape do wyswietlenia
 
-        private static readonly int spriteWidth = Sprites.spriteWall[0].Length;
+/*        private static readonly int spriteWidth = Sprites.spriteWall[0].Length;
         private static readonly int miniMapWidth = Sprites.map[0].Length;
         private static readonly int mapDisplayWidth = spriteWidth*miniMapWidth;
 
         private static readonly int spriteHeight = Sprites.spriteWall.Length;
         private static readonly int miniMapHeight = Sprites.map.Length;
         private static readonly int mapDisplayHeight = spriteHeight*miniMapHeight;
-
+*/
         private static List<string> infoDisplay = new List<string>();
         private static List<string> newInfoDisplay = new List<string>();
 

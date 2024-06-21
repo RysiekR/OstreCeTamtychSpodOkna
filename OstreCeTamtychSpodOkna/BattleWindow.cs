@@ -443,7 +443,7 @@ public class BattleWindow : Window
                     {
                         if (skill is OffensiveSkill offensiveSkill)
                         {
-                            float damageDealt = offensiveSkill.DealDamage(enemyPokemon);
+                            float damageDealt = offensiveSkill.Use(enemyPokemon);
                             UpdateHPBars();
                             UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name}, zadając {damageDealt} obrażeń!");
                             if (!enemyPokemon.stats.IsAlive)
@@ -461,6 +461,7 @@ public class BattleWindow : Window
                                 });
                             }
                         }
+
                         skillsDialog.Running = false;
                     };
                     skillsDialog.Add(skillButton);
