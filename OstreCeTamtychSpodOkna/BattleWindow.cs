@@ -60,6 +60,7 @@ public class BattleProgram
                 messageDialog.AddButton(surrenderButton);
                 messageDialog.AddButton(tryAgainButton);
                 Application.Run(messageDialog);
+                Application.Shutdown();
             }
             
         } while (battle);
