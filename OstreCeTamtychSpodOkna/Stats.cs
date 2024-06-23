@@ -1,4 +1,6 @@
-﻿public struct Stats
+﻿using System;
+
+public struct Stats
 {
     Pokemon owner;
     private int vitality;
@@ -18,14 +20,17 @@
 
     //Add vittality stat and regen method zamienic strenght na vitality i zrobic cos nowego ze strenght
 
-    public Stats( int vit, int def, Pokemon ownerPokemon) //trzeba dodac strength i wywogle wszystko zrobic na random
+    public Stats(Pokemon ownerPokemon) //trzeba dodac strength i wywogle wszystko zrobic na random
     {
+        Random random = new Random();
+        int skillPoll = 15;
+        
         owner = ownerPokemon;
-        vitality = vit;
-        defense = def;
-        strength = 10;
+        vitality = random.Next(1,skillPoll/3*2);
+        defense = random.Next(1,skillPoll-vitality-1);
+        strength = skillPoll - vitality - defense;
         UpdateStats();
-        hp = 0.5f * maxHp;
+        hp = random.Next((int)(0.5f * maxHp), (int)maxHp);
     }
     public bool IsAlive
     {
@@ -69,11 +74,12 @@
         }
     }
 
+    float armorScalar = 25f;
     private void TakeHpDamage(float value)
     {
         float damage = -value;
         float damageAfterArmor;
-        damageAfterArmor = damage / (1.0f + (armorFromDefense / 10.0f));
+        damageAfterArmor = damage / (1.0f + (armorFromDefense / armorScalar));
 /*        Console.WriteLine("damage b4 armor :");
         Console.WriteLine(damage);
         Console.WriteLine("damage after armor :");
@@ -84,6 +90,10 @@
             damageAfterArmor = 0;
         }
         hp -= damageAfterArmor;
+    }
+    public float GetValueAfterArmors(float value)
+    {
+        return value / (1.0f + (armorFromDefense / armorScalar));
     }
 
     public void HitShield(float damage)
@@ -101,7 +111,7 @@
     public void UpdateStats()
     {
         float tempMaxHp = maxHp;
-        maxHp = vitality * 20.0f * owner.level.level;
+        maxHp = vitality * 10.0f * owner.level.level;
         hp = (hp * maxHp) / tempMaxHp;
 
         maxShield = (defense * 1.5f + vitality * 1.5f) * 1.2f * owner.level.level;
@@ -112,17 +122,27 @@
             shield = 0;
         }
 
-        damageModifier = strength * 1.01f * owner.level.level;
+        damageModifier = 1 + (strength * 0.1f * owner.level.level);
 
         armorFromDefense = (defense) * owner.level.level * 0.5f;
     }
     public void LevelUp()
     {
-        //kazdy type pokemona mialo mu dodawac inne staty
-        Console.WriteLine("LevelUp");
-        vitality += 5;
-        defense += 5;
-        strength += 5;
+        Random random = new Random();
+        int skillPoll = 9;
+        int vitalityAdd = random.Next(1, skillPoll / 3 * 2);
+        int defenseAdd = random.Next(1, skillPoll - vitalityAdd - 1);
+        int strengthAdd = skillPoll - vitalityAdd - defenseAdd;
+        vitality += vitalityAdd;
+        defense += defenseAdd;
+        strength += strengthAdd;
+        UpdateStats();
+    }
+    public void PrintInfo()
+    {
+        Console.WriteLine($"Vit: {vitality}");
+        Console.WriteLine($"Armor: {armorFromDefense} from Def: {defense} which is {100-GetValueAfterArmors(100f)}% dmg reduction");
+        Console.WriteLine($"Dmg mod: {damageModifier} from Str: {strength}");
     }
 
     public void Heal(int value)

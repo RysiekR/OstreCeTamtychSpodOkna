@@ -11,32 +11,78 @@ public class Pokemon
     public Pokemon()
     {
         level = new PokemonLevel(this);
+        
+
         Random random = new Random();
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
         Name = PokemonNameGenerator.GenerateName(type);
-        stats = new Stats(5, 5, this);
-        /*
-                allSkills.Add(new OffensiveSkill("Fireball",Type.Lava, this));
-                allSkills.Add(new OffensiveSkill("Fireball2", Type.Lava, this));
-                allSkills.Add(new OffensiveSkill("Fireball3",Type.Lava, this));
-                allSkills.Add(new OffensiveSkill("Fireball4",Type.Lava, this));
-                allSkills.Add(new OffensiveSkill("Not Fireball",Type.Lava, this));
-        */
-        GenerateSkills(5);
+        stats = new Stats(this);
+        for(int i = 0; i < 10; i++)
+        {
+            level.exp = 5 * level.level + 1;
+        }
+
+        FillSkillsUpToPokemonLevel();
+    }
+    public Pokemon(int averagePlayerPokemonLevel)
+    {
+        Random random = new Random();
+        int levelToCreate = Math.Max(1, averagePlayerPokemonLevel +random.Next(-4,5));
+        level = new(this, levelToCreate);
+
+        type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
+        Name = PokemonNameGenerator.GenerateName(type);
+        stats = new Stats(this);
+
+        for(int i = 0; i < levelToCreate-1; i++)
+        {
+            LevelUpLogic();
+        }
+        //FillSkillsUpToPokemonLevel();
+
+
     }
 
+
+    /// <summary>
+    /// Generuje skille. losowo jezeli howMany = 1, co najmniej 1 offensywny jezeli howMany > 1
+    /// </summary>
+    /// <param name="howMany"></param>
     private void GenerateSkills(int howMany)
     {
         Random random = new Random();
-        int offSkills = random.Next(1, howMany);
-        int healSkills = howMany - offSkills;
-        for (int i = 0; i < offSkills; i++)
+        if (howMany > 1)
         {
-            allSkills.Add(new OffensiveSkill(this));
+            int offSkills = random.Next(1, howMany);
+            int healSkills = howMany - offSkills;
+            for (int i = 0; i < offSkills; i++)
+            {
+                allSkills.Add(new OffensiveSkill(this));
+            }
+            for (int i = 0; i < healSkills; i++)
+            {
+                allSkills.Add(new HealSkill(this));
+            }
         }
-        for (int i = 0; i < healSkills; i++)
+        else
         {
-            allSkills.Add(new HealSkill(this));
+            if (random.Next(0, 2) == 0)
+            {
+                allSkills.Add(new OffensiveSkill(this));
+            }
+            else
+            {
+                allSkills.Add(new HealSkill(this));
+            }
+        }
+    }
+    public void FillSkillsUpToPokemonLevel()
+    {
+        int minNumOfSkills = 2;
+        int numberOfSkillsToHave = minNumOfSkills + level.level;
+        if (numberOfSkillsToHave > allSkills.Count && numberOfSkillsToHave > 0)
+        {
+            GenerateSkills(numberOfSkillsToHave-allSkills.Count);
         }
     }
 
@@ -91,14 +137,25 @@ public class Pokemon
     */
     public void LevelUpLogic()
     {
-        //TOmfDO stats.levelup()
-        Console.WriteLine("No Level up logic implemented !!!!!!!!!!!!!");
+        stats.LevelUp();
+        FillSkillsUpToPokemonLevel();
+        foreach (var skill in allSkills)
+        {
+            if (skill is OffensiveSkill offensiveSkill)
+            {
+                offensiveSkill.UpdateSkill();
+            }
+        }
     }
     public void PokemonInfoPrint()
     {
         Console.WriteLine(Name + ": ");
         Console.WriteLine("Type" + type);
+        Console.WriteLine("Hp: " + stats.Hp + "/" + stats.maxHp);
+        Console.WriteLine("Shield: " + stats.shield + "/" + stats.maxShield);
+        stats.PrintInfo();
         Console.WriteLine("Lv: " + level.level + " Exp: " + level.exp + "/" + level.LevelUpFormula());
+
     }
     public void AllSkillsInfoPrint()
     {

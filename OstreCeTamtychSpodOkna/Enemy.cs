@@ -44,13 +44,17 @@ public class Enemy : HasPokemonList
         {
             howMany = 1;
         }
+        else if (howMany>9)
+        {
+            howMany += rnd.Next(-4, 5);
+        }
         else
         {
             howMany += rnd.Next(-1, 2);
         }
         for (int i = 0; i < howMany; i++)
         {
-            pokemonList.Add(new Pokemon());
+            pokemonList.Add(new Pokemon(PrawieSingleton.GetAverageLevelOfPlayerPokemons()));
         }
     }
 

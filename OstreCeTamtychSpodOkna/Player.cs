@@ -23,6 +23,8 @@ public class Player : HasPokemonList
     private Dictionary<ConsoleKey, Action> movements;
     private Dictionary<char, Action> logicFromChars;
 
+    public List<Pokemon> rescuedPokemons = new();
+
     public Player(Map currentMap)
     {
         itemsList.Add(ItemFactory.CreateSmallPotion());
@@ -229,16 +231,60 @@ public class Player : HasPokemonList
 
                 if (int.TryParse(input, out int numer))
                 {
-                    Console.WriteLine($"Wczytano Pokemona: {pokemonList[numer-1].Name} jego skille to: ");
+                    Console.WriteLine($"Wczytano Pokemona: {pokemonList[numer - 1].Name} jego skille to: ");
                     Console.WriteLine();
-                    pokemonList[numer-1].AllSkillsInfoPrint();
+                    pokemonList[numer - 1].AllSkillsInfoPrint();
+                    Console.WriteLine("want to change some skills ? press 1 to delete and reroll skills, or any key");
+                    ConsoleKey tempKey = Console.ReadKey().Key;
+                    if (tempKey == ConsoleKey.D1)
+                    {
+                        bool tempRemovalMenu = true;
+                        List<int> listToRemove = new();
+                        while (tempRemovalMenu)
+                        {
+                            Console.WriteLine("which to remove? 0 to accept and exit");
+
+                            string inputNumber = Console.ReadLine();
+
+                            if (int.TryParse(inputNumber, out int numerIndexu))
+                            {
+                                if (numerIndexu == 0)
+                                {
+                                    tempRemovalMenu = false;
+                                }
+                                else
+                                {
+                                    numerIndexu--;
+                                    listToRemove.Add(numerIndexu);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Niepoprawny format. Podaj liczbę całkowitą.");
+                            }
+
+                        }
+                        List<SkillCategory> skillsToRemove = new List<SkillCategory>();
+                        foreach (int numerIndexu in listToRemove)
+                        {
+                            skillsToRemove.Add(pokemonList[numer - 1].allSkills[numerIndexu]);
+                        }
+                        foreach (SkillCategory skillBleh in skillsToRemove)
+                        {
+                            pokemonList[numer - 1].allSkills.Remove(skillBleh);
+                        }
+
+                        pokemonList[numer - 1].FillSkillsUpToPokemonLevel();
+
+                    }
+                    Console.WriteLine("exiting pokemon skill list press any key");
                     Console.ReadKey();
+
                 }
                 else
                 {
                     Console.WriteLine("Niepoprawny format. Podaj liczbę całkowitą.");
                 }
-                Console.ReadKey();
 
 
             }
@@ -296,8 +342,17 @@ public class Player : HasPokemonList
             if (enemy.row == possibleRow && enemy.col == possibleCol)
             {
                 BattleProgram.BattleWindowHolder(this, enemy);
+                Random random = new Random();
                 if (!(enemy.pokemonList.Any(p => p.stats.IsAlive)))
                 {
+                    foreach (Pokemon pokemon in enemy.pokemonList)
+                    {
+                        int chance = random.Next(1, 11);
+                        if (chance <= 4)
+                        {
+                            rescuedPokemons.Add(pokemon);
+                        }
+                    }
                     enemiesToRemove.Add(enemy); // Tutaj wywołać walkę, nie zabijać jeszcze !!!!
                 }
             }
@@ -347,6 +402,17 @@ public class Player : HasPokemonList
 public static class PrawieSingleton
 {
     public static Player player;
+    public static int GetAverageLevelOfPlayerPokemons()
+    {
+        int averageLevel = 0;
+        foreach (Pokemon p in player.pokemonList)
+        {
+            averageLevel += p.level.level;
+        }
+        averageLevel /= player.pokemonList.Count + 1;
+
+        return averageLevel;
+    }
 }
 public static class Hospital
 {
