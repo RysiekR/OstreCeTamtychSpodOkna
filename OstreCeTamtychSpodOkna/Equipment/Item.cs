@@ -1,71 +1,77 @@
-﻿using System;
-
-namespace Equipment
+﻿public abstract class Item
 {
-    public abstract class Item
+    protected static Random random = new Random();
+
+    public string Name { get; set; }
+    protected readonly int minPower;
+    protected readonly int maxPower;
+    public Item(string name, int minPower, int maxPower)
     {
-        protected static Random random = new Random();
-
-        private string Name { get; set; }
-        protected readonly int minPower;
-        protected readonly int maxPower;
-
-        protected Item(string name, int minPower, int maxPower)
-        {
-            Name = name;
-            this.minPower = minPower;
-            this.maxPower = maxPower;
-        }
-
-        public abstract void UseItem(Pokemon pokemon);
- 
+        Name = name;
+        this.minPower = minPower;
+        this.maxPower = maxPower;
     }
 
-    class Potion(string name, int minPower, int maxPower) : Item(name, minPower, maxPower)
-    {
-        public override void UseItem(Pokemon pokemon)
-        {
-            var value = random.Next(minPower, maxPower);
-            pokemon.stats.Heal(value);
-            Console.WriteLine("Pokemon {0} wyleczony o {1}", pokemon.Name, value);
-        }
+    public abstract string UseItem(Pokemon playerPokemon, Pokemon enemyPokemon);
 
+}
+
+class Potion(string name, int minPower, int maxPower) : Item(name, minPower, maxPower)
+{
+    public string UseItemLocally(Pokemon pokemon)
+    {
+        var value = random.Next(minPower, maxPower);
+        pokemon.stats.Heal(value);
+        return ($"Pokemon {pokemon.Name} wyleczony o {value}");
     }
-
-    class HyperPotion : Item
+    public override string UseItem(Pokemon playerPokemon, Pokemon enemyPokemon)
     {
-        public HyperPotion() : base("HyperPotion", 0, 0) { }
-
-        public override void UseItem(Pokemon pokemon)
-        {
-            pokemon.stats.RestoreFullHP();
-            Console.WriteLine("Pokemon {0} wyleczony do max", pokemon.Name);
-        }
-
-    }
-
-    class Shield(string name, int minPower, int maxPower) : Item(name, minPower, maxPower)
-    {
-        public override void UseItem(Pokemon pokemon)
-        {
-            var value = random.Next(minPower, maxPower);
-            pokemon.stats.IncreaseShield(value);
-            Console.WriteLine("Pokemon {0} dostał punkty tarczy o {1}", pokemon.Name, value);
-        }
-
-    }
-
-    class Bomb(string name, int minPower, int maxPower) : Item(name, minPower, maxPower)
-    {
-        public override void UseItem(Pokemon enemyPokemon)
-        {
-            var value = random.Next(minPower, maxPower);
-            enemyPokemon.stats.HitWithItem(value);
-            Console.WriteLine("Pokemon przeciwnika {0} dostał {1} punktow obrazen", enemyPokemon.Name, value);
-        }
-
+        return UseItemLocally(playerPokemon);
     }
 
 }
 
+class HyperPotion : Item
+{
+    public HyperPotion() : base("HyperPotion", 0, 0) { }
 
+    public string UseItemLocally(Pokemon pokemon)
+    {
+        pokemon.stats.RestoreFullHP();
+        return ($"Pokemon {pokemon.Name} wyleczony do max");
+    }
+    public override string UseItem(Pokemon playerPokemon, Pokemon enemyPokemon)
+    {
+        return UseItemLocally(playerPokemon);
+    }
+
+}
+
+class Shield(string name, int minPower, int maxPower) : Item(name, minPower, maxPower)
+{
+    public string UseItemLocally(Pokemon pokemon)
+    {
+        var value = random.Next(minPower, maxPower);
+        pokemon.stats.IncreaseShield(value);
+        return ($"Pokemon {pokemon.Name} dostał punkty tarczy o {value}");
+    }
+    public override string UseItem(Pokemon playerPokemon, Pokemon enemyPokemon)
+    {
+        return UseItemLocally(playerPokemon);
+    }
+
+}
+
+class Bomb(string name, int minPower, int maxPower) : Item(name, minPower, maxPower)
+{
+    public string UseItemLocally(Pokemon enemyPokemon)
+    {
+        var value = random.Next(minPower, maxPower);
+        enemyPokemon.stats.HitWithItem(value);
+        return ($"Pokemon przeciwnika {enemyPokemon.Name} dostał {value} punktow obrazen");
+    }
+    public override string UseItem(Pokemon playerPokemon, Pokemon enemyPokemon)
+    {
+        return UseItemLocally(enemyPokemon);
+    }
+}

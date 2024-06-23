@@ -1,5 +1,3 @@
-using Equipment;
-using OstreCeTamtychSpodOkna.Equipment;
 
 public class Pokemon
 {
@@ -8,15 +6,15 @@ public class Pokemon
     public string Name { get; set; }
     public Type type { get; private set; }
     public Stats stats; //{ get; set; }
-    public List<SkillCategory> allSkills = new List<SkillCategory>(); 
- 
+    public List<SkillCategory> allSkills = new List<SkillCategory>();
+
     public Pokemon()
     {
         level = new PokemonLevel(this);
         Random random = new Random();
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
         Name = PokemonNameGenerator.GenerateName(type);
-        stats = new Stats(5,5,this);
+        stats = new Stats(5, 5, this);
         /*
                 allSkills.Add(new OffensiveSkill("Fireball",Type.Lava, this));
                 allSkills.Add(new OffensiveSkill("Fireball2", Type.Lava, this));
@@ -31,12 +29,12 @@ public class Pokemon
     {
         Random random = new Random();
         int offSkills = random.Next(1, howMany);
-        int healSkills = howMany-offSkills;
+        int healSkills = howMany - offSkills;
         for (int i = 0; i < offSkills; i++)
         {
             allSkills.Add(new OffensiveSkill(this));
         }
-        for (int i = 0;i < healSkills; i++)
+        for (int i = 0; i < healSkills; i++)
         {
             allSkills.Add(new HealSkill(this));
         }
@@ -100,7 +98,7 @@ public class Pokemon
     {
         Console.WriteLine(Name + ": ");
         Console.WriteLine("Type" + type);
-        Console.WriteLine("Lv: " + level.level +" Exp: "+level.exp+"/"+level.LevelUpFormula());
+        Console.WriteLine("Lv: " + level.level + " Exp: " + level.exp + "/" + level.LevelUpFormula());
     }
     public void AllSkillsInfoPrint()
     {

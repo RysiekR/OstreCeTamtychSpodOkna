@@ -15,7 +15,7 @@ public class Player : HasPokemonList
     string enemyString = "123456789";
     public Map currentMap;
     public Pokemon Pokemon { get; set; }
-
+    public List<Item> itemsList = new List<Item>();
 
     private bool hitObstacle = false;
     ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
@@ -25,6 +25,13 @@ public class Player : HasPokemonList
 
     public Player(Map currentMap)
     {
+        itemsList.Add(ItemFactory.CreateSmallPotion());
+        itemsList.Add(ItemFactory.CreateMediumPotion());
+        itemsList.Add(ItemFactory.CreateHyperPotion());
+        itemsList.Add(ItemFactory.CreateSmallShield());
+        itemsList.Add(ItemFactory.CreateBigShield());
+        itemsList.Add(ItemFactory.CreateSmallBomb());
+        itemsList.Add(ItemFactory.CreateBigBomb());
         this.currentMap = currentMap;
         InitializePlayerPosition();
         pokemonList.Clear();

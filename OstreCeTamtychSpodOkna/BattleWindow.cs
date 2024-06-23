@@ -1,5 +1,4 @@
-﻿using OstreCeTamtychSpodOkna;
-using System.Data;
+﻿using System.Data;
 using Terminal.Gui;
 
 public class BattleProgram
@@ -311,18 +310,17 @@ public class BattleWindow : Window
 
         var battleLogFrame = new FrameView("Battle Log")
         {
-            X = Pos.Percent(80),
-            Y = Pos.Percent(60),
-            Width = 52,
-            Height = 20,
+            X = Pos.Percent(58),
+            Y = Pos.Percent(85),
+            Width = 70,
+            Height = 8,
             CanFocus = false,
-
         };
 
         battleLog = new TextView()
         {
-            X = Pos.Percent(5),
-            Y = Pos.Percent(10),
+            X = Pos.Percent(2),
+            Y = Pos.Percent(1),
             Width = Dim.Fill() - 1,
             Height = Dim.Fill() - 1,
             ReadOnly = true,
@@ -336,12 +334,24 @@ public class BattleWindow : Window
         Add(battleLogFrame);
         battleLogFrame.Add(battleLog);
     }
-
     private void ConfigureButtonEvents(Button changeButton, Button skillsButton, Button itemsButton, Button fleeButton)
     {
         fleeButton.Clicked += () =>
         {
             EndBattle();
+        };
+
+        itemsButton.Clicked += () =>
+        {
+            var itemsDialog = new Dialog("Choose an item", 60, 20)
+            {
+                X = Pos.Center(),
+                Y = Pos.Center()
+            };
+
+            CreateItemsGrid(itemsDialog);
+
+            Application.Run(itemsDialog);
         };
 
         skillsButton.Clicked += () =>
@@ -421,6 +431,59 @@ public class BattleWindow : Window
             enemyShieldBar.ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Black, Color.Black) };
         }
     }
+    private void CreateItemsGrid(Dialog itemsDialog)
+    {
+        int rows = (player.itemsList.Count + 1) / 2;
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                int itemIndex = i * 2 + j;
+                if (itemIndex < player.itemsList.Count)
+                {
+                    Item item = player.itemsList[itemIndex];
+                    var itemButton = new Button(item.Name)
+                    {
+                        X = j * 20,
+                        Y = i * 2,
+                    };
+                    /*if (item is Potion potionItem)
+                    {
+                        itemButton.ColorScheme = GetColorSchemeForSkillType(potionItem.type.ToString());
+                    }*/
+                    itemButton.Clicked += () =>
+                    {
+                        //string ToLog = item.UseItem(playerPokemon, enemyPokemon);
+                        UpdateBattleLog(item.UseItem(playerPokemon, enemyPokemon));
+                        UpdateHPBars();
+                        if (!enemyPokemon.stats.IsAlive)
+                        {
+                            Application.RequestStop();
+                            Application.Top.Running = false;
+                        }
+                        else
+                        {
+                            DisableButtons();
+                            Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(0.5f), (_) =>
+                            {
+                                EnemyTurn();
+                                return false;
+                            });
+                        }
+                        itemsDialog.Running = false;
+                    };
+                    itemsDialog.Add(itemButton);
+                }
+            }
+        }
+        var returnButton = new Button("Return")
+        {
+            X = Pos.Center(),
+            Y = Pos.Percent(90),
+        };
+        returnButton.Clicked += () => { itemsDialog.Running = false; };
+        itemsDialog.Add(returnButton);
+    }
     private void CreateSkillsGrid(Dialog skillsDialog)
     {
         int rows = (playerPokemon.allSkills.Count + 1) / 2;
@@ -456,7 +519,7 @@ public class BattleWindow : Window
                             else
                             {
                                 DisableButtons();
-                                Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(1), (_) =>
+                                Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(0.5f), (_) =>
                                 {
                                     EnemyTurn();
                                     return false;

@@ -1,18 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OstreCeTamtychSpodOkna
+﻿public class PokemonAscii
 {
-    public class PokemonAscii
+    public static String GetPokemonAsciByName(String pokemonName)
     {
-        public static String GetPokemonAsciByName(String pokemonName)
-        {
-            Dictionary<String, String> mapAscii = new Dictionary<String, String>();  
+        Dictionary<String, String> mapAscii = new Dictionary<String, String>();
 
-            String pikachu =  @"
+        String pikachu = @"
 *%#=..........      .. .   ....  .      . ... 
 .#@%-:-:.                        ..:-#@@@:    
 ..#@=::::=..  ..       .      ..--:::%@%.  ...
@@ -39,7 +31,7 @@ namespace OstreCeTamtychSpodOkna
 .. .. . .-==-----=-...:-:--=+===..   .  .     ";
 
 
-            String snail = @"
+        String snail = @"
                                        +=:     :==
                                        -:       ::
                                         --     +  
@@ -58,7 +50,7 @@ namespace OstreCeTamtychSpodOkna
      .:-==***++=+*#%**##%%%%#*###**%%%+.          
 .:-=+=---=+##%%#**##%##+-:-=*#####+=.       ";
 
-            String bird = @"
+        String bird = @"
                                  .""?`   ':_'      
                               'lj@j`""_rB$[.    .  
                           .""[M%*c|.@$$B{^`:+\xl   
@@ -80,7 +72,7 @@ namespace OstreCeTamtychSpodOkna
   ^"",v)M%_.          .""^,W&x;.        ^l/8z(.     
 ;t/j\rn,            ;}\xx/,         .{)f|fu{   ";
 
-            String goose = @"
+        String goose = @"
                                  -. -+.           
          -  :*                 :%=.##  :          
         =* -%+              +- @%.@@.-%.          
@@ -106,7 +98,7 @@ namespace OstreCeTamtychSpodOkna
       -*%#=   .-#.                                
       ..   .+%@=           ";
 
-            String octopus = @"
+        String octopus = @"
                      =#@@@%#-                     
                    :@%%@@@@%%%.                   
        .           %%=@@@@@@=@#           .       
@@ -132,7 +124,7 @@ namespace OstreCeTamtychSpodOkna
        .*=    +     =%%    @%=     +    +*        
          .-.  ++. .=%%.    :%%=. .++  :-       ";
 
-            String vulture = @"
+        String vulture = @"
                                      .:-:.         
                                     -***##*+=-.   
                                      ::#%+%#+#%=- 
@@ -158,7 +150,7 @@ namespace OstreCeTamtychSpodOkna
 :*%%%%%*+=:=*@#-::*#* +-                          
     ...:+*##*-:.:%#- .   ";
 
-            String rhinoceros = @"
+        String rhinoceros = @"
                =      .-=--+*+-                       
       .   :**-  =##=#+##**%**+=:. ..-:::.         
       *==-.+*#+*%***@%*******+*#*#=*#+*%##+       
@@ -174,7 +166,7 @@ namespace OstreCeTamtychSpodOkna
                  .=%%@=%@@-        +#%##:+@%#     
                  .:=-=##%%#             -=++-     ";
 
-            String scorpio = @"
+        String scorpio = @"
       .---=+#%#+-              :+###*=---.       
      -+-=#%*=-:::--            --::::=*%#=:=-     
    .#=+@@=                              -%@+:#.   
@@ -198,22 +190,9 @@ namespace OstreCeTamtychSpodOkna
    =@+    :*%*+-.*%* -*@@@@#=:=@*::+*%#:    -@*   
    @:    :##*. =*%#@%#+=---+#@@#@+-  *#*=    .%:  
   :-     #%@* -*#%==*:+****+-=*-##*: =@%+     .=  
-  .      ##:  **@.  =%=-:::=#+   %#*  :%#      .  
-        .%#   *%:   +=+%@@%+-#   .@#:  *%:        
-         #@   @@#    **@@@@**.   =@@:  %%         
-          #*  =#-    ==%@@@=.    :#+  -%.         
-           =+  *%  .=#@@@@+=     %%  =+           
-             .  =+ *=%@@@==    :%+  ..            
-                 .+-@@@=+:   :==    .#            
-                  *+*%=-           -%@            
-                  +#@++        :=*%%*#            
-                  =#@*.      =%#*+-+@:            
-                   =*+:     #%=#==@@=             
-                   ++@*    :%:@@@@@-              
-                    -++*=::-#*%@@+                
-                     .-#@+*%%+:.        ";
+  .      ##:  **@.  =%=-:::=#+   %#*  :%#      .  ";
 
-            String chameleon = @"
+        String chameleon = @"
                    ::=++**+==:. =%%*=.            
                 -*#**++==+-++**#*-#@@@#-:-=-:.    
               -%#+*#####%#%**+*+=+##*+=+++***++-  
@@ -227,7 +206,7 @@ namespace OstreCeTamtychSpodOkna
 +**= -#**+=##       =#@#-       *@*=              
  -#%#++++%%+.         :.             ";
 
-            String bear = @"
+        String bear = @"
                           .-+++==+=-::=+:.   =:    
           .-=+***++++*=*%%*-.+##**#=+=@#*=+#++    
        -++===:.-+=#%#=*#+=-=*%*:+@+*#-+*+-+*#*=   
@@ -249,17 +228,16 @@ namespace OstreCeTamtychSpodOkna
 
 
 
-            mapAscii.Add("Pikachu", pikachu);
-            mapAscii.Add("Charmander", snail);
-            mapAscii.Add("Bulbazaur", bird);
-            mapAscii.Add("Squirtle", goose);
-            mapAscii.Add("Snali", snail);
-            mapAscii.Add("Tentacruel", octopus);
+        mapAscii.Add("Pikachu", pikachu);
+        mapAscii.Add("Charmander", snail);
+        mapAscii.Add("Bulbazaur", bird);
+        mapAscii.Add("Squirtle", goose);
+        mapAscii.Add("Snali", snail);
+        mapAscii.Add("Tentacruel", octopus);
 
 
 
-            return mapAscii.GetValueOrDefault(pokemonName, scorpio);
+        return mapAscii.GetValueOrDefault(pokemonName, scorpio);
 
-        }
     }
 }
