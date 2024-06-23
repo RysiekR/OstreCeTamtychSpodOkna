@@ -1,5 +1,6 @@
 ﻿
 using OstreCeTamtychSpodOkna;
+using System.Runtime.InteropServices;
 using Terminal.Gui;
 
 public class Player : HasPokemonList

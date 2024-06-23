@@ -125,5 +125,50 @@
         strength += 5;
     }
 
+    public void Heal(int value)
+    {
+        var tempCurrentHp = hp + value;
+        if(tempCurrentHp > maxHp)
+        {
+            hp = maxHp;
+        } else
+        {
+            hp = tempCurrentHp;
+        }
+    }
+
+    public void RestoreFullHP()
+    {
+        hp = maxHp;
+    }
+
+    public void IncreaseShield(int value)
+    {
+        var tempCurrentShield = shield + value;
+
+        if (tempCurrentShield > maxShield) {
+            shield = maxShield;
+        } 
+        else {
+            shield = tempCurrentShield;
+        }
+        isShielded = true;
+    }
+
+    public void HitWithItem(int value)
+    {
+        var leftHPHitValue = shield - value; //bijemy w obecną taczę jak dodatnia to całość na tarcze, jak ujemna to jeszcze w HP
+
+        if (leftHPHitValue >= 0)
+        {
+            shield = leftHPHitValue;
+        }
+        else
+        {
+            shield = 0;
+            hp += leftHPHitValue; //dodajemy do hp ujemną liczbę czyli zadajemy obrażenia 
+        }
+    }
+
 }
 

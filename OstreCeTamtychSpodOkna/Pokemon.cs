@@ -1,3 +1,6 @@
+using Equipment;
+using OstreCeTamtychSpodOkna.Equipment;
+
 public class Pokemon
 {
 
