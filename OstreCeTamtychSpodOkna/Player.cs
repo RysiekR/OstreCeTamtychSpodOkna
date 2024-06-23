@@ -22,6 +22,8 @@ public class Player : HasPokemonList
     private Dictionary<ConsoleKey, Action> movements;
     private Dictionary<char, Action> logicFromChars;
 
+    public List<Pokemon> rescuedPokemons = new();
+
     public Player(Map currentMap)
     {
         this.currentMap = currentMap;
@@ -221,9 +223,9 @@ public class Player : HasPokemonList
 
                 if (int.TryParse(input, out int numer))
                 {
-                    Console.WriteLine($"Wczytano Pokemona: {pokemonList[numer-1].Name} jego skille to: ");
+                    Console.WriteLine($"Wczytano Pokemona: {pokemonList[numer - 1].Name} jego skille to: ");
                     Console.WriteLine();
-                    pokemonList[numer-1].AllSkillsInfoPrint();
+                    pokemonList[numer - 1].AllSkillsInfoPrint();
                     Console.ReadKey();
                 }
                 else
@@ -288,8 +290,17 @@ public class Player : HasPokemonList
             if (enemy.row == possibleRow && enemy.col == possibleCol)
             {
                 BattleProgram.BattleWindowHolder(this, enemy);
+                Random random = new Random();
                 if (!(enemy.pokemonList.Any(p => p.stats.IsAlive)))
                 {
+                    foreach (Pokemon pokemon in enemy.pokemonList)
+                    {
+                        int chance = random.Next(1, 11);
+                        if (chance <= 4)
+                        {
+                            rescuedPokemons.Add(pokemon);
+                        }
+                    }
                     enemiesToRemove.Add(enemy); // Tutaj wywołać walkę, nie zabijać jeszcze !!!!
                 }
             }

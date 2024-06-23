@@ -44,6 +44,10 @@ public class Enemy : HasPokemonList
         {
             howMany = 1;
         }
+        else if (howMany>9)
+        {
+            howMany += rnd.Next(-3, 4);
+        }
         else
         {
             howMany += rnd.Next(-1, 2);
