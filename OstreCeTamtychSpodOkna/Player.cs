@@ -14,7 +14,7 @@ public class Player : HasPokemonList
     private int possibleCol;
     string enemyString = "123456789";
     public Map currentMap;
-    public Pokemon Pokemon { get; set; }
+    //public Pokemon Pokemon { get; set; }
     public List<Item> itemsList = new List<Item>();
 
     private bool hitObstacle = false;
@@ -39,7 +39,7 @@ public class Player : HasPokemonList
         pokemonList.Clear();
         pokemonList.Add(new Pokemon());
         pokemonList.Add(new Pokemon());
-        Pokemon = pokemonList[0];
+       // Pokemon = pokemonList[0];
         //slowniki
         movements = new Dictionary<ConsoleKey, Action>
             {
@@ -335,7 +335,7 @@ public class Player : HasPokemonList
         }
 
         hitObstacle = true;
-        Console.Beep();
+
         List<Enemy> enemiesToRemove = new List<Enemy>();
         foreach (Enemy enemy in currentMap.enemyList)
         {

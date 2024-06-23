@@ -45,11 +45,11 @@
                                 {
                                     Console.ForegroundColor = ConsoleColor.Cyan;
                                 }
-                                else if (MapHolder.FindEnemyOnArenaAt(row, col).Pokemon.type == Type.Moist)
+                                else if (MapHolder.FindEnemyOnArenaAt(row, col).pokemonList[0].type == Type.Moist)
                                 {
                                     Console.ForegroundColor = ConsoleColor.Blue;
                                 }
-                                else if (MapHolder.FindEnemyOnArenaAt(row, col).Pokemon.type == Type.Lava)
+                                else if (MapHolder.FindEnemyOnArenaAt(row, col).pokemonList[0].type == Type.Lava)
                                 {
                                     Console.ForegroundColor = ConsoleColor.Red;
                                 }

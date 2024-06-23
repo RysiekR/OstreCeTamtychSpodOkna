@@ -17,10 +17,10 @@ public class Pokemon
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
         Name = PokemonNameGenerator.GenerateName(type);
         stats = new Stats(this);
-        for(int i = 0; i < 10; i++)
+        /*for(int i = 0; i < 10; i++)
         {
             level.exp = 5 * level.level + 1;
-        }
+        }*/
 
         FillSkillsUpToPokemonLevel();
     }
@@ -34,11 +34,11 @@ public class Pokemon
         Name = PokemonNameGenerator.GenerateName(type);
         stats = new Stats(this);
 
+        FillSkillsUpToPokemonLevel();
         for(int i = 0; i < levelToCreate-1; i++)
         {
             LevelUpLogic();
         }
-        //FillSkillsUpToPokemonLevel();
 
 
     }

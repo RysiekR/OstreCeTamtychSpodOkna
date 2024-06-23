@@ -5,11 +5,65 @@ public class BattleProgram
 {
     public static void BattleWindowHolder(Player aPlayer, Enemy enemy)
     {
+        bool battle = false;
+        do
+        {
+            battle = false;
+            bool playerCon = false;
+            bool enemyCon = false;
+            Application.Init();
+            var battleWindow = new BattleWindow(aPlayer, enemy);
+            Application.Run(battleWindow);
+            Application.Shutdown();
+            foreach (Pokemon p in enemy.pokemonList)
+            {
+                if (p.stats.IsAlive)
+                {
+                    enemyCon = true;
+                }
+            }
+            foreach (Pokemon p in aPlayer.pokemonList)
+            {
+                if (p.stats.IsAlive)
+                {
+                    playerCon = true;
+                }
+            }
+            if (playerCon && enemyCon) battle = true;
+            Application.Init();
+            {
+                var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
 
-        Application.Init();
-        var battleWindow = new BattleWindow(aPlayer, enemy);
-        Application.Run(battleWindow);
-        Application.Shutdown();
+                var surrenderButton = new Button("Don't Attack")
+                {
+                    X = Pos.Percent(20),
+                    Y = Pos.Center(),
+                };
+                surrenderButton.Clicked += () =>
+                {
+                    Application.RequestStop(messageDialog);
+
+                    battle = false;
+                    //Environment.Exit(0); //Zakończenie aplikacji
+                };
+
+                var tryAgainButton = new Button("Spróbuj ponownie")
+                {
+                    X = Pos.Percent(60),
+                    Y = Pos.Center(),
+                };
+                tryAgainButton.Clicked += () =>
+                {
+                    Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
+                };
+
+                messageDialog.AddButton(surrenderButton);
+                messageDialog.AddButton(tryAgainButton);
+                Application.Run(messageDialog);
+            }
+            
+        } while (battle);
+        
     }
 }
 public class BattleWindow : Window
@@ -58,7 +112,6 @@ public class BattleWindow : Window
     {
         var pokemons = player.pokemonList.Where(p => p.stats.IsAlive).ToList();
         var names = pokemons.Select(p => p.Name).ToArray();
-
         var dialog = new Dialog("Wybierz pokemona", 60, 20);
         var listView = new ListView(new Rect(0, 0, 50, 14), names);
         listView.OpenSelectedItem += (args) =>
@@ -84,7 +137,7 @@ public class BattleWindow : Window
         this.enemy = enemy;
         ChoosePokemon(enemy);
         ChoosePokemonDirectly(player);
-        battleState = new BattleState(player.Pokemon, enemy.Pokemon);
+        battleState = new BattleState(playerPokemon, enemyPokemon);
         enemyAI = new EnemyAI(battleState);
 
         battleState.OnEnemyTurnStart += () =>
@@ -106,7 +159,7 @@ public class BattleWindow : Window
     }
     private void EndEnemyTurn()
     {
-        if (!enemy.Pokemon.IsAlive)
+        if (!enemyPokemon.IsAlive)
         {
             EndBattle();
         }
@@ -131,7 +184,7 @@ public class BattleWindow : Window
                 Application.RequestStop();
             }
         }
-        else if (!enemy.Pokemon.IsAlive)
+        else if (!enemyPokemon.IsAlive)
         {
             EndBattle();
         }
@@ -161,7 +214,7 @@ public class BattleWindow : Window
         var enemySkill = enemyPokemon.ChooseOffensiveSkill();
         if (enemySkill is OffensiveSkill offensiveSkill)
         {
-            float damageDealt = offensiveSkill.DealDamage(playerPokemon);
+            float damageDealt = offensiveSkill.Use(playerPokemon);
             UpdateHPBars();
             UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name}, zadając {damageDealt} obrażenia!");
             if (!playerPokemon.stats.IsAlive)
@@ -206,8 +259,8 @@ public class BattleWindow : Window
         var buttonsTable = new FrameView("Akcje")
         {
             X = Pos.Percent(10),
-            Y = Pos.Percent(80),
-            Width = Dim.Percent(20),
+            Y = Pos.Percent(85),
+            Width = Dim.Percent(30),
             Height = 6
         };
         buttonsTable.Add(skillsButton, changeButton, itemsButton, fleeButton);
@@ -278,6 +331,11 @@ public class BattleWindow : Window
             Height = 1,
             ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Green, Color.Black) }
         };
+        var enemyLevelLabel = new Label($"Level:{enemyPokemon.level.level}")
+        {
+            X = Pos.Percent(1),
+            Y = Pos.Top(enemyHPBar) - 2,
+        };
 
         enemyShieldBar = new ProgressBar()
         {
@@ -306,7 +364,7 @@ public class BattleWindow : Window
             Y = Pos.Top(enemyHPBar),
         };
         Add(enemyFrame);
-        enemyFrame.Add(enemyHPBar, enemyShieldBar, enemyHPLabel, enemyShieldLabel, enemyPokemonNameLabel);
+        enemyFrame.Add(enemyHPBar, enemyShieldBar, enemyHPLabel, enemyShieldLabel, enemyLevelLabel, enemyPokemonNameLabel);
 
         var battleLogFrame = new FrameView("Battle Log")
         {
@@ -447,13 +505,8 @@ public class BattleWindow : Window
                         X = j * 20,
                         Y = i * 2,
                     };
-                    /*if (item is Potion potionItem)
-                    {
-                        itemButton.ColorScheme = GetColorSchemeForSkillType(potionItem.type.ToString());
-                    }*/
                     itemButton.Clicked += () =>
                     {
-                        //string ToLog = item.UseItem(playerPokemon, enemyPokemon);
                         UpdateBattleLog(item.UseItem(playerPokemon, enemyPokemon));
                         UpdateHPBars();
                         if (!enemyPokemon.stats.IsAlive)
@@ -495,7 +548,8 @@ public class BattleWindow : Window
                 if (skillIndex < playerPokemon.allSkills.Count)
                 {
                     SkillCategory skill = playerPokemon.allSkills[skillIndex];
-                    var skillButton = new Button(skill.name)
+                    string skillButtonLabel = skill.name + " " + skill.numberOfUses + "/" + skill.maxNumberOfUses;
+                    var skillButton = new Button(skillButtonLabel)
                     {
                         X = j * 20,
                         Y = i * 2,
@@ -510,11 +564,31 @@ public class BattleWindow : Window
                         {
                             float damageDealt = offensiveSkill.Use(enemyPokemon);
                             UpdateHPBars();
-                            UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name}, zadając {damageDealt} obrażeń!");
+
+                            if (damageDealt <= 0)
+                            {
+                                UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name} i nie trafia!");
+                            }
+                            else
+                            {
+                                UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name}, zadając {damageDealt} obrażeń!");
+                            }
+
                             if (!enemyPokemon.stats.IsAlive)
                             {
-                                Application.RequestStop();
-                                Application.Top.Running = false;
+/*                                enemy.indexOfFightingPokemon++;
+                                if (enemy.pokemonList.Count > enemy.indexOfFightingPokemon)
+                                {*/
+                                    Application.RequestStop();
+                                    Application.Top.Running = false;/*
+                                }
+                                else
+                                {
+                                    ChoosePokemon(enemy);
+                                    UpdateHPBars();
+                                    InitializeUI();
+                                    EnemyTurn();
+                                }*/
                             }
                             else
                             {
@@ -525,6 +599,18 @@ public class BattleWindow : Window
                                     return false;
                                 });
                             }
+                        }
+                        else if (skill is HealSkill healSkill)
+                        {
+                            healSkill.Use(playerPokemon);
+                            UpdateHPBars();
+                            UpdateBattleLog($"{playerPokemon.Name} używa {healSkill.name}, lecząc {healSkill.HealValue} zdrowia!");
+                            DisableButtons();
+                            Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(0.5f), (_) =>
+                            {
+                                EnemyTurn();
+                                return false;
+                            });
                         }
 
                         skillsDialog.Running = false;
@@ -573,6 +659,7 @@ public class BattleWindow : Window
     {
         UpdateBattleLog("Walka zakończona!");
         Application.RequestStop();
+        
     }
     void UpdateBattleLog(string message)
     {
@@ -592,7 +679,7 @@ public class BattleWindow : Window
         var playerPokemonArt = new Label(PokemonAscii.GetPokemonAsciByName(playerPokemon.Name))
         {
             X = Pos.Percent(10),
-            Y = Pos.Percent(25),
+            Y = Pos.Percent(23),
             Width = 30,
             Height = 14
         };

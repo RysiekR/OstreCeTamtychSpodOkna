@@ -74,7 +74,7 @@ public struct Stats
         }
     }
 
-    float armorScalar = 25f;
+    float armorScalar = 100f;
     private void TakeHpDamage(float value)
     {
         float damage = -value;

@@ -10,7 +10,8 @@ public class Enemy : HasPokemonList
     public static string enemyString = "123456789%";
     string obstacleString = "AC#PN";
     public Map currentMap;
-    public Pokemon Pokemon { get; set; }
+    public int indexOfFightingPokemon = 0;
+    //public Pokemon Pokemon { get; set; }
 
     public Enemy(int rowSpawn, int colSpawn, Map currentMap)
     {
@@ -25,10 +26,9 @@ public class Enemy : HasPokemonList
         }
         else
         {
-
             enemyAvatar = pokemonList.Count.ToString();
         }
-        Pokemon = pokemonList[0];
+       // Pokemon = pokemonList[indexOfFightingPokemon];
         InitializeEnemyPosition();
     }
     private int oldCol;

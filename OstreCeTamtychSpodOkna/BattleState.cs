@@ -5,6 +5,7 @@
     public bool IsPlayerTurn { get; set; }
     public Action OnPlayerTurnStart { get; set; }
     public Action OnEnemyTurnStart { get; set; }
+    
 
     public BattleState(Pokemon playerPokemon, Pokemon enemyPokemon)
     {

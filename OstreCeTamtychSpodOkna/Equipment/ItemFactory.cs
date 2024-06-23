@@ -32,6 +32,6 @@
 
     public static Item CreateBigBomb()
     {
-        return new Bomb("BigBomb", 10, 20);
+        return new Bomb("BigBomb", 10000, 20000);
     }
 }

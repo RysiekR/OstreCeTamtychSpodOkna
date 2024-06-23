@@ -86,11 +86,11 @@ public class OffensiveSkill : SkillCategory
     }
     public float DealDamage(Pokemon pokemonToHit)
     {
+
         var stats = pokemonToHit.stats;
-        stats.Hp -= damage;
+        stats.Hp = -damage;
         if (stats.Hp < 0) stats.Hp = 0;
         pokemonToHit.stats = stats;
-        Console.Beep();
         return pokemonToHit.stats.GetValueAfterArmors(damage);
     }
 
@@ -107,18 +107,22 @@ public class OffensiveSkill : SkillCategory
 public class HealSkill : SkillCategory
 {
     public Category category { get; private set; } = Category.Heal;
+    public Type type { get; private set; }
     public string name { get; private set; }
     public float HealValue { get; private set; }
+    public float baseHealValue {  get; private set; }
     private Pokemon owner;
     public bool CanUse { get; private set; } = true;
     public int numberOfUses { get; private set; }
     public int maxNumberOfUses { get; private set; }
+    Random random = new Random();
     public HealSkill(Pokemon ownerA)
     {
         owner = ownerA;
+        type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
         name = SkillNameGenerator.GenerateName(ownerA.type, Category.Defensive);
-        Random random = new Random();
-        HealValue = random.Next(0, 40 * owner.level.level);
+        baseHealValue = random.Next(0, 40);
+        HealValue = baseHealValue * owner.level.level;
         maxNumberOfUses = random.Next(1, 3);
         ResetUses();
     }
@@ -131,7 +135,6 @@ public class HealSkill : SkillCategory
             numberOfUses--;
             if (numberOfUses <= 0)
             {
-
                 CanUse = false;
             }
         }
@@ -144,6 +147,12 @@ public class HealSkill : SkillCategory
     }
     public void Heal(Pokemon target)
     {
+        if (target.type == this.type)
+        {
+            HealValue = baseHealValue * owner.level.level * 2;
+        }
+        else HealValue = baseHealValue * owner.level.level;
+
         if (target.IsAlive)
         {
             target.stats.Hp += HealValue;
