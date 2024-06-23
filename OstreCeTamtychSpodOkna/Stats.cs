@@ -1,4 +1,6 @@
-﻿public struct Stats
+﻿using System;
+
+public struct Stats
 {
     Pokemon owner;
     private int vitality;
@@ -18,13 +20,15 @@
 
     //Add vittality stat and regen method zamienic strenght na vitality i zrobic cos nowego ze strenght
 
-    public Stats( int vit, int def, Pokemon ownerPokemon) //trzeba dodac strength i wywogle wszystko zrobic na random
+    public Stats(Pokemon ownerPokemon) //trzeba dodac strength i wywogle wszystko zrobic na random
     {
         Random random = new Random();
+        int skillPoll = 15;
+        
         owner = ownerPokemon;
-        vitality = vit;
-        defense = def;
-        strength = 10;
+        vitality = random.Next(1,skillPoll/3*2);
+        defense = random.Next(1,skillPoll-vitality-1);
+        strength = skillPoll - vitality - defense;
         UpdateStats();
         hp = random.Next((int)(0.5f * maxHp), (int)maxHp);
     }
@@ -70,11 +74,12 @@
         }
     }
 
+    float armorScalar = 25f;
     private void TakeHpDamage(float value)
     {
         float damage = -value;
         float damageAfterArmor;
-        damageAfterArmor = damage / (1.0f + (armorFromDefense / 100.0f));
+        damageAfterArmor = damage / (1.0f + (armorFromDefense / armorScalar));
 /*        Console.WriteLine("damage b4 armor :");
         Console.WriteLine(damage);
         Console.WriteLine("damage after armor :");
@@ -88,7 +93,7 @@
     }
     public float GetValueAfterArmors(float value)
     {
-        return value / (1.0f + (armorFromDefense / 100.0f));
+        return value / (1.0f + (armorFromDefense / armorScalar));
     }
 
     public void HitShield(float damage)
@@ -123,11 +128,21 @@
     }
     public void LevelUp()
     {
-        //kazdy type pokemona mialo mu dodawac inne staty
-        Console.WriteLine("LevelUp");
-        vitality += 5;
-        defense += 5;
-        strength += 5;
+        Random random = new Random();
+        int skillPoll = 9;
+        int vitalityAdd = random.Next(1, skillPoll / 3 * 2);
+        int defenseAdd = random.Next(1, skillPoll - vitalityAdd - 1);
+        int strengthAdd = skillPoll - vitalityAdd - defenseAdd;
+        vitality += vitalityAdd;
+        defense += defenseAdd;
+        strength += strengthAdd;
+        UpdateStats();
+    }
+    public void PrintInfo()
+    {
+        Console.WriteLine($"Vit: {vitality}");
+        Console.WriteLine($"Armor: {armorFromDefense} from Def: {defense} which is {100-GetValueAfterArmors(100f)}% dmg reduction");
+        Console.WriteLine($"Dmg mod: {damageModifier} from Str: {strength}");
     }
 
 }

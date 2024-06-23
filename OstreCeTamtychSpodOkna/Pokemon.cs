@@ -10,10 +10,16 @@ public class Pokemon
     public Pokemon()
     {
         level = new PokemonLevel(this);
+        
+
         Random random = new Random();
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
         Name = PokemonNameGenerator.GenerateName(type);
-        stats = new Stats(5, 5, this);
+        stats = new Stats(this);
+        for(int i = 0; i < 10; i++)
+        {
+            level.exp = 5 * level.level + 1;
+        }
 
         FillSkillsUpToPokemonLevel();
     }
@@ -25,9 +31,14 @@ public class Pokemon
 
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
         Name = PokemonNameGenerator.GenerateName(type);
-        stats = new Stats(5, 5, this);
+        stats = new Stats(this);
 
-        FillSkillsUpToPokemonLevel();
+        for(int i = 0; i < levelToCreate-1; i++)
+        {
+            LevelUpLogic();
+        }
+        //FillSkillsUpToPokemonLevel();
+
 
     }
 
@@ -125,8 +136,6 @@ public class Pokemon
     */
     public void LevelUpLogic()
     {
-        //TOmfDO stats.levelup()
-        //Console.WriteLine("No Level up logic implemented !!!!!!!!!!!!!");
         stats.LevelUp();
         FillSkillsUpToPokemonLevel();
         foreach (var skill in allSkills)
@@ -143,6 +152,7 @@ public class Pokemon
         Console.WriteLine("Type" + type);
         Console.WriteLine("Hp: " + stats.Hp + "/" + stats.maxHp);
         Console.WriteLine("Shield: " + stats.shield + "/" + stats.maxShield);
+        stats.PrintInfo();
         Console.WriteLine("Lv: " + level.level + " Exp: " + level.exp + "/" + level.LevelUpFormula());
 
     }
