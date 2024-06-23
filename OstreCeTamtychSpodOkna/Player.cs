@@ -222,6 +222,7 @@ public class Player : HasPokemonList
                 if (int.TryParse(input, out int numer))
                 {
                     Console.WriteLine($"Wczytano Pokemona: {pokemonList[numer-1].Name} jego skille to: ");
+                    Console.WriteLine();
                     pokemonList[numer-1].AllSkillsInfoPrint();
                     Console.ReadKey();
                 }
