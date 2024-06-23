@@ -350,6 +350,17 @@ public class Player : HasPokemonList
 public static class PrawieSingleton
 {
     public static Player player;
+    public static int GetAverageLevelOfPlayerPokemons()
+    {
+        int averageLevel = 0;
+        foreach (Pokemon p in player.pokemonList)
+        {
+            averageLevel += p.level.level;
+        }
+        averageLevel /= player.pokemonList.Count + 1;
+
+            return averageLevel;
+    }
 }
 public static class Hospital
 {

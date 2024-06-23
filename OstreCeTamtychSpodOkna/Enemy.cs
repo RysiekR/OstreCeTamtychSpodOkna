@@ -46,7 +46,7 @@ public class Enemy : HasPokemonList
         }
         else if (howMany>9)
         {
-            howMany += rnd.Next(-3, 4);
+            howMany += rnd.Next(-4, 5);
         }
         else
         {
@@ -54,7 +54,7 @@ public class Enemy : HasPokemonList
         }
         for (int i = 0; i < howMany; i++)
         {
-            pokemonList.Add(new Pokemon());
+            pokemonList.Add(new Pokemon(PrawieSingleton.GetAverageLevelOfPlayerPokemons()));
         }
     }
 

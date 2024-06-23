@@ -20,12 +20,13 @@
 
     public Stats( int vit, int def, Pokemon ownerPokemon) //trzeba dodac strength i wywogle wszystko zrobic na random
     {
+        Random random = new Random();
         owner = ownerPokemon;
         vitality = vit;
         defense = def;
         strength = 10;
         UpdateStats();
-        hp = 0.5f * maxHp;
+        hp = random.Next((int)(0.5f * maxHp), (int)maxHp);
     }
     public bool IsAlive
     {
@@ -73,7 +74,7 @@
     {
         float damage = -value;
         float damageAfterArmor;
-        damageAfterArmor = damage / (1.0f + (armorFromDefense / 10.0f));
+        damageAfterArmor = damage / (1.0f + (armorFromDefense / 100.0f));
 /*        Console.WriteLine("damage b4 armor :");
         Console.WriteLine(damage);
         Console.WriteLine("damage after armor :");
@@ -84,6 +85,10 @@
             damageAfterArmor = 0;
         }
         hp -= damageAfterArmor;
+    }
+    public float GetValueAfterArmors(float value)
+    {
+        return value / (1.0f + (armorFromDefense / 100.0f));
     }
 
     public void HitShield(float damage)
@@ -101,7 +106,7 @@
     public void UpdateStats()
     {
         float tempMaxHp = maxHp;
-        maxHp = vitality * 20.0f * owner.level.level;
+        maxHp = vitality * 10.0f * owner.level.level;
         hp = (hp * maxHp) / tempMaxHp;
 
         maxShield = (defense * 1.5f + vitality * 1.5f) * 1.2f * owner.level.level;
@@ -112,7 +117,7 @@
             shield = 0;
         }
 
-        damageModifier = strength * 1.01f * owner.level.level;
+        damageModifier = 1 + (strength * 0.1f * owner.level.level);
 
         armorFromDefense = (defense) * owner.level.level * 0.5f;
     }

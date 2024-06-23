@@ -47,7 +47,7 @@ public class OffensiveSkill : SkillCategory
         name = SkillNameGenerator.GenerateName(type, Category.Offensive);
         initialDamageValue = random.Next(10, 20);
 
-        accuracy = random.Next(0, 101);
+        accuracy = random.Next(75, 101);
         UpdateSkill();
         maxNumberOfUses = random.Next(1, 10);
         ResetUses();
@@ -91,7 +91,7 @@ public class OffensiveSkill : SkillCategory
         if (stats.Hp < 0) stats.Hp = 0;
         pokemonToHit.stats = stats;
         Console.Beep();
-        return damage;
+        return pokemonToHit.stats.GetValueAfterArmors(damage);
     }
 
     public void SkillInfoPrint()

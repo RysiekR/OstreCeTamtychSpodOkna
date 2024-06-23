@@ -11,6 +11,15 @@
         _level = 1;
         _exp = 0;
     }
+
+    public PokemonLevel(Pokemon ownerOfLevel, int level)
+    {
+        Random random = new Random();
+        owner = ownerOfLevel;
+        _level = level;
+        _exp = random.Next(0,LevelUpFormula());
+    }
+
     public int level { get => _level; }
    
     public int exp
