@@ -226,13 +226,57 @@ public class Player : HasPokemonList
                     Console.WriteLine($"Wczytano Pokemona: {pokemonList[numer - 1].Name} jego skille to: ");
                     Console.WriteLine();
                     pokemonList[numer - 1].AllSkillsInfoPrint();
+                    Console.WriteLine("want to change some skills ? press 1 to delete and reroll skills, or any key");
+                    ConsoleKey tempKey = Console.ReadKey().Key;
+                    if (tempKey == ConsoleKey.D1)
+                    {
+                        bool tempRemovalMenu = true;
+                        List<int> listToRemove = new();
+                        while (tempRemovalMenu)
+                        {
+                            Console.WriteLine("which to remove? 0 to exit");
+
+                            string inputNumber = Console.ReadLine();
+
+                            if (int.TryParse(inputNumber, out int numerIndexu))
+                            {
+                                if (numerIndexu == 0)
+                                {
+                                    tempRemovalMenu = false;
+                                }
+                                else
+                                {
+                                    numerIndexu--;
+                                    listToRemove.Add(numerIndexu);
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("Niepoprawny format. Podaj liczbę całkowitą.");
+                            }
+
+                        }
+                        List<SkillCategory> skillsToRemove = new List<SkillCategory>();
+                        foreach (int numerIndexu in listToRemove)
+                        {
+                            skillsToRemove.Add(pokemonList[numer - 1].allSkills[numerIndexu]);
+                        }
+                        foreach (SkillCategory skillBleh in skillsToRemove)
+                        {
+                            pokemonList[numer - 1].allSkills.Remove(skillBleh);
+                        }
+
+                        pokemonList[numer - 1].FillSkillsUpToPokemonLevel();
+
+                    }
+                    Console.WriteLine("exiting pokemon skill list press any key");
                     Console.ReadKey();
+
                 }
                 else
                 {
                     Console.WriteLine("Niepoprawny format. Podaj liczbę całkowitą.");
                 }
-                Console.ReadKey();
 
 
             }
@@ -359,7 +403,7 @@ public static class PrawieSingleton
         }
         averageLevel /= player.pokemonList.Count + 1;
 
-            return averageLevel;
+        return averageLevel;
     }
 }
 public static class Hospital
