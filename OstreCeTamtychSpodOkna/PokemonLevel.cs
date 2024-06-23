@@ -34,7 +34,7 @@
             else { Console.WriteLine("Error PokemonLevel.exp gain < 0 !!!!!!"); }; // error jezeli ktos by chcial odjac expa
         }
     }
-    private int LevelUpFormula() // intowy prog expa na level
+    public int LevelUpFormula() // intowy prog expa na level
     {
         return _level * 5; // tutaj bardzo prosty do zmiany
     }

@@ -93,4 +93,14 @@ public class Pokemon
         //TOmfDO stats.levelup()
         Console.WriteLine("No Level up logic implemented !!!!!!!!!!!!!");
     }
+    public void PokemonInfoPrint()
+    {
+        Console.WriteLine(Name + ": ");
+        Console.WriteLine("Type" + type);
+        Console.WriteLine("Lv: " + level.level +" Exp: "+level.exp+"/"+level.LevelUpFormula());
+    }
+    public void AllSkillsInfoPrint()
+    {
+        foreach (var skill in allSkills) { skill.SkillInfoPrint(); }
+    }
 }

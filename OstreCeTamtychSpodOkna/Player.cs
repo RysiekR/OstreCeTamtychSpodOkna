@@ -205,15 +205,33 @@ public class Player : HasPokemonList
             {
                 Console.Clear();
                 Console.WriteLine("Lista Pokemonow:");
+
+                int iterator = 1;
+
                 foreach (Pokemon p in pokemonList)
                 {
-                    Console.WriteLine(p.Name + "skills: ");
-                    foreach(SkillCategory s in p.allSkills)
-                    {
-                        Console.WriteLine(s.name + " number of uses left:" + s.numberOfUses + "/" + s.maxNumberOfUses);
-                    }
+                    Console.WriteLine(iterator + ":");
+                    p.PokemonInfoPrint();
+                    iterator++;
+                }
+
+
+                Console.Write("Podaj liczbę całkowitą: ");
+                string input = Console.ReadLine();
+
+                if (int.TryParse(input, out int numer))
+                {
+                    Console.WriteLine($"Wczytano Pokemona: {pokemonList[numer-1].Name} jego skille to: ");
+                    pokemonList[numer-1].AllSkillsInfoPrint();
+                    Console.ReadKey();
+                }
+                else
+                {
+                    Console.WriteLine("Niepoprawny format. Podaj liczbę całkowitą.");
                 }
                 Console.ReadKey();
+
+
             }
             else if (check == "3") { }
         }

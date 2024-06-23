@@ -7,6 +7,7 @@ public interface SkillCategory
     bool CanUse { get; }
     float Use(Pokemon target);
     public void ResetUses();
+    public void SkillInfoPrint();
 }
 
 public enum Category
@@ -37,30 +38,39 @@ public class OffensiveSkill : SkillCategory
     public bool CanUse { get; private set; } = true;
     public int numberOfUses { get; private set; }
     public int maxNumberOfUses { get; private set; }
+    Random random = new Random();
 
     public OffensiveSkill(Pokemon ownerA)
     {
-        Random random = new Random();
         owner = ownerA;
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
         name = SkillNameGenerator.GenerateName(type, Category.Offensive);
         initialDamageValue = random.Next(10, 20);
 
-        accuracy = random.Next(0, 100);
+        accuracy = random.Next(0, 101);
         UpdateSkill();
         maxNumberOfUses = random.Next(1, 10);
         ResetUses();
     }
+    /// <summary>
+    /// when canUse: returns damage if hit succesful if not then returns 0
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
     public float Use(Pokemon target)
     {
         if (CanUse)
         {
             numberOfUses--;
-            if (numberOfUses <= 0)
+            if (random.Next(0, 101) < accuracy)
             {
-                CanUse = false;
+                if (numberOfUses <= 0)
+                {
+                    CanUse = false;
+                }
+                return DealDamage(target);
             }
-            return DealDamage(target);
+            else return 0;
         }
         else return 0;
     }
@@ -82,6 +92,16 @@ public class OffensiveSkill : SkillCategory
         pokemonToHit.stats = stats;
         Console.Beep();
         return damage;
+    }
+
+    public void SkillInfoPrint()
+    {
+        Console.WriteLine(category + " skill " + name + ":");
+        Console.WriteLine("Type: " + type);
+        Console.WriteLine("Damage: " + damage);
+        Console.WriteLine("Accuracy: " + accuracy);
+        Console.WriteLine("Num of uses: " + numberOfUses + "/" + maxNumberOfUses);
+        Console.WriteLine();
     }
 }
 public class HealSkill : SkillCategory
@@ -133,4 +153,12 @@ public class HealSkill : SkillCategory
             }
         }
     }
+    public void SkillInfoPrint()
+    {
+        Console.WriteLine(category + name + ":");
+        Console.WriteLine("Heal ammount: " + HealValue);
+        Console.WriteLine("Num of uses: " + numberOfUses + "/" + maxNumberOfUses);
+        Console.WriteLine();
+    }
+
 }
