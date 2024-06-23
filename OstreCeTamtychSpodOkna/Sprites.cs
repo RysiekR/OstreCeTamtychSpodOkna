@@ -44,7 +44,7 @@
     "W           W",
     "W A         W",
     "W           W",
-    "W H         W",
+    "W H     S   W",
     "W           W",
     "W           W",
     "WWWWWWWWWWWWW",
@@ -101,6 +101,14 @@
             "║│││║",
             "║│H│║",
         };
+        public static readonly string[] spriteShop =
+        {
+            "╔╤╤╤╗",
+            "║│││║",
+            "║│+│║",
+            "║│││║",
+            "║│S│║",
+        };
         public static readonly string[] wall =
         {
             "+---+",
@@ -148,6 +156,7 @@
                 case 'A': bigSprite = spritePortalToArena; break;
                 case 'C': bigSprite = spritePortalToCity; break;
                 case 'H': bigSprite = spriteHospital; break;
+                case 'S': bigSprite = spriteShop; break;
                 //case 'F': bigSprite = debugFight; break;
                 default: bigSprite = spriteAir; break;
             }
