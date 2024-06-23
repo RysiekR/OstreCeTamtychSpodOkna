@@ -234,7 +234,7 @@ public class Player : HasPokemonList
                         List<int> listToRemove = new();
                         while (tempRemovalMenu)
                         {
-                            Console.WriteLine("which to remove? 0 to exit");
+                            Console.WriteLine("which to remove? 0 to accept and exit");
 
                             string inputNumber = Console.ReadLine();
 
