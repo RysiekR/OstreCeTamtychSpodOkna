@@ -341,7 +341,8 @@ public class Player : HasPokemonList
         {
             if (enemy.row == possibleRow && enemy.col == possibleCol)
             {
-                BattleProgram.BattleWindowHolder(this, enemy);
+                BattleProgram.BattleWindowHolder(this, enemy); // WALKA NA KONKRETNYM PRZECIWNIKU TUTAJ, TUTAJ MASZ ENEMY KTORY JEST W TRAKCIE WALKI
+                enemy.AssignAvatar();
                 Random random = new Random();
                 if (!(enemy.pokemonList.Any(p => p.stats.IsAlive)))
                 {

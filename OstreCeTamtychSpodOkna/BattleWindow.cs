@@ -3,11 +3,13 @@ using Terminal.Gui;
 
 public class BattleProgram
 {
+    public static bool battleOverride;
     public static void BattleWindowHolder(Player aPlayer, Enemy enemy)
     {
         bool battle = false;
         do
         {
+            battleOverride = true;
             battle = false;
             bool playerCon = false;
             bool enemyCon = false;
@@ -30,41 +32,45 @@ public class BattleProgram
                 }
             }
             if (playerCon && enemyCon) battle = true;
-            Application.Init();
-            {
-                var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
-
-                var surrenderButton = new Button("Don't Attack")
-                {
-                    X = Pos.Percent(20),
-                    Y = Pos.Center(),
-                };
-                surrenderButton.Clicked += () =>
-                {
-                    Application.RequestStop(messageDialog);
-
-                    battle = false;
-                    //Environment.Exit(0); //Zakończenie aplikacji
-                };
-
-                var tryAgainButton = new Button("Spróbuj ponownie")
-                {
-                    X = Pos.Percent(60),
-                    Y = Pos.Center(),
-                };
-                tryAgainButton.Clicked += () =>
-                {
-                    Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
-                };
-
-                messageDialog.AddButton(surrenderButton);
-                messageDialog.AddButton(tryAgainButton);
-                Application.Run(messageDialog);
-                Application.Shutdown();
-            }
             
+            battle = battleOverride && battle;
+/*
+            if (battle)
+            {
+                Application.Init();
+                {
+                    var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
+
+                    var surrenderButton = new Button("RUN / Don't Attack")
+                    {
+                        X = Pos.Percent(20),
+                        Y = Pos.Center(),
+                    };
+                    surrenderButton.Clicked += () =>
+                    {
+                        Application.RequestStop(messageDialog);
+
+                        battle = false;
+                        //Environment.Exit(0); //Zakończenie aplikacji
+                    };
+
+                    var tryAgainButton = new Button("Fight Continues / Spróbuj ponownie")
+                    {
+                        X = Pos.Percent(60),
+                        Y = Pos.Center(),
+                    };
+                    tryAgainButton.Clicked += () =>
+                    {
+                        Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
+                    };
+                    messageDialog.AddButton(surrenderButton);
+                    messageDialog.AddButton(tryAgainButton);
+                    Application.Run(messageDialog);
+                    Application.Shutdown();
+                }
+            }*/
         } while (battle);
-        
+
     }
 }
 public class BattleWindow : Window
@@ -577,11 +583,11 @@ public class BattleWindow : Window
 
                             if (!enemyPokemon.stats.IsAlive)
                             {
-/*                                enemy.indexOfFightingPokemon++;
-                                if (enemy.pokemonList.Count > enemy.indexOfFightingPokemon)
-                                {*/
-                                    Application.RequestStop();
-                                    Application.Top.Running = false;/*
+                                /*                                enemy.indexOfFightingPokemon++;
+                                                                if (enemy.pokemonList.Count > enemy.indexOfFightingPokemon)
+                                                                {*/
+                                Application.RequestStop();
+                                Application.Top.Running = false;/*
                                 }
                                 else
                                 {
@@ -658,9 +664,10 @@ public class BattleWindow : Window
     }
     public void EndBattle()
     {
+        BattleProgram.battleOverride = false;
         UpdateBattleLog("Walka zakończona!");
         Application.RequestStop();
-        
+
     }
     void UpdateBattleLog(string message)
     {

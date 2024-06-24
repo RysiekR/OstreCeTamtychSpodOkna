@@ -20,15 +20,8 @@ public class Enemy : HasPokemonList
         this.col = colSpawn;
         pokemonList.Clear();
         GeneratePokemonsInList(PrawieSingleton.player.pokemonList.Count());
-        if (pokemonList.Count > 9)
-        {
-            enemyAvatar = "%";
-        }
-        else
-        {
-            enemyAvatar = pokemonList.Count.ToString();
-        }
-       // Pokemon = pokemonList[indexOfFightingPokemon];
+        AssignAvatar();
+        // Pokemon = pokemonList[indexOfFightingPokemon];
         InitializeEnemyPosition();
     }
     private int oldCol;
@@ -37,6 +30,26 @@ public class Enemy : HasPokemonList
     Random rnd = new Random();
     private bool hitObstacle = false;
     int randomMove;
+    public void AssignAvatar()
+    {
+        int livingPokemons = 0;
+        foreach (var pokemon in pokemonList)
+        {
+            if (pokemon.stats.IsAlive)
+            {
+                livingPokemons++;
+            }
+        }
+        if (livingPokemons > 9)
+        {
+            enemyAvatar = "%";
+        }
+        else
+        {
+            
+            enemyAvatar = livingPokemons.ToString();
+        }
+    }
 
     private void GeneratePokemonsInList(int howMany)
     {
@@ -44,7 +57,7 @@ public class Enemy : HasPokemonList
         {
             howMany = 1;
         }
-        else if (howMany>9)
+        else if (howMany > 9)
         {
             howMany += rnd.Next(-4, 5);
         }
@@ -154,5 +167,17 @@ public class Enemy : HasPokemonList
         currentMap.mapAsList[row] = currentMap.mapAsList[row].Insert(col, "N");
         currentMap.mapAsList[row] = currentMap.mapAsList[row].Remove(col + 1, 1);
 
+    }
+    public bool HasLivingPokemons()
+    {
+        int livingPokemons = 0;
+        foreach (Pokemon p in pokemonList)
+        {
+            if (p.stats.IsAlive)
+            {
+                livingPokemons++;
+            }
+        }
+        return livingPokemons > 0;
     }
 }
