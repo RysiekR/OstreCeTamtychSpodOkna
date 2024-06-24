@@ -76,6 +76,8 @@ public static class Menu
         {
             Console.Clear();
             Console.WriteLine("All info menu");
+            Console.WriteLine("Esc to exit");
+
 
             int indexPokemon = 0;
             foreach (Pokemon pokemon in pokemonList)
