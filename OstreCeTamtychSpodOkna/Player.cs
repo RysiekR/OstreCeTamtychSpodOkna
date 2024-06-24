@@ -1,8 +1,6 @@
 ﻿
 using OstreCeTamtychSpodOkna;
 using OstreCeTamtychSpodOkna.Equipment;
-using System.Numerics;
-using System.Runtime.InteropServices;
 using Terminal.Gui;
 
 public class Player : HasPokemonList
@@ -31,19 +29,22 @@ public class Player : HasPokemonList
     public Player(Map currentMap)
     {
         rescuedPokemons = new List<Pokemon>();
-        itemsList.Add(ItemFactory.CreateSmallPotion());
-        itemsList.Add(ItemFactory.CreateMediumPotion());
-        itemsList.Add(ItemFactory.CreateHyperPotion());
-        itemsList.Add(ItemFactory.CreateSmallShield());
-        itemsList.Add(ItemFactory.CreateBigShield());
-        itemsList.Add(ItemFactory.CreateSmallBomb());
-        itemsList.Add(ItemFactory.CreateBigBomb());
+        /*        itemsList.Add(ItemFactory.CreateSmallPotion());
+                itemsList.Add(ItemFactory.CreateMediumPotion());
+                itemsList.Add(ItemFactory.CreateHyperPotion());
+                itemsList.Add(ItemFactory.CreateSmallShield());
+                itemsList.Add(ItemFactory.CreateBigShield());
+                itemsList.Add(ItemFactory.CreateSmallBomb());
+                itemsList.Add(ItemFactory.CreateBigBomb());
+        */
         this.currentMap = currentMap;
         InitializePlayerPosition();
         pokemonList.Clear();
-        pokemonList.Add(new Pokemon());
-        pokemonList.Add(new Pokemon());
-       // Pokemon = pokemonList[0];
+        /*
+                pokemonList.Add(new Pokemon());
+                pokemonList.Add(new Pokemon());
+               */
+        // Pokemon = pokemonList[0];
         //slowniki
         movements = new Dictionary<ConsoleKey, Action>
             {
@@ -349,6 +350,26 @@ public static class PrawieSingleton
         averageLevel /= player.pokemonList.Count + 1;
 
         return averageLevel;
+    }
+    public static int GetLevelDifferenceInPlayerPokemons()
+    {
+        int lowestLevel = 0;
+        int highestlevel = 0;
+        if(player.pokemonList.Count != 0)
+        {
+            int[] levelsArray = new int[player.pokemonList.Count];
+
+            for (int i = 0; i < player.pokemonList.Count; i++)
+            {
+                levelsArray[i] = player.pokemonList[i].level.level;
+            }
+
+            lowestLevel = levelsArray.Min();
+            highestlevel = levelsArray.Max();
+        }
+
+
+        return Math.Max(0, (highestlevel - lowestLevel));
     }
 }
 public static class Hospital

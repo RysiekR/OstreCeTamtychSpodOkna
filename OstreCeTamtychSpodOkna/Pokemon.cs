@@ -25,13 +25,14 @@ public class Pokemon
         FillSkillsUpToPokemonLevel();
     }
     /// <summary>
-    /// Takes int and randoms pokemon levels +- 3 lvls
+    /// Takes int and randoms pokemon level base on intbaseLevelToRandomize +- diference in player pokemon lvls
     /// </summary>
     /// <param name="baseLevelToRandomizeFrom"></param>
     public Pokemon(int baseLevelToRandomizeFrom)
     {
         Random random = new Random();
-        int levelToCreate = Math.Max(1, baseLevelToRandomizeFrom +random.Next(-3,4));
+        int difference = PrawieSingleton.GetLevelDifferenceInPlayerPokemons();
+        int levelToCreate = Math.Max(1, baseLevelToRandomizeFrom + random.Next(-difference,difference+1));
         level = new(this, levelToCreate);
 
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);

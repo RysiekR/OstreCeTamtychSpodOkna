@@ -11,7 +11,7 @@ public static class Rescue
         do
         {
             Console.Clear();
-            Console.WriteLine("Creatures Rescue:");
+            Console.WriteLine("Creatures Rescue Center:");
             Console.WriteLine("Esc to exit");
             Console.WriteLine("1 to buyout creatures");
             Console.WriteLine("2 to see transfered rescued Creatures");
@@ -86,7 +86,7 @@ public static class Rescue
         string choosenIndexOfPokemon = Console.ReadLine();
         if (int.TryParse(choosenIndexOfPokemon, out int numerIndexPokemon))
         {
-            if (numerIndexPokemon == 0 || numerIndexPokemon - 1 > transferedPokemons.Count)
+            if (numerIndexPokemon == 0 || numerIndexPokemon - 1 > transferedPokemons.Count || transferedPokemons.Count == 0)
             {
                 return;
             }
