@@ -171,4 +171,11 @@ public class Pokemon
             skill.SkillInfoPrint(); 
         }
     }
+    public int ExpAfterWin()
+    {
+        if (level.level > 1)
+        {
+            return ((int)Math.Sqrt(level.level - 1) * 5)/2;
+        }
+        else { return 1; }
 }

@@ -45,6 +45,6 @@
     }
     public int LevelUpFormula() // intowy prog expa na level
     {
-        return _level * 5; // tutaj bardzo prosty do zmiany
+        return (int)Math.Sqrt(_level) * 5; // tutaj bardzo prosty do zmiany
     }
 }
