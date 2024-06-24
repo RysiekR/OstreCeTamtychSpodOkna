@@ -18,7 +18,7 @@ public static class MapHolder
     public static Enemy FindEnemyOnArenaAt(int row, int col)
     {
         Enemy enemy = null;
-        foreach (Enemy enemi in tempArenaMap.enemyList)
+        foreach (Enemy enemi in PrawieSingleton.player.currentMap.enemyList)
         {
             if (enemi.row == row && enemi.col == col) 
             {
