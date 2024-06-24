@@ -98,7 +98,7 @@ public class OffensiveSkill : SkillCategory
 
     public void SkillInfoPrint()
     {
-        Console.WriteLine(category + " skill " + name + ":");
+        Console.WriteLine(category + " skill: " + name + ":");
         Console.WriteLine("Type: " + type);
         Console.WriteLine("Damage: " + damage);
         Console.WriteLine("Accuracy: " + accuracy);
@@ -166,7 +166,7 @@ public class HealSkill : SkillCategory
     }
     public void SkillInfoPrint()
     {
-        Console.WriteLine(category + " skill " + name + ":");
+        Console.WriteLine(category + " skill: " + name + ":");
         Console.WriteLine("Heal ammount: " + HealValue);
         Console.WriteLine("Num of uses: " + numberOfUses + "/" + maxNumberOfUses);
         Console.WriteLine();
