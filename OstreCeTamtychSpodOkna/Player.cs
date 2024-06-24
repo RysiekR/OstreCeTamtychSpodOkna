@@ -78,7 +78,7 @@ public class Player : HasPokemonList
         //dodanie znakow enemies
         foreach (char enemy in enemyString)
         {
-            logicFromChars[enemy] = () => FightyFight(); //TODO MIODEK walka
+            logicFromChars[enemy] = () => FightyFightChecker(); //TODO MIODEK walka
         }
         PrawieSingleton.player = this;
     }
@@ -235,6 +235,17 @@ public class Player : HasPokemonList
         Menu.ShowMenu();
     }
     //TODO miodek
+
+    public void FightyFightChecker()
+    {
+        hitObstacle = true;
+        if (pokemonList.Count > 0)
+        {
+            FightyFight();
+        }
+    }
+
+
     public void FightyFight()
     {
         // Sprawdzenie, czy gracz ma jakiekolwiek żywe Pokemony przed rozpoczęciem walki
