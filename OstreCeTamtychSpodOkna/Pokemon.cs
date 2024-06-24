@@ -24,10 +24,14 @@ public class Pokemon
 
         FillSkillsUpToPokemonLevel();
     }
-    public Pokemon(int averagePlayerPokemonLevel)
+    /// <summary>
+    /// Takes int and randoms pokemon levels +- 3 lvls
+    /// </summary>
+    /// <param name="baseLevelToRandomizeFrom"></param>
+    public Pokemon(int baseLevelToRandomizeFrom)
     {
         Random random = new Random();
-        int levelToCreate = Math.Max(1, averagePlayerPokemonLevel +random.Next(-4,5));
+        int levelToCreate = Math.Max(1, baseLevelToRandomizeFrom +random.Next(-3,4));
         level = new(this, levelToCreate);
 
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
