@@ -222,7 +222,14 @@ public class BattleWindow : Window
         {
             float damageDealt = offensiveSkill.Use(playerPokemon);
             UpdateHPBars();
-            UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name}, zadając {damageDealt} obrażenia!");
+            if (damageDealt <= 0)
+            {
+                UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name} i nie trafia!");
+            }
+            else
+            {
+                UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name}, zadając {damageDealt} obrażenia!");
+            }
             if (!playerPokemon.stats.IsAlive)
             {
                 playerTurn = false;
@@ -521,6 +528,7 @@ public class BattleWindow : Window
                     };
                     itemButton.Clicked += () =>
                     {
+                        player.itemsList.RemoveAt(itemIndex);
                         UpdateBattleLog(item.UseItem(playerPokemon, enemyPokemon));
                         UpdateHPBars();
                         if (!enemyPokemon.stats.IsAlive)
