@@ -277,7 +277,7 @@ public class BattleWindow : Window
 
     private void InitializeUI()
     {
-        var playerFrame = new FrameView("Gracz")
+        var playerFrame = new FrameView($"Twój pokemon: {playerPokemon.Name}")
         {
             X = Pos.Percent(5),
             Y = Pos.Percent(5),
@@ -286,7 +286,7 @@ public class BattleWindow : Window
         };
         playerHPBar = new ProgressBar()
         {
-            X = Pos.Percent(15),
+            X = Pos.Percent(12),
             Y = Pos.Percent(30),
             Width = Dim.Percent(80),
             Height = 1,
@@ -314,15 +314,21 @@ public class BattleWindow : Window
             Y = Pos.Top(playerShieldBar) - 1,
         };
 
-        var playerPokemonNameLabel = new Label($"{playerPokemon.Name}")
+        var playerLevelLabel = new Label($"Level:{playerPokemon.level.level}")
+        {
+            X = Pos.Percent(1),
+            Y = Pos.Top(playerShieldBar),
+        };
+        var playerTypeLabel = new Label($"Type:{playerPokemon.type}")
         {
             X = Pos.Percent(1),
             Y = Pos.Top(playerHPBar),
-        };
+        }; 
+        
         Add(playerFrame);
-        playerFrame.Add(playerHPBar, playerShieldBar, playerHPLabel, playerShieldLabel, playerPokemonNameLabel);
+        playerFrame.Add(playerHPBar, playerShieldBar, playerHPLabel, playerShieldLabel, playerLevelLabel, playerTypeLabel);
 
-        var enemyFrame = new FrameView("Przeciwnik")
+        var enemyFrame = new FrameView($"Pokemon przeciwnika: {enemyPokemon.Name}")
         {
             X = Pos.Percent(55),
             Y = Pos.Percent(5),
@@ -332,17 +338,13 @@ public class BattleWindow : Window
 
         enemyHPBar = new ProgressBar()
         {
-            X = Pos.Percent(15),
+            X = Pos.Percent(12),
             Y = Pos.Percent(30),
             Width = Dim.Percent(80),
             Height = 1,
             ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Green, Color.Black) }
         };
-        var enemyLevelLabel = new Label($"Level:{enemyPokemon.level.level}")
-        {
-            X = Pos.Percent(1),
-            Y = Pos.Top(enemyHPBar) - 2,
-        };
+       
 
         enemyShieldBar = new ProgressBar()
         {
@@ -364,14 +366,19 @@ public class BattleWindow : Window
             X = Pos.Left(enemyShieldBar),
             Y = Pos.Top(enemyShieldBar) - 1,
         };
-
-        var enemyPokemonNameLabel = new Label($"{enemyPokemon.Name}")
+        var enemyLevelLabel = new Label($"Level:{enemyPokemon.level.level}")
+        {
+            X = Pos.Percent(1),
+            Y = Pos.Top(enemyShieldBar),
+        };
+        var enemyTypeLabel = new Label($"Type:{enemyPokemon.type}")
         {
             X = Pos.Percent(1),
             Y = Pos.Top(enemyHPBar),
         };
+        
         Add(enemyFrame);
-        enemyFrame.Add(enemyHPBar, enemyShieldBar, enemyHPLabel, enemyShieldLabel, enemyLevelLabel, enemyPokemonNameLabel);
+        enemyFrame.Add(enemyHPBar, enemyShieldBar, enemyHPLabel, enemyShieldLabel, enemyLevelLabel, enemyTypeLabel);
 
         var battleLogFrame = new FrameView("Battle Log")
         {
@@ -501,7 +508,7 @@ public class BattleWindow : Window
         int rows = (player.itemsList.Count + 1) / 2;
         for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < 2; j++)
+            for (int j = 0; j < 3; j++)
             {
                 int itemIndex = i * 2 + j;
                 if (itemIndex < player.itemsList.Count)
