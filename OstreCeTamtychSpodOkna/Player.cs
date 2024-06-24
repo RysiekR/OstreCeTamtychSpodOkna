@@ -234,7 +234,6 @@ public class Player : HasPokemonList
     {
         Menu.ShowMenu();
     }
-    //TODO miodek
 
     public void FightyFightChecker()
     {
@@ -242,6 +241,26 @@ public class Player : HasPokemonList
         if (pokemonList.Count > 0)
         {
             FightyFight();
+        }
+        else
+        {
+            Application.Init();
+            var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
+
+            var tryAgainButton = new Button("Zdobądź Pokemony!")
+            {
+                X = Pos.Percent(60),
+                Y = Pos.Center(),
+            };
+            tryAgainButton.Clicked += () =>
+            {
+                Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
+            };
+
+            messageDialog.AddButton(tryAgainButton);
+            Application.Run(messageDialog);
+            Application.Shutdown();
+            return;
         }
     }
 
@@ -254,18 +273,7 @@ public class Player : HasPokemonList
             Application.Init();
             var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
 
-            var surrenderButton = new Button("Don't Attack")
-            {
-                X = Pos.Percent(20),
-                Y = Pos.Center(),
-            };
-            surrenderButton.Clicked += () =>
-            {
-                Application.RequestStop();
-                Environment.Exit(0); //Zakończenie aplikacji
-            };
-
-            var tryAgainButton = new Button("Spróbuj ponownie")
+            var tryAgainButton = new Button("Ulecz pokemony!")
             {
                 X = Pos.Percent(60),
                 Y = Pos.Center(),
@@ -275,7 +283,6 @@ public class Player : HasPokemonList
                 Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
             };
 
-            messageDialog.AddButton(surrenderButton);
             messageDialog.AddButton(tryAgainButton);
             Application.Run(messageDialog);
             Application.Shutdown();
