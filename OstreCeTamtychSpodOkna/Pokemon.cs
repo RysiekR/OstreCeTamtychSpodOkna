@@ -175,7 +175,8 @@ public class Pokemon
     {
         if (level.level > 1)
         {
-            return ((int)Math.Sqrt(level.level - 1) * 5)/2;
+            return ((int)Math.Sqrt(level.level - 1) * 5) / 2;
         }
         else { return 1; }
+    }
 }
