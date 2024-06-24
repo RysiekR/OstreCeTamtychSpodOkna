@@ -23,7 +23,7 @@
             _ => throw new ArgumentOutOfRangeException(nameof(type), $"Not expected Pokémon type value: {type}")
         };
 
-        return typeElements[random.Next(typeElements.Length)] + neutralElements[random.Next(neutralElements.Length)];
+        return typeElements[random.Next(typeElements.Length)] + " " + neutralElements[random.Next(neutralElements.Length)];
     }
 }
 

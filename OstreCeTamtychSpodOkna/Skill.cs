@@ -166,7 +166,7 @@ public class HealSkill : SkillCategory
     }
     public void SkillInfoPrint()
     {
-        Console.WriteLine(category +" "+ name + " skill:");
+        Console.WriteLine(category + " skill " + name + ":");
         Console.WriteLine("Heal ammount: " + HealValue);
         Console.WriteLine("Num of uses: " + numberOfUses + "/" + maxNumberOfUses);
         Console.WriteLine();

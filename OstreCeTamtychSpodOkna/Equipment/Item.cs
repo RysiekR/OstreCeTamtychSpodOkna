@@ -13,8 +13,8 @@
     protected static Random random = new Random();
 
     public string Name { get; set; }
-    protected readonly int minPower;
-    protected readonly int maxPower;
+    public readonly int minPower;
+    public readonly int maxPower;
     public readonly int Price;
 
     public Item(string name, int minPower, int maxPower, int price)

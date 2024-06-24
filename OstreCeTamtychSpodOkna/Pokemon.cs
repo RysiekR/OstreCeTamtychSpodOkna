@@ -154,7 +154,7 @@ public class Pokemon
     public void PokemonInfoPrint()
     {
         Console.WriteLine(Name + ": ");
-        Console.WriteLine("Type" + type);
+        Console.WriteLine("Type " + type);
         Console.WriteLine("Hp: " + stats.Hp + "/" + stats.maxHp);
         Console.WriteLine("Shield: " + stats.shield + "/" + stats.maxShield);
         stats.PrintInfo();
@@ -163,6 +163,12 @@ public class Pokemon
     }
     public void AllSkillsInfoPrint()
     {
-        foreach (var skill in allSkills) { skill.SkillInfoPrint(); }
+        int number = 0;
+        foreach (var skill in allSkills) 
+        {
+            number++;
+            Console.WriteLine(number);
+            skill.SkillInfoPrint(); 
+        }
     }
 }

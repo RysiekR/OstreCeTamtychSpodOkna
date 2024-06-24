@@ -1,4 +1,6 @@
-﻿namespace OstreCeTamtychSpodOkna
+﻿using System.Numerics;
+
+namespace OstreCeTamtychSpodOkna
 {
     public static class Display
     {
@@ -121,6 +123,11 @@
             // TODO umiesc gracza w miejscu bezpiecznym dla kodu
             InitializeDisplay(MapHolder.cityMap);
             //TODO print player
+        }
+        public static void QuitMenu()
+        {
+            InitializeDisplay(PrawieSingleton.player.currentMap);
+
         }
     }
 }
