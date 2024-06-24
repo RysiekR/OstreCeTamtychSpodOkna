@@ -87,8 +87,10 @@ public class OffensiveSkill : SkillCategory
     public float DealDamage(Pokemon pokemonToHit)
     {
 
+        float damageMultiplayer = Calculations.GiveMeMutiplayer(pokemonToHit,type);
+
         var stats = pokemonToHit.stats;
-        stats.Hp = -damage;
+        stats.Hp = -damage * damageMultiplayer;
         if (stats.Hp < 0) stats.Hp = 0;
         pokemonToHit.stats = stats;
         return pokemonToHit.stats.GetValueAfterArmors(damage);
@@ -170,4 +172,37 @@ public class HealSkill : SkillCategory
         Console.WriteLine();
     }
 
+}
+
+public static class Calculations
+{
+    private static bool IsWinning(Type mySpellType, Type opponentSpellType)
+    {
+        Type[] types = (Type[])Enum.GetValues(typeof(Type));
+        int myIndex = Array.IndexOf(types, mySpellType);
+        int winningIndex = (myIndex + 1) % types.Length;
+        Type winningType = types[winningIndex];
+
+        return opponentSpellType == winningType;
+    }
+    public static float GiveMeMutiplayer(Pokemon target, Type mySpellType)
+    {
+        Type targetPokemonType = target.type;
+
+        if (IsWinning(mySpellType, targetPokemonType))
+        {
+            //Wygrana
+            return 2f;
+        }
+        else if (mySpellType == targetPokemonType)
+        {
+            //Remis
+            return 1f;
+        }
+        else
+        {
+            //Przegrana
+            return 0.5f;
+        }
+    }
 }
