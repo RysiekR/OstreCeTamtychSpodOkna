@@ -4,6 +4,7 @@ public static class Rescue
 {
     static Player player = PrawieSingleton.player;
     public static List<Pokemon> transferedPokemons = new List<Pokemon>();
+    static int howManyTransferred = 0;
     public static void OpenRescueMenu()
     {
         bool con1 = true;
@@ -15,7 +16,7 @@ public static class Rescue
             Console.WriteLine("1 to buyout creatures");
             Console.WriteLine("2 to see transfered rescued Creatures");
             Console.WriteLine("3 to transfer all Creatures");
-            Console.WriteLine($"You have transfered {transferedPokemons.Count}.");
+            Console.WriteLine($"You have transfered {howManyTransferred}.");
             if (player.rescuedPokemons.Count > 0)
             {
                 Console.WriteLine("You can still transfer some.");
@@ -119,6 +120,7 @@ public static class Rescue
             player.money += p.ExpAfterWin();
             money += p.ExpAfterWin();
             transferedPokemons.Add(p);
+            howManyTransferred++;
         }
         player.rescuedPokemons.Clear();
         Console.WriteLine($"Transfered! and got {money} money. ");
