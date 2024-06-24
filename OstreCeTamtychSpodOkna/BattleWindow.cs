@@ -32,43 +32,43 @@ public class BattleProgram
                 }
             }
             if (playerCon && enemyCon) battle = true;
-            
+
             battle = battleOverride && battle;
-/*
-            if (battle)
-            {
-                Application.Init();
-                {
-                    var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
+            /*
+                        if (battle)
+                        {
+                            Application.Init();
+                            {
+                                var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
 
-                    var surrenderButton = new Button("RUN / Don't Attack")
-                    {
-                        X = Pos.Percent(20),
-                        Y = Pos.Center(),
-                    };
-                    surrenderButton.Clicked += () =>
-                    {
-                        Application.RequestStop(messageDialog);
+                                var surrenderButton = new Button("RUN / Don't Attack")
+                                {
+                                    X = Pos.Percent(20),
+                                    Y = Pos.Center(),
+                                };
+                                surrenderButton.Clicked += () =>
+                                {
+                                    Application.RequestStop(messageDialog);
 
-                        battle = false;
-                        //Environment.Exit(0); //Zakończenie aplikacji
-                    };
+                                    battle = false;
+                                    //Environment.Exit(0); //Zakończenie aplikacji
+                                };
 
-                    var tryAgainButton = new Button("Fight Continues / Spróbuj ponownie")
-                    {
-                        X = Pos.Percent(60),
-                        Y = Pos.Center(),
-                    };
-                    tryAgainButton.Clicked += () =>
-                    {
-                        Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
-                    };
-                    messageDialog.AddButton(surrenderButton);
-                    messageDialog.AddButton(tryAgainButton);
-                    Application.Run(messageDialog);
-                    Application.Shutdown();
-                }
-            }*/
+                                var tryAgainButton = new Button("Fight Continues / Spróbuj ponownie")
+                                {
+                                    X = Pos.Percent(60),
+                                    Y = Pos.Center(),
+                                };
+                                tryAgainButton.Clicked += () =>
+                                {
+                                    Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
+                                };
+                                messageDialog.AddButton(surrenderButton);
+                                messageDialog.AddButton(tryAgainButton);
+                                Application.Run(messageDialog);
+                                Application.Shutdown();
+                            }
+                        }*/
         } while (battle);
 
     }
@@ -213,7 +213,6 @@ public class BattleWindow : Window
     }
     private void PlayerTurn()
     {
-        InitializeButtons();
         EnableButtons();
     }
     private void EnemyTurn()
@@ -237,8 +236,16 @@ public class BattleWindow : Window
             }
         }
     }
-    private void InitializeButtons()
+    public void InitializeButtons()
     {
+        var buttonsTable = new FrameView("Akcje")
+        {
+            X = Pos.Percent(10),
+            Y = Pos.Percent(85),
+            Width = Dim.Percent(30),
+            Height = 6
+        };
+
         skillsButton = new Button("Umiejętności")
         {
             X = Pos.Percent(5),
@@ -263,13 +270,6 @@ public class BattleWindow : Window
             Y = Pos.Percent(90)
         };
 
-        var buttonsTable = new FrameView("Akcje")
-        {
-            X = Pos.Percent(10),
-            Y = Pos.Percent(85),
-            Width = Dim.Percent(30),
-            Height = 6
-        };
         buttonsTable.Add(skillsButton, changeButton, itemsButton, fleeButton);
         ConfigureButtonEvents(changeButton, skillsButton, itemsButton, fleeButton);
         Add(buttonsTable);
@@ -323,8 +323,8 @@ public class BattleWindow : Window
         {
             X = Pos.Percent(1),
             Y = Pos.Top(playerHPBar),
-        }; 
-        
+        };
+
         Add(playerFrame);
         playerFrame.Add(playerHPBar, playerShieldBar, playerHPLabel, playerShieldLabel, playerLevelLabel, playerTypeLabel);
 
@@ -344,7 +344,7 @@ public class BattleWindow : Window
             Height = 1,
             ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.Green, Color.Black) }
         };
-       
+
 
         enemyShieldBar = new ProgressBar()
         {
@@ -376,7 +376,7 @@ public class BattleWindow : Window
             X = Pos.Percent(1),
             Y = Pos.Top(enemyHPBar),
         };
-        
+
         Add(enemyFrame);
         enemyFrame.Add(enemyHPBar, enemyShieldBar, enemyHPLabel, enemyShieldLabel, enemyLevelLabel, enemyTypeLabel);
 
@@ -525,6 +525,9 @@ public class BattleWindow : Window
                         UpdateHPBars();
                         if (!enemyPokemon.stats.IsAlive)
                         {
+                            int expGained = enemyPokemon.ExpAfterWin();
+                            enemyPokemon.ExpAfterWin();
+                            playerPokemon.level.exp = expGained;
                             Application.RequestStop();
                             Application.Top.Running = false;
                         }
@@ -590,11 +593,12 @@ public class BattleWindow : Window
 
                             if (!enemyPokemon.stats.IsAlive)
                             {
-                                /*                                enemy.indexOfFightingPokemon++;
-                                                                if (enemy.pokemonList.Count > enemy.indexOfFightingPokemon)
-                                                                {*/
+                                int expGained = enemyPokemon.ExpAfterWin();
+                                enemyPokemon.ExpAfterWin();
+                                playerPokemon.level.exp = expGained;
                                 Application.RequestStop();
-                                Application.Top.Running = false;/*
+                                Application.Top.Running = false;
+                                /*
                                 }
                                 else
                                 {
