@@ -79,7 +79,7 @@ public class Map
     }
     private bool IsFreeSpace(int row, int col)
     {
-        if (mapAsList[col][row] == ' ' || mapAsList[col][row] == ',')
+        if (mapAsList[col][row] == ' ' || mapAsList[col][row] == ',' || mapAsList[col][row] == 'C')
         {
             return true;
         }
