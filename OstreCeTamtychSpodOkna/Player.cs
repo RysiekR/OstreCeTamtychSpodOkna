@@ -1,5 +1,6 @@
 ﻿
 using OstreCeTamtychSpodOkna;
+using OstreCeTamtychSpodOkna.Equipment;
 using System.Runtime.InteropServices;
 using Terminal.Gui;
 
@@ -16,6 +17,7 @@ public class Player : HasPokemonList
     public Map currentMap;
     //public Pokemon Pokemon { get; set; }
     public List<Item> itemsList = new List<Item>();
+    public int money = 1000;
 
     private bool hitObstacle = false;
     ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
@@ -60,7 +62,8 @@ public class Player : HasPokemonList
                     {'N', () => tempIntFromNs++ },
                     {'A', () => ChangeMapTo('A') },
                     {'C', () => ChangeMapTo('C') },
-                    {'H', () => UseHospital() }
+                    {'H', () => UseHospital() },
+                    {'S', () => UseShop() }
                     //{'F', () => FightyFight() }
                 };
         //dodanie kazdego znaku przez ktory nie mozna przejsc
@@ -167,6 +170,24 @@ public class Player : HasPokemonList
     {
         hitObstacle = true;
         Hospital.HealPokemons();
+    }
+
+    void UseShop()
+    {
+        Application.Init();
+        hitObstacle = true;
+        var shopDialog = new Dialog("Buy an item", 60, 20)
+        {
+            X = Pos.Center(),
+            Y = Pos.Center()
+        };
+        ShopWindow shopWindow = new ShopWindow(this);
+
+        shopWindow.CreateShopGrid(shopDialog);
+
+        Application.Run(shopDialog);
+        Application.Shutdown();
+
     }
 
     private void InitializePlayerPosition()
