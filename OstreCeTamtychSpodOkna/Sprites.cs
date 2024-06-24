@@ -2,7 +2,7 @@
 {
     public class Sprites
     {
-        public static readonly string obstacle = "╬┼╦╩╣╠│║╤";
+        public static readonly string obstacle = "╬┼╦╩╣╠│║╤*#@$':|)(^";
         //minimapy
 /*        public static readonly string[] map =
         {
@@ -41,7 +41,7 @@
         public static readonly string[] city =
         {
     "WWWWWWWWWWWWW",
-    "W           W",
+    "W        TRTW",
     "W A         W",
     "W           W",
     "W H     S   W",
@@ -109,6 +109,22 @@
             "║│││║",
             "║│S│║",
         };
+        public static readonly string[] treeSprite =
+        {
+            " *^* ",
+            "*#@#*",
+            "'*$*'",
+            ")|:|(",
+            " |^| "
+        };
+        public static readonly string[] rescueSprite =
+        {
+            "**^**",
+            "$#!#$",
+            "@'#'@",
+            ")|^|(",
+            " |R| ",
+        };
         public static readonly string[] wall =
         {
             "+---+",
@@ -116,14 +132,6 @@
             "|+++|",
             "|+++|",
             "+---+"
-        };
-        public static readonly string[] tree =
-        {
-            " *^* ",
-            "*#@#*",
-            "'*$*'",
-            ")|:|(",
-            " |^| "
         };
         public static readonly string[] empty =
         {
@@ -157,6 +165,8 @@
                 case 'C': bigSprite = spritePortalToCity; break;
                 case 'H': bigSprite = spriteHospital; break;
                 case 'S': bigSprite = spriteShop; break;
+                case 'T': bigSprite = treeSprite; break;
+                case 'R': bigSprite = rescueSprite; break;
                 //case 'F': bigSprite = debugFight; break;
                 default: bigSprite = spriteAir; break;
             }

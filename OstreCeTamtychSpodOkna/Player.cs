@@ -1,6 +1,7 @@
 ﻿
 using OstreCeTamtychSpodOkna;
 using OstreCeTamtychSpodOkna.Equipment;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using Terminal.Gui;
 
@@ -8,7 +9,7 @@ public class Player : HasPokemonList
 {
     public bool isOnArena = false;
     private int grassPoints = 0;
-    private int tempIntFromNs = 0;
+    public int tempIntFromNs = 1;
     public int row = 7;
     public int col = 15;
     private int possibleRow;
@@ -25,10 +26,11 @@ public class Player : HasPokemonList
     private Dictionary<ConsoleKey, Action> movements;
     private Dictionary<char, Action> logicFromChars;
 
-    public List<Pokemon> rescuedPokemons = new();
+    public List<Pokemon> rescuedPokemons;// = new List<Pokemon>();
 
     public Player(Map currentMap)
     {
+        rescuedPokemons = new List<Pokemon>();
         itemsList.Add(ItemFactory.CreateSmallPotion());
         itemsList.Add(ItemFactory.CreateMediumPotion());
         itemsList.Add(ItemFactory.CreateHyperPotion());
@@ -63,7 +65,8 @@ public class Player : HasPokemonList
                     {'A', () => ChangeMapTo('A') },
                     {'C', () => ChangeMapTo('C') },
                     {'H', () => UseHospital() },
-                    {'S', () => UseShop() }
+                    {'S', () => UseShop() },
+                    {'R', () => RescueMenu() },
                     //{'F', () => FightyFight() }
                 };
         //dodanie kazdego znaku przez ktory nie mozna przejsc
@@ -78,6 +81,8 @@ public class Player : HasPokemonList
         }
         PrawieSingleton.player = this;
     }
+
+
     public void UpdatePos()
     {
         consoleKeyPressed = Console.ReadKey(true).Key;
@@ -189,6 +194,12 @@ public class Player : HasPokemonList
         Application.Shutdown();
 
     }
+    private void RescueMenu()
+    {
+        hitObstacle = true;
+        Rescue.OpenRescueMenu();
+    }
+
 
     private void InitializePlayerPosition()
     {
@@ -350,6 +361,9 @@ public static class Hospital
         }
     }
 }
+
+
+
 
 
 /*public struct Position

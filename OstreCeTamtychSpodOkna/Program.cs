@@ -22,6 +22,10 @@ public class Program
         }
         Display.SetNewDisplay(player.currentMap);
         Display.RenderDisplay();
+        Rescue.transferedPokemons.Add(new Pokemon());
+        Rescue.transferedPokemons.Add(new Pokemon());
+        Rescue.transferedPokemons.Add(new Pokemon());
+        Rescue.transferedPokemons.Add(new Pokemon());
 
 
         while (true)

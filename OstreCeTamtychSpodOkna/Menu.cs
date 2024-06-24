@@ -177,7 +177,7 @@ public static class Menu
                 string choosenIndexOfPokemon = Console.ReadLine();
                 if (int.TryParse(choosenIndexOfPokemon, out int numerIndexPokemon))
                 {
-                    if (numerIndexPokemon == 0 || numerIndexPokemon>pokemonList.Count)
+                    if (numerIndexPokemon == 0 || numerIndexPokemon - 1 >pokemonList.Count)
                     {
                         return;
                     }
