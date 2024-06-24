@@ -15,10 +15,10 @@ public class Program
 
         //Start Game
         Player player = new(MapHolder.cityMap);
-        /*for (int i = 0; i < 10; i++) //Init Debug Dummies
+        for (int i = 0; i < 10; i++) //Init Debug Dummies
         {
             MapHolder.cityMap.enemyList.Add(new Enemy(6, i + 10, MapHolder.cityMap));
-        }*/
+        }
 
         Display.InitializeDisplay(MapHolder.cityMap);
 

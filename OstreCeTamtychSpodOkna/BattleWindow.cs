@@ -501,7 +501,7 @@ public class BattleWindow : Window
         int rows = (player.itemsList.Count + 1) / 2;
         for (int i = 0; i < rows; i++)
         {
-            for (int j = 0; j < 2; j++)
+            for (int j = 0; j < 3; j++)
             {
                 int itemIndex = i * 2 + j;
                 if (itemIndex < player.itemsList.Count)
