@@ -171,13 +171,13 @@ public static class Menu
                     Console.WriteLine();
                     indexPokemon++;
                 }
-                Console.WriteLine("Write number coresponding to creature to skill change. Or 0 to exit");
+                Console.WriteLine("Write number coresponding to creature to skill change - Enter to confirm. Or 0 to exit");
                 Console.WriteLine();
 
                 string choosenIndexOfPokemon = Console.ReadLine();
                 if (int.TryParse(choosenIndexOfPokemon, out int numerIndexPokemon))
                 {
-                    if (numerIndexPokemon == 0)
+                    if (numerIndexPokemon == 0 || numerIndexPokemon>pokemonList.Count)
                     {
                         return;
                     }
@@ -203,17 +203,15 @@ public static class Menu
 
     private static void DeletePokemonSkill(string stringToInt, Pokemon pokemon)
     {
-        List<int> listToRemove = new();
+        int numerIndexPokemon = 0;
 
         if (int.TryParse(stringToInt, out int numer))
         {
-            if (numer == 0)
+            if (numer == 0 || numer > pokemon.allSkills.Count)
             {
                 return;
             }
-
-
-            listToRemove.Add(numer);
+            numerIndexPokemon = numer - 1;
         }
         else
         {
@@ -221,7 +219,7 @@ public static class Menu
             return;
         }
 
-        SkillCategory skillToRemove = pokemon.allSkills[numer - 1];
+        SkillCategory skillToRemove = pokemon.allSkills[numerIndexPokemon];
         pokemon.allSkills.Remove(skillToRemove);
         pokemon.FillSkillsUpToPokemonLevel();
     }
