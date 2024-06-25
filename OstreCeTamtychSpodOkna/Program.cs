@@ -15,12 +15,6 @@ public class Program
 
         //Start Game
         Display.InitializeDisplay(MapHolder.cityMap);
-/*
-        for (int i = 0; i < 10; i++) //Init Debug Dummies
-        {
-            MapHolder.cityMap.enemyList.Add(new Enemy(6, i + 10, MapHolder.cityMap));
-        }
-*/
         Display.SetNewDisplay(player.currentMap);
         Display.RenderDisplay();
         Rescue.transferedPokemons.Add(new Pokemon());

@@ -10,7 +10,7 @@ public class Enemy : HasPokemonList
     string obstacleString = "AC#PN";
     public Map currentMap;
     public int indexOfFightingPokemon = 0;
-    //public Pokemon Pokemon { get; set; }
+
 
     public Enemy(int rowSpawn, int colSpawn, Map currentMap)
     {
@@ -20,12 +20,11 @@ public class Enemy : HasPokemonList
         pokemonList.Clear();
         GeneratePokemonsInList(PrawieSingleton.player.pokemonList.Count());
         AssignAvatar();
-        // Pokemon = pokemonList[indexOfFightingPokemon];
         InitializeEnemyPosition();
     }
     private int oldCol;
     private int oldRow;
-    //public List<string> jakaMapa = new();
+
     Random rnd = new Random();
     private bool hitObstacle = false;
     int randomMove;
@@ -74,9 +73,6 @@ public class Enemy : HasPokemonList
     {
         oldCol = col;
         oldRow = row;
-        /*            jakaMapa.Clear();
-                    jakaMapa.AddRange(currentMap.mapAsList);
-        */
         char charUp = currentMap.mapAsList[row - 1][col];
         char charDown = currentMap.mapAsList[row + 1][col];
         char charLeft = currentMap.mapAsList[row][col - 1];

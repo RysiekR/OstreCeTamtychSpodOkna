@@ -34,41 +34,6 @@ public class BattleProgram
             if (playerCon && enemyCon) battle = true;
 
             battle = battleOverride && battle;
-            /*
-                        if (battle)
-                        {
-                            Application.Init();
-                            {
-                                var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
-
-                                var surrenderButton = new Button("RUN / Don't Attack")
-                                {
-                                    X = Pos.Percent(20),
-                                    Y = Pos.Center(),
-                                };
-                                surrenderButton.Clicked += () =>
-                                {
-                                    Application.RequestStop(messageDialog);
-
-                                    battle = false;
-                                    //Environment.Exit(0); //Zakończenie aplikacji
-                                };
-
-                                var tryAgainButton = new Button("Fight Continues / Spróbuj ponownie")
-                                {
-                                    X = Pos.Percent(60),
-                                    Y = Pos.Center(),
-                                };
-                                tryAgainButton.Clicked += () =>
-                                {
-                                    Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
-                                };
-                                messageDialog.AddButton(surrenderButton);
-                                messageDialog.AddButton(tryAgainButton);
-                                Application.Run(messageDialog);
-                                Application.Shutdown();
-                            }
-                        }*/
         } while (battle);
 
     }
@@ -834,9 +799,4 @@ public class BattleWindow : Window
         };
         Add(enemyPokemonRemoveArt);
     }
-}
-public enum GameMode
-{
-    Exploration,
-    Combat
 }
