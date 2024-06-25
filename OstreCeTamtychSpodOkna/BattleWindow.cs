@@ -222,7 +222,14 @@ public class BattleWindow : Window
         {
             float damageDealt = offensiveSkill.Use(playerPokemon);
             UpdateHPBars();
-            UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name}, zadając {damageDealt} obrażenia!");
+            if (damageDealt <= 0)
+            {
+                UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name} i nie trafia!");
+            }
+            else
+            {
+                UpdateBattleLog($"{enemyPokemon.Name} używa {enemySkill.name}, zadając {(int)damageDealt} obrażenia!");
+            }
             if (!playerPokemon.stats.IsAlive)
             {
                 playerTurn = false;
@@ -302,13 +309,13 @@ public class BattleWindow : Window
             ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.BrightCyan, Color.Black) }
         };
 
-        playerHPLabel = new Label($"HP: {playerPokemon.stats.Hp}/{playerPokemon.stats.maxHp}")
+        playerHPLabel = new Label($"HP: {(int)playerPokemon.stats.Hp}/{(int)playerPokemon.stats.maxHp}")
         {
             X = Pos.Left(playerHPBar),
             Y = Pos.Top(playerHPBar) - 1,
         };
 
-        playerShieldLabel = new Label($"Shield: {playerPokemon.stats.shield}/{playerPokemon.stats.maxShield}")
+        playerShieldLabel = new Label($"Shield: {(int)playerPokemon.stats.shield}/{(int)playerPokemon.stats.maxShield}")
         {
             X = Pos.Left(playerShieldBar),
             Y = Pos.Top(playerShieldBar) - 1,
@@ -355,13 +362,13 @@ public class BattleWindow : Window
             ColorScheme = new ColorScheme() { Normal = Terminal.Gui.Attribute.Make(Color.BrightCyan, Color.Black) }
         };
 
-        enemyHPLabel = new Label($"HP: {enemyPokemon.stats.Hp}/{enemyPokemon.stats.maxHp}")
+        enemyHPLabel = new Label($"HP: {(int)enemyPokemon.stats.Hp}/{(int)enemyPokemon.stats.maxHp}")
         {
             X = Pos.Left(enemyHPBar),
             Y = Pos.Top(enemyHPBar) - 1,
         };
 
-        enemyShieldLabel = new Label($"Shield: {enemyPokemon.stats.shield}/{enemyPokemon.stats.maxShield}")
+        enemyShieldLabel = new Label($"Shield: {(int)enemyPokemon.stats.shield}/{(int)enemyPokemon.stats.maxShield}")
         {
             X = Pos.Left(enemyShieldBar),
             Y = Pos.Top(enemyShieldBar) - 1,
@@ -473,11 +480,11 @@ public class BattleWindow : Window
         enemyShieldBar.Fraction = Math.Max(0, enemyPokemon.stats.shield / enemyPokemon.stats.maxShield);
         enemyHPBar.Fraction = Math.Max(0, enemyPokemon.stats.Hp / enemyPokemon.stats.maxHp);
 
-        playerHPLabel.Text = $"HP: {playerPokemon.stats.Hp}/{playerPokemon.stats.maxHp}";
-        playerShieldLabel.Text = $"Shield: {playerPokemon.stats.shield}/{playerPokemon.stats.maxShield}";
+        playerHPLabel.Text = $"HP: {(int)playerPokemon.stats.Hp}/{(int)playerPokemon.stats.maxHp}";
+        playerShieldLabel.Text = $"Shield: {(int)playerPokemon.stats.shield}/{(int)playerPokemon.stats.maxShield}";
 
-        enemyHPLabel.Text = $"HP: {enemyPokemon.stats.Hp}/{enemyPokemon.stats.maxHp}";
-        enemyShieldLabel.Text = $"Shield: {enemyPokemon.stats.shield}/{enemyPokemon.stats.maxShield}";
+        enemyHPLabel.Text = $"HP: {(int)enemyPokemon.stats.Hp}/{(int)enemyPokemon.stats.maxHp}";
+        enemyShieldLabel.Text = $"Shield: {(int)enemyPokemon.stats.shield}/{(int)enemyPokemon.stats.maxShield}";
 
 
         //UpdateShield for player
@@ -521,6 +528,7 @@ public class BattleWindow : Window
                     };
                     itemButton.Clicked += () =>
                     {
+                        player.itemsList.RemoveAt(itemIndex);
                         UpdateBattleLog(item.UseItem(playerPokemon, enemyPokemon));
                         UpdateHPBars();
                         if (!enemyPokemon.stats.IsAlive)
@@ -588,7 +596,7 @@ public class BattleWindow : Window
                             }
                             else
                             {
-                                UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name}, zadając {damageDealt} obrażeń!");
+                                UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name}, zadając {(int)damageDealt} obrażeń!");
                             }
 
                             if (!enemyPokemon.stats.IsAlive)
@@ -622,7 +630,7 @@ public class BattleWindow : Window
                         {
                             healSkill.Use(playerPokemon);
                             UpdateHPBars();
-                            UpdateBattleLog($"{playerPokemon.Name} używa {healSkill.name}, lecząc {healSkill.HealValue} zdrowia!");
+                            UpdateBattleLog($"{playerPokemon.Name} używa {healSkill.name}, lecząc {(int)healSkill.HealValue} zdrowia!");
                             DisableButtons();
                             Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(0.5f), (_) =>
                             {

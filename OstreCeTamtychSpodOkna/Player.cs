@@ -212,28 +212,12 @@ public class Player : HasPokemonList
         {
             FightyFight();
         }
-    }
-    public void FightyFight()
-    {
-        hitObstacle = true;
-        // Sprawdzenie, czy gracz ma jakiekolwiek żywe Pokemony przed rozpoczęciem walki
-        if (!pokemonList.Any(p => p.stats.IsAlive))
+        else
         {
             Application.Init();
             var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
 
-            var surrenderButton = new Button("Don't Attack")
-            {
-                X = Pos.Percent(20),
-                Y = Pos.Center(),
-            };
-            surrenderButton.Clicked += () =>
-            {
-                Application.RequestStop();
-                Environment.Exit(0); //Zakończenie aplikacji
-            };
-
-            var tryAgainButton = new Button("Spróbuj ponownie")
+            var tryAgainButton = new Button("Zdobądź Pokemony!")
             {
                 X = Pos.Percent(60),
                 Y = Pos.Center(),
@@ -243,7 +227,33 @@ public class Player : HasPokemonList
                 Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
             };
 
-            messageDialog.AddButton(surrenderButton);
+            messageDialog.AddButton(tryAgainButton);
+            Application.Run(messageDialog);
+            Application.Shutdown();
+            return;
+        }
+    }
+
+
+    public void FightyFight()
+    {
+        hitObstacle = true;
+        // Sprawdzenie, czy gracz ma jakiekolwiek żywe Pokemony przed rozpoczęciem walki
+        if (!pokemonList.Any(p => p.stats.IsAlive))
+        {
+            Application.Init();
+            var messageDialog = new Dialog("Brak Pokemonów", 60, 7);
+
+            var tryAgainButton = new Button("Ulecz pokemony!")
+            {
+                X = Pos.Percent(60),
+                Y = Pos.Center(),
+            };
+            tryAgainButton.Clicked += () =>
+            {
+                Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
+            };
+
             messageDialog.AddButton(tryAgainButton);
             Application.Run(messageDialog);
             Application.Shutdown();
