@@ -2,7 +2,7 @@
 {
     public class Sprites
     {
-        public static readonly string obstacle = "╬┼╦╩╣╠│║╤╗╔┌─┐│└┘*#@$':|)(^";
+        public static readonly string obstacle = "╬┼╦╩╣╠│║╤╗╔┌─┐│└┘*#@$':|)(^.";
         //minimapy
         public static string[] arena => ArenaSprites.GetRandomMapStringArray();  
         public static readonly string[] city =
