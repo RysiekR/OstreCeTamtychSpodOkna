@@ -176,25 +176,37 @@ public class HealSkill : SkillCategory
 
 public static class Calculations
 {
-    private static bool IsWinning(Type mySpellType, Type opponentSpellType)
+    /// <summary>
+    /// Is First type wining with second
+    /// </summary>
+    /// <param name="firstType"></param>
+    /// <param name="secondType"></param>
+    /// <returns></returns>
+    private static bool IsWinning(Type firstType, Type secondType)
     {
         Type[] types = (Type[])Enum.GetValues(typeof(Type));
-        int myIndex = Array.IndexOf(types, mySpellType);
-        int winningIndex = (myIndex + 1) % types.Length;
+        int secondIndex = Array.IndexOf(types, secondType);
+        int winningIndex = (secondIndex + 1) % types.Length; // index that wins with second type
         Type winningType = types[winningIndex];
 
-        return opponentSpellType == winningType;
+        return firstType == winningType;
     }
-    public static float GiveMeMutiplayer(Pokemon target, Type mySpellType)
+    /// <summary>
+    /// returns 2, 1, or 0.5 depending if spellType is wining with target pokemon type
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="spellType"></param>
+    /// <returns></returns>
+    public static float GiveMeMutiplayer(Pokemon target, Type spellType)
     {
         Type targetPokemonType = target.type;
 
-        if (IsWinning(mySpellType, targetPokemonType))
+        if (IsWinning(spellType, targetPokemonType))
         {
             //Wygrana
             return 2f;
         }
-        else if (mySpellType == targetPokemonType)
+        else if (spellType == targetPokemonType)
         {
             //Remis
             return 1f;

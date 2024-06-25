@@ -78,7 +78,8 @@ public static class Menu
         Console.WriteLine("Creatures:\n" +
             "1. Classic pokemon-ish lvls, types, skills\n" +
             "2. When you defeat enemy's Creature, Creature that has defeated gains exp(ergo grow stronger)\n" +
-            "3. Dont neglect your Creatures swap them in battle for all of them to gain exp");
+            "3. Dont neglect your Creatures swap them in battle for all of them to gain exp\n" +
+            "4. Moist beats Lava, Lava beats Mud, Mud beats Moist");
         Console.WriteLine("Money:\n" +
             "1. Here you have money for items in Shop and BuyOut currency for Rescue Center\n" +
             "2. Money is gained after transfering Creature in Rescue Center\n" +
