@@ -299,9 +299,7 @@ public class Player : HasPokemonList
                 {
                     rescuedPokemons.Add(pokemon);
                 }
-                
             }
-
         }
         if (enemyDefeated != null)
         {
