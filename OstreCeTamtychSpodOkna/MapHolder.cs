@@ -7,7 +7,7 @@ public static class MapHolder
 
     public static void GenerateArena()
     {
-        tempArenaMap = new Map(Sprites.arena,5);
+        tempArenaMap = new Map(Sprites.arena,Math.Min(30,Math.Max(3,PrawieSingleton.player.pokemonList.Count)));
     }
     public static Enemy FindEnemyOnArenaAt(int row, int col)
     {

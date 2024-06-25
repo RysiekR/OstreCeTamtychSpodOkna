@@ -7,8 +7,8 @@ public class Player : HasPokemonList
     public bool isOnArena = false;
     private int grassPoints = 0;
     public int tempIntFromNs = 1;
-    public int row = 7;
-    public int col = 15;
+    public int row = 11;
+    public int col = 46;
     private int possibleRow;
     private int possibleCol;
     string enemyString = "123456789";
@@ -125,6 +125,7 @@ public class Player : HasPokemonList
     void ChangeMapTo(char letterOfTheMap)
     {
         hitObstacle = true;
+        Console.Clear();
         switch (letterOfTheMap)
         {
             case 'A':
@@ -141,6 +142,9 @@ public class Player : HasPokemonList
                 isOnArena = true;
                 break;
             case 'C':
+
+                row = 12;
+                col = 14;
                 currentMap = MapHolder.cityMap;
                 InitializePlayerPosition();
                 Display.LoadCityMap();

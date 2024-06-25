@@ -66,12 +66,14 @@ public class Map
         Random rnd = new Random();
         int tempRow;
         int tempCol;
+        int maxCol = mapAsList[0].Length;
+        int maxRow = mapAsList.Count;
         for (int i = 0; i < howMany; i++)
         {
             do
             {
-                tempRow = rnd.Next(spriteHeight,35); //tempRow = rnd.Next(spriteHeight,mapAsList.Count-spriteHeight);
-                tempCol = rnd.Next(spriteHeight,35); //tempCol = rnd.Next(spriteHeight, mapAsList[tempRow].Length-spriteHeight);
+                tempRow = rnd.Next(spriteHeight, maxRow); //tempRow = rnd.Next(spriteHeight,mapAsList.Count-spriteHeight);
+                tempCol = rnd.Next(spriteHeight, maxCol); //tempCol = rnd.Next(spriteHeight, mapAsList[tempRow].Length-spriteHeight);
             } while (!IsFreeSpace(tempRow, tempCol));
 
             this.enemyList.Add(new Enemy(tempRow, tempCol, this));
@@ -79,7 +81,10 @@ public class Map
     }
     private bool IsFreeSpace(int row, int col)
     {
-        if (mapAsList[col][row] == ' ' || mapAsList[col][row] == ',' || mapAsList[col][row] == 'C')
+        if (row < 0 || col < 0) return false;
+        if (row > mapAsList.Count) return false;
+        if (col > mapAsList[0].Length) return false;
+        if (mapAsList[row][col] == ' ' || mapAsList[row][col] == ',')
         {
             return true;
         }

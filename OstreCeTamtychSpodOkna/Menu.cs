@@ -19,6 +19,7 @@ public static class Menu
             Console.WriteLine("Press 2 to see all info about creatures");
             Console.WriteLine("Press 3 to see items");
             Console.WriteLine("Press 4 to see rescued creatures");
+            Console.WriteLine("Press 5 to see where you are");
 
             ConsoleKey pressedKey0 = Console.ReadKey(true).Key;
             switch (pressedKey0)
@@ -28,12 +29,31 @@ public static class Menu
                 case ConsoleKey.D2: PokemonInfoAll(); break;
                 case ConsoleKey.D3: ItemsListMenu(); break;
                 case ConsoleKey.D4: RescuedPokemons(); break;
+                case ConsoleKey.D5: ShowWhereIsPlayer(); break;
             }
         } while (con1);
         Console.CursorVisible = false;
         Display.QuitMenu();
     }
 
+    private static void ShowWhereIsPlayer()
+    {
+        Console.Clear();
+        Console.WriteLine("Press Esc to exit.");
+
+
+        Console.SetCursorPosition(player.col + 1, player.row); Console.Write('<');
+        Console.SetCursorPosition(player.col - 1, player.row); Console.Write('>');
+        Console.SetCursorPosition(player.col, player.row + 1); Console.Write('^');
+        Console.SetCursorPosition(player.col, player.row - 1); Console.Write('!');
+
+        ConsoleKey pressedKey0 = Console.ReadKey(true).Key;
+        switch (pressedKey0)
+        {
+            case ConsoleKey.Escape: return;
+
+        }
+    }
     private static void PokemonListMenu()
     {
         bool con2 = true;
@@ -103,7 +123,7 @@ public static class Menu
             Console.WriteLine("Items list menu");
             Console.WriteLine("Esc to exit");
 
-            foreach(Item i in player.itemsList)
+            foreach (Item i in player.itemsList)
             {
                 Console.WriteLine($"{i.Name} has power: {i.minPower}-{i.maxPower}");
             }
@@ -168,7 +188,7 @@ public static class Menu
                 string choosenIndexOfPokemon = Console.ReadLine();
                 if (int.TryParse(choosenIndexOfPokemon, out int numerIndexPokemon))
                 {
-                    if (numerIndexPokemon == 0 || (numerIndexPokemon - 1 )>pokemonList.Count || pokemonList.Count == 0)
+                    if (numerIndexPokemon == 0 || (numerIndexPokemon - 1) > pokemonList.Count || pokemonList.Count == 0)
                     {
                         return;
                     }

@@ -112,13 +112,13 @@ namespace OstreCeTamtychSpodOkna
             }
         }
 
-        public static void LoadArena()
+        public static void LoadArena() // Player class is clearing console b4 using this
         {
             InitializeDisplay(MapHolder.tempArenaMap);
             //TODO print player
         }
 
-        public static void LoadCityMap()
+        public static void LoadCityMap() // Player class is clearing console b4 using this
         {
             // TODO umiesc gracza w miejscu bezpiecznym dla kodu
             InitializeDisplay(MapHolder.cityMap);

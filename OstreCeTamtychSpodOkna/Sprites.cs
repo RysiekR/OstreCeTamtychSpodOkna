@@ -2,19 +2,9 @@
 {
     public class Sprites
     {
-        public static readonly string obstacle = "╬┼╦╩╣╠│║╤*#@$':|)(^";
+        public static readonly string obstacle = "╬┼╦╩╣╠│║╤╗╔*#@$':|)(^";
         //minimapy
-        public static readonly string[] arena =
-        {
-    "WWWWWWWWWWWWW",
-    "W           W",
-    "W   C       W",
-    "W           W",
-    "W           W",
-    "W           W",
-    "W           W",
-    "WWWWWWWWWWWWW",
-};
+        public static string[] arena => ArenaSprites.GetRandomMapStringArray();  
         public static readonly string[] city =
         {
     "WWWWWWWWWWWWW",
@@ -88,7 +78,7 @@
         };
         public static readonly string[] treeSprite =
         {
-            " *^* ",
+            ".*^*.",
             "*#@#*",
             "'*$*'",
             ")|:|(",
@@ -150,6 +140,47 @@
             return chosenSprite;
         }
     }
+}
+public static class ArenaSprites
+{
+    static Random random = new Random();
+
+    public static string[] GetRandomMapStringArray()
+    {
+        return listOfMiniMaps[random.Next(0,listOfMiniMaps.Count)];
+    }
+    static readonly string[] a = {
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "W                        W",
+    "W   C                    W",
+    "W                        W",
+    "W                        W",
+    "W                        W",
+    "W                        W",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+};
+    static readonly string[] b = {
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "W                        W",
+    "W           C            W",
+    "W                        W",
+    "W                        W",
+    "W                 TT     W",
+    "W                        W",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+};
+    static readonly string[] c = {
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+    "W                        W",
+    "W   C             T      W",
+    "W                        W",
+    "W          TTTTTT        W",
+    "W                        W",
+    "W                        W",
+    "WWWWWWWWWWWWWWWWWWWWWWWWWW",
+};
+    static readonly List<string[]> listOfMiniMaps = new List<string[]>{ a,b,c};
+
 }
 
 
