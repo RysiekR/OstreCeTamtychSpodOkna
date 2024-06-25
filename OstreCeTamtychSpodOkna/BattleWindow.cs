@@ -521,7 +521,7 @@ public class BattleWindow : Window
                 if (itemIndex < player.itemsList.Count)
                 {
                     Item item = player.itemsList[itemIndex];
-                    var itemButton = new Button(item.Name)
+                    var itemButton = new Button(item.Name, true)
                     {
                         X = j * 20,
                         Y = i * 2,
@@ -574,50 +574,79 @@ public class BattleWindow : Window
                 {
                     SkillCategory skill = playerPokemon.allSkills[skillIndex];
                     string skillButtonLabel = skill.name + " " + skill.numberOfUses + "/" + skill.maxNumberOfUses;
-                    var skillButton = new Button(skillButtonLabel)
+                    var skillButton = new Button(skillButtonLabel, true)
                     {
-                        X = j * 20,
+                        X = j * 25,
                         Y = i * 2,
                     };
                     if (skill is OffensiveSkill offensiveSkill)
                     {
                         skillButton.ColorScheme = GetColorSchemeForSkillType(offensiveSkill.type.ToString());
                     }
+                    else 
+                    {
+                        var normalAttribute = Terminal.Gui.Attribute.Make(Color.Black, Color.White);
+                        var focusAttribute = Terminal.Gui.Attribute.Make(Color.Black, Color.DarkGray);
+                        skillButton.ColorScheme = new ColorScheme() { Normal = normalAttribute, Focus = focusAttribute };
+                    }
+                
                     skillButton.Clicked += () =>
                     {
                         if (skill is OffensiveSkill offensiveSkill)
                         {
-                            float damageDealt = offensiveSkill.Use(enemyPokemon);
-                            UpdateHPBars();
+                            if (offensiveSkill.numberOfUses > 0)
+                            {
+                                float damageDealt = offensiveSkill.Use(enemyPokemon);
+                                UpdateHPBars();
 
-                            if (damageDealt <= 0)
-                            {
-                                UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name} i nie trafia!");
-                            }
-                            else
-                            {
-                                UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name}, zadając {(int)damageDealt} obrażeń!");
-                            }
-
-                            if (!enemyPokemon.stats.IsAlive)
-                            {
-                                int expGained = enemyPokemon.ExpAfterWin();
-                                enemyPokemon.ExpAfterWin();
-                                playerPokemon.level.exp = expGained;
-                                Application.RequestStop();
-                                Application.Top.Running = false;
-                                /*
+                                if (damageDealt <= 0)
+                                {
+                                    UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name} i nie trafia!");
                                 }
                                 else
                                 {
-                                    ChoosePokemon(enemy);
-                                    UpdateHPBars();
-                                    InitializeUI();
-                                    EnemyTurn();
-                                }*/
+                                    UpdateBattleLog($"{playerPokemon.Name} używa {offensiveSkill.name}, zadając {(int)damageDealt} obrażeń!");
+                                }
+
+                                if (!enemyPokemon.stats.IsAlive)
+                                {
+                                    int expGained = enemyPokemon.ExpAfterWin();
+                                    enemyPokemon.ExpAfterWin();
+                                    playerPokemon.level.exp = expGained;
+                                    Application.RequestStop();
+                                    Application.Top.Running = false;
+                                }
+                                else
+                                {
+                                    skillsDialog.Running = false;
+                                    DisableButtons();
+                                    Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(0.5f), (_) =>
+                                    {
+                                        EnemyTurn();
+                                        return false;
+                                    });
+                                }
                             }
                             else
                             {
+                                SkillUnavailableError();
+                            }
+                        }
+                        else if (skill is HealSkill healSkill)
+                        {
+                            if (healSkill.numberOfUses > 0)
+                            {
+                                healSkill.Use(playerPokemon);
+                                UpdateHPBars();
+                                if (playerPokemon.stats.Hp == playerPokemon.stats.maxHp)
+                                {
+                                    UpdateBattleLog($"{playerPokemon.Name} używa {healSkill.name} ale ma już pełne życie!");
+                                }
+                                else
+                                {
+                                    UpdateBattleLog($"{playerPokemon.Name} używa {healSkill.name}, lecząc {(int)healSkill.HealValue} zdrowia!");
+                                }
+                                skillsDialog.Running = false;
                                 DisableButtons();
                                 Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(0.5f), (_) =>
                                 {
@@ -625,21 +654,11 @@ public class BattleWindow : Window
                                     return false;
                                 });
                             }
-                        }
-                        else if (skill is HealSkill healSkill)
-                        {
-                            healSkill.Use(playerPokemon);
-                            UpdateHPBars();
-                            UpdateBattleLog($"{playerPokemon.Name} używa {healSkill.name}, lecząc {(int)healSkill.HealValue} zdrowia!");
-                            DisableButtons();
-                            Application.MainLoop.AddTimeout(TimeSpan.FromSeconds(0.5f), (_) =>
+                            else
                             {
-                                EnemyTurn();
-                                return false;
-                            });
+                                SkillUnavailableError();
+                            }
                         }
-
-                        skillsDialog.Running = false;
                     };
                     skillsDialog.Add(skillButton);
                 }
@@ -653,6 +672,29 @@ public class BattleWindow : Window
         returnButton.Clicked += () => { skillsDialog.Running = false; };
         skillsDialog.Add(returnButton);
     }
+    private void SkillUnavailableError()
+    {
+        var messageDialog = new Dialog("Ta umiejętność jest obecnie niedostępna.", 60, 7);
+        messageDialog.ColorScheme = Colors.Error;
+        var label = new Label("Wykorzystałeś już wszystkie jej użycia. \n" + "Odwiedź szpital, żeby odświeżyć użycia.")
+        {
+            X = Pos.Center(),
+            Y = Pos.Percent(30),
+        };
+        messageDialog.Add(label);
+        var tryAgainButton = new Button("Wybierz inną umiejętność!")
+        {
+            X = Pos.Percent(60),
+            Y = Pos.Center(),
+        };
+        tryAgainButton.Clicked += () =>
+        {
+            Application.RequestStop(); //Zamknięcie tylko tego okna dialogowego
+        };
+
+        messageDialog.AddButton(tryAgainButton);
+        Application.Run(messageDialog);
+    }
     private ColorScheme GetColorSchemeForSkillType(string type)
     {
         var normalAttribute = Terminal.Gui.Attribute.Make(Color.White, Color.Black);
@@ -662,15 +704,15 @@ public class BattleWindow : Window
         {
             case "Mud":
                 normalAttribute = Terminal.Gui.Attribute.Make(Color.BrightYellow, Color.Black);
-                focusAttribute = Terminal.Gui.Attribute.Make(Color.White, Color.Black);
+                focusAttribute = Terminal.Gui.Attribute.Make(Color.BrightYellow, Color.DarkGray);
                 break;
             case "Lava":
                 normalAttribute = Terminal.Gui.Attribute.Make(Color.BrightRed, Color.Black);
-                focusAttribute = Terminal.Gui.Attribute.Make(Color.Red, Color.Black);
+                focusAttribute = Terminal.Gui.Attribute.Make(Color.BrightRed, Color.DarkGray);
                 break;
             case "Moist":
                 normalAttribute = Terminal.Gui.Attribute.Make(Color.BrightBlue, Color.Black);
-                focusAttribute = Terminal.Gui.Attribute.Make(Color.Blue, Color.Black);
+                focusAttribute = Terminal.Gui.Attribute.Make(Color.BrightBlue, Color.DarkGray);
                 break;
         }
 
