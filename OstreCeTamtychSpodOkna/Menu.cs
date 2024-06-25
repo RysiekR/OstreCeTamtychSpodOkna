@@ -20,6 +20,7 @@ public static class Menu
             Console.WriteLine("Press 3 to see items");
             Console.WriteLine("Press 4 to see rescued creatures");
             Console.WriteLine("Press 5 to see where you are");
+            Console.WriteLine("Press 6 to see instructions");
 
             ConsoleKey pressedKey0 = Console.ReadKey(true).Key;
             switch (pressedKey0)
@@ -30,6 +31,7 @@ public static class Menu
                 case ConsoleKey.D3: ItemsListMenu(); break;
                 case ConsoleKey.D4: RescuedPokemons(); break;
                 case ConsoleKey.D5: ShowWhereIsPlayer(); break;
+                case ConsoleKey.D6: ShowInstructions(); break;
             }
         } while (con1);
         Console.CursorVisible = false;
@@ -39,13 +41,49 @@ public static class Menu
     private static void ShowWhereIsPlayer()
     {
         Console.Clear();
-        Console.WriteLine("Press Esc to exit.");
+        Console.WriteLine("Press any key exit.");
+        Console.WriteLine("You are here.");
 
 
         Console.SetCursorPosition(player.col + 1, player.row); Console.Write('<');
         Console.SetCursorPosition(player.col - 1, player.row); Console.Write('>');
         Console.SetCursorPosition(player.col, player.row + 1); Console.Write('^');
         Console.SetCursorPosition(player.col, player.row - 1); Console.Write('!');
+
+        ConsoleKey pressedKey0 = Console.ReadKey(true).Key;
+        switch (pressedKey0)
+        {
+            case ConsoleKey.Escape: return;
+
+        }
+    }
+    private static void ShowInstructions()
+    {
+        Console.Clear();
+        Console.WriteLine("Press any key to exit.");
+
+        Console.WriteLine("You are: #");
+        Console.WriteLine("To buy more Creatures: \n" +
+            "1. Defeat Enemies\n" +
+            "2. Transfer rescued Creatures in Rescue Center\n" +
+            "3. You can exchange for BuyOut currency(get 1 after each win, those Ns are BuyOut currency)\n" +
+            "4. Cost is equal to level of that Creature");
+        Console.WriteLine("Shop: S");
+        Console.WriteLine("Hospital: H");
+        Console.WriteLine("Rescue Center: R");
+        Console.WriteLine("Enemies: \n" +
+            "1. Number = how many Creatures enemy has\n" +
+            "2. If number is higher then 9 its gona be: %\n" +
+            "3. Color of an enemy is a type of first Creature");
+        Console.WriteLine("Creatures:\n" +
+            "1. Classic pokemon-ish lvls, types, skills\n" +
+            "2. When you defeat enemy's Creature, Creature that has defeated gains exp(ergo grow stronger)\n" +
+            "3. Dont neglect your Creatures swap them in battle for all of them to gain exp");
+        Console.WriteLine("Money:\n" +
+            "1. Here you have money for items in Shop and BuyOut currency for Rescue Center\n" +
+            "2. Money is gained after transfering Creature in Rescue Center\n" +
+            "3. BuyOut currency is gained after defeating Enemy");
+
 
         ConsoleKey pressedKey0 = Console.ReadKey(true).Key;
         switch (pressedKey0)
