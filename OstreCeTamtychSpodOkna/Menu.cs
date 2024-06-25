@@ -202,6 +202,7 @@ public static class Menu
         do
         {
             Console.WriteLine("Skill change Menu. \nPress Esc to exit. Press any to continue");
+            Console.WriteLine("Do or Do not abuse to have fun.");
             ConsoleKey pressedKey0 = Console.ReadKey(true).Key;
             switch (pressedKey0)
             {

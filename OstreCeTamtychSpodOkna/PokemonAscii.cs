@@ -1,8 +1,7 @@
 ﻿public class PokemonAscii
 {
-    public static String GetPokemonAsciByName(String pokemonName)
+    public static String GetPokemonAscii()
     {
-        Dictionary<String, String> mapAscii = new Dictionary<String, String>();
 
         String pikachu = @"
 *%#=..........      .. .   ....  .      . ... 
@@ -225,19 +224,22 @@
 -@*+-%     -@%*+=    :%==*%      .@==+#-          
 %@*+#%.    .@%%@@%+:  =*%%++      :@@%@%#=.       
 -@@@@@%=    :====:::  .@%%%@#*=     .:-.::.   ";
-
-
-
-        mapAscii.Add("Pikachu", pikachu);
-        mapAscii.Add("Charmander", snail);
-        mapAscii.Add("Bulbazaur", bird);
-        mapAscii.Add("Squirtle", goose);
-        mapAscii.Add("Snali", snail);
-        mapAscii.Add("Tentacruel", octopus);
-
-
-
-        return mapAscii.GetValueOrDefault(pokemonName, scorpio);
-
+        List<String> list =
+        [
+            pikachu,
+            snail,
+            bird,
+            goose,
+            snail,
+            octopus,
+            scorpio,
+            chameleon,
+            bear,
+            octopus,
+            scorpio
+        ];
+            
+        Random rnd = new Random();
+        return list[rnd.Next(0, list.Count - 1)];
     }
 }

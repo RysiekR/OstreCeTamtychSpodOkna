@@ -746,23 +746,25 @@ public class BattleWindow : Window
     }
     private void AddAsciiPokemonArt()
     {
-
-        var playerPokemonArt = new Label(PokemonAscii.GetPokemonAsciByName(playerPokemon.Name))
+        
+        var playerPokemonArt = new Label(PokemonAscii.GetPokemonAscii())
         {
             X = Pos.Percent(10),
             Y = Pos.Percent(23),
             Width = 30,
             Height = 14
         };
+        Remove(playerPokemonArt);//wyczysc przed ponownym narysowaniem ascii
         Add(playerPokemonArt);
 
-        var enemyPokemonArt = new Label(PokemonAscii.GetPokemonAsciByName(enemyPokemon.Name))
+        var enemyPokemonArt = new Label(PokemonAscii.GetPokemonAscii())
         {
             X = Pos.Percent(60),
             Y = Pos.Percent(25),
             Width = 30,
             Height = 14
         };
+        Remove(enemyPokemonArt);   
         Add(enemyPokemonArt);
     }
 }
