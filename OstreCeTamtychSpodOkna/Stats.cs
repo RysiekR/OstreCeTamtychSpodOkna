@@ -144,6 +144,27 @@ public struct Stats
         Console.WriteLine($"Armor: {armorFromDefense} from Def: {defense} which is {100-GetValueAfterArmors(100f)}% dmg reduction");
         Console.WriteLine($"Dmg mod: {damageModifier} from Str: {strength}");
     }
+    private void SetShield()
+    {
+        if (shield > 0)
+        {
+            isShielded = true;
+        }
+        else
+        {
+            isShielded = false;
+        }
+    }
+    private void SetAlive()
+    {
+        if (hp > 0) { isAlive = true; }
+        else { isAlive = false; }
+    }
+    public void SetShieldAndAlive()
+    {
+        SetShield();
+        SetAlive();
+    }
 
     public void Heal(int value)
     {

@@ -1,6 +1,5 @@
-﻿
-//enemy class with movement logic, in the future will be holding pokemons 
-using OstreCeTamtychSpodOkna;
+﻿using OstreCeTamtychSpodOkna;
+using System;
 
 public class Enemy : HasPokemonList
 {
@@ -179,5 +178,23 @@ public class Enemy : HasPokemonList
             }
         }
         return livingPokemons > 0;
+    }
+
+    public List<Pokemon> RollForRescuedPokemons()
+    {
+        Random random = new Random();
+        List<Pokemon> list = new List<Pokemon>();
+        if (!(pokemonList.Any(p => p.stats.IsAlive)))
+        {
+            foreach (Pokemon pokemon in pokemonList)
+            {
+                int chance = random.Next(1, 11);
+                if (chance <= 4)
+                {
+                    list.Add(pokemon);
+                }
+            }
+        }
+        return list;
     }
 }

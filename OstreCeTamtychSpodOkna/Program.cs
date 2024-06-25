@@ -1,8 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using Terminal.Gui;
-using System.Data;
-using OstreCeTamtychSpodOkna;
-using System.Media;
+﻿using OstreCeTamtychSpodOkna;
 
 public class Program
 {
@@ -10,7 +6,18 @@ public class Program
     {
         //Application.Init();
         Console.WriteLine("Press alt+enter or f11");
-        Console.ReadLine();
+        Console.WriteLine("If fullscreen then continue");
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
+        Console.Clear();
+        Console.WriteLine("You should go to Rescue Center. Buy Creature. \nYou can press M to see Menu.\n");
+        Console.WriteLine("To buy more Creatures: \n" +
+            "1. Defeat Enemies\n" +
+            "2. Transfer rescued Creatures in Rescue Center\n" +
+            "3. You can exchange for BuyOut currency(get 1 after each win, those Ns are BuyOut currency)\n" +
+            "4. Cost is equal to level of that Creature");
+        Console.WriteLine("Press any key to continue...");
+        Console.ReadKey();
         Console.Clear();
 
         //Start Game

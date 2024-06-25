@@ -96,6 +96,8 @@ public class Pokemon
     {
         stats.Hp = stats.maxHp;
         stats.shield = stats.maxShield;
+        stats.SetShieldAndAlive();
+
         foreach (var skill in allSkills)
         {
             skill.ResetUses();

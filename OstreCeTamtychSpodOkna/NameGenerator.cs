@@ -5,14 +5,6 @@
     private static readonly string[] moistElements = { "Dew", "Mist", "Puddle", "Spray", "Droplet", "Ripple", "Splashsquatch", "Moistache", "Dampoodle", "Fogzilla" };
     private static readonly string[] mudElements = { "Swamp", "Quagmire", "Silt", "Clay", "Peat", "Loam", "Mudbud", "Sludgehog", "Dirturtle", "Quicksandwich" };
     private static readonly string[] neutralElements = { "Mon", "Ster", "Ion", "Beast", "Critter", "Sprite", "Fuzzle", "Woozle", "Bloop", "Thingamajig" };
-
-    /*    public enum PokemonType
-        {
-            Lava,
-            Moist,
-            Mud
-        }
-    */
     public static string GenerateName(Type type)
     {
         string[] typeElements = type switch

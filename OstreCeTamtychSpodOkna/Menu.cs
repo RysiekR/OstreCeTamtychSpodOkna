@@ -27,7 +27,6 @@ public static class Menu
                 case ConsoleKey.D2: PokemonInfoAll(); break;
                 case ConsoleKey.D3: ItemsListMenu(); break;
                 case ConsoleKey.D4: RescuedPokemons(); break;
-
             }
         } while (con1);
         Display.QuitMenu();
@@ -54,19 +53,14 @@ public static class Menu
                 Console.WriteLine();
                 indexPokemon++;
             }
-
-
             ConsoleKey pressedKey0 = Console.ReadKey(true).Key;
             switch (pressedKey0)
             {
                 case ConsoleKey.Escape: con2 = false; break;
                 case ConsoleKey.D1: PokemonSkillsToChange(); break;
                 case ConsoleKey.D2: PokemonInfoAll(); break;
-
             }
         } while (con2);
-
-
     }
 
     private static void PokemonInfoAll()
@@ -77,7 +71,6 @@ public static class Menu
             Console.Clear();
             Console.WriteLine("All info menu");
             Console.WriteLine("Esc to exit");
-
 
             int indexPokemon = 0;
             foreach (Pokemon pokemon in pokemonList)
@@ -91,8 +84,6 @@ public static class Menu
                 Console.WriteLine();
                 indexPokemon++;
             }
-
-
 
             ConsoleKey pressedKey0 = Console.ReadKey(true).Key;
             switch (pressedKey0)
@@ -143,12 +134,10 @@ public static class Menu
             {
                 case ConsoleKey.Escape: con6 = false; break;
             }
-
         } while (con6);
     }
     private static void PokemonSkillsToChange()
     {
-        // from previous list which pokemon to chose skills to chose to change
         bool con3 = true;
         do
         {
@@ -200,7 +189,6 @@ public static class Menu
             }
         } while (con3);
     }
-
     private static void DeletePokemonSkill(string stringToInt, Pokemon pokemon)
     {
         int numerIndexPokemon = 0;

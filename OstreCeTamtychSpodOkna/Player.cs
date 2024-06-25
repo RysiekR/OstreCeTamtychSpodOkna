@@ -1,5 +1,4 @@
-﻿
-using OstreCeTamtychSpodOkna;
+﻿using OstreCeTamtychSpodOkna;
 using OstreCeTamtychSpodOkna.Equipment;
 using Terminal.Gui;
 
@@ -14,17 +13,15 @@ public class Player : HasPokemonList
     private int possibleCol;
     string enemyString = "123456789";
     public Map currentMap;
-    //public Pokemon Pokemon { get; set; }
     public List<Item> itemsList = new List<Item>();
     public int money = 1000;
 
     private bool hitObstacle = false;
-    ConsoleKey consoleKeyPressed;// = ConsoleKey.None;
-
+    ConsoleKey consoleKeyPressed;
     private Dictionary<ConsoleKey, Action> movements;
     private Dictionary<char, Action> logicFromChars;
 
-    public List<Pokemon> rescuedPokemons;// = new List<Pokemon>();
+    public List<Pokemon> rescuedPokemons;
 
     public Player(Map currentMap)
     {
@@ -40,11 +37,6 @@ public class Player : HasPokemonList
         this.currentMap = currentMap;
         InitializePlayerPosition();
         pokemonList.Clear();
-        /*
-                pokemonList.Add(new Pokemon());
-                pokemonList.Add(new Pokemon());
-               */
-        // Pokemon = pokemonList[0];
         //slowniki
         movements = new Dictionary<ConsoleKey, Action>
             {
@@ -57,9 +49,8 @@ public class Player : HasPokemonList
                 {ConsoleKey.M, () => ShowMenu() }
         };
 
-        logicFromChars = new Dictionary<char, Action>
+        logicFromChars = new Dictionary<char, Action>//tutaj dodawac logike zwiazana z np sklepami i szpitalami
                 {
-                    //tutaj dodawac logike zwiazana z np sklepami i szpitalami
                     {'P', () => ChangeMapTo('P')},
                     {',', () => grassPoints++ },
                     {'N', () => tempIntFromNs++ },
@@ -68,34 +59,30 @@ public class Player : HasPokemonList
                     {'H', () => UseHospital() },
                     {'S', () => UseShop() },
                     {'R', () => RescueMenu() },
-                    //{'F', () => FightyFight() }
                 };
-        //dodanie kazdego znaku przez ktory nie mozna przejsc
-        foreach (char obstacleChar in Sprites.obstacle)
+
+        foreach (char obstacleChar in Sprites.obstacle)//dodanie kazdego znaku przez ktory nie mozna przejsc
         {
             logicFromChars[obstacleChar] = () => hitObstacle = true;
         }
-        //dodanie znakow enemies
-        foreach (char enemy in enemyString)
+
+        foreach (char enemy in enemyString)//dodanie znakow enemies
         {
             logicFromChars[enemy] = () => FightyFightChecker(); //TODO MIODEK walka
         }
         PrawieSingleton.player = this;
     }
 
-
     public void UpdatePos()
     {
         consoleKeyPressed = Console.ReadKey(true).Key;
-
         if (movements.TryGetValue(consoleKeyPressed, out var movementAction))
         {
             movementAction(); // tu jest wykonanie slownika
         }
     }
-
     // bierze i sprawdza char w kierunku w ktorym chcemy sie poruszyc
-    // i sprawdza co tam jest i robi co trzeba(mam nadzieje)(teraz dolozylem slownik to juz wcale nie mam pewnosci)
+    // i sprawdza co tam jest i robi co trzeba(mam nadzieje)
     void Movement(int futureRow, int futureCol)
     {
         char charInThisDirection = this.currentMap.mapAsList[futureRow][futureCol];
@@ -103,7 +90,6 @@ public class Player : HasPokemonList
         int oldRow = row;
         possibleRow = futureRow;
         possibleCol = futureCol;
-
         //sprawdz slownik i jezeli cos sie da zrobic to zrob
         if (logicFromChars.TryGetValue(charInThisDirection, out var action))
         {
@@ -128,7 +114,6 @@ public class Player : HasPokemonList
                     { col--; }
                     break;
             }
-
             //wpisanie ruchu do mapy
             currentMap.mapAsList[row] = currentMap.mapAsList[row].Insert(col, "#");
             currentMap.mapAsList[row] = currentMap.mapAsList[row].Remove(col + 1, 1);
@@ -136,48 +121,38 @@ public class Player : HasPokemonList
             currentMap.mapAsList[oldRow] = currentMap.mapAsList[oldRow].Remove(oldCol + 1, 1);
         }
         hitObstacle = false;
-
-
-
     }
-
     void ChangeMapTo(char letterOfTheMap)
     {
         hitObstacle = true;
         switch (letterOfTheMap)
         {
             case 'A':
-                {
-                    MapHolder.GenerateArena();
-                    currentMap = MapHolder.tempArenaMap;
-                    InitializePlayerPosition();
-                    Display.LoadArena();
+                MapHolder.GenerateArena();
+                currentMap = MapHolder.tempArenaMap;
+                InitializePlayerPosition();
+                Display.LoadArena();
 
-                    int oldCol = col;
-                    int oldRow = row;
-                    MapHolder.cityMap.mapAsList[oldRow] = MapHolder.cityMap.mapAsList[oldRow].Insert(oldCol, " ");
-                    MapHolder.cityMap.mapAsList[oldRow] = MapHolder.cityMap.mapAsList[oldRow].Remove(oldCol + 1, 1);
+                int oldCol = col;
+                int oldRow = row;
+                MapHolder.cityMap.mapAsList[oldRow] = MapHolder.cityMap.mapAsList[oldRow].Insert(oldCol, " ");
+                MapHolder.cityMap.mapAsList[oldRow] = MapHolder.cityMap.mapAsList[oldRow].Remove(oldCol + 1, 1);
 
-                    isOnArena = true;
-                    break;
-                }
+                isOnArena = true;
+                break;
             case 'C':
-                {
-                    currentMap = MapHolder.cityMap;
-                    InitializePlayerPosition();
-                    Display.LoadCityMap();
-                    isOnArena = false;
-                    break;
-                }
+                currentMap = MapHolder.cityMap;
+                InitializePlayerPosition();
+                Display.LoadCityMap();
+                isOnArena = false;
+                break;
         }
-
     }
     void UseHospital()
     {
         hitObstacle = true;
         Hospital.HealPokemons();
     }
-
     void UseShop()
     {
         Application.Init();
@@ -200,15 +175,12 @@ public class Player : HasPokemonList
         hitObstacle = true;
         Rescue.OpenRescueMenu();
     }
-
-
     private void InitializePlayerPosition()
     {
         //wstawienie gracza
         currentMap.mapAsList[row] = currentMap.mapAsList[row].Insert(col, "#");
         currentMap.mapAsList[row] = currentMap.mapAsList[row].Remove(col + 1, 1);
     }
-
     private void PrintPoints()
     {
         for (int i = 0; i < 4; i++)
@@ -229,25 +201,21 @@ public class Player : HasPokemonList
         Console.SetCursorPosition(80, 6);
         Console.Write(tempIntFromNs);
     }
-
     private void ShowMenu()
     {
         Menu.ShowMenu();
     }
-    //TODO miodek
-
     public void FightyFightChecker()
     {
         hitObstacle = true;
-        if (pokemonList.Count > 0)
+        if (pokemonList.Count > 0)//sprawdzenie czy ma jakiego kolwiek pokemona jak nie ma to sie tylko odbija
         {
             FightyFight();
         }
     }
-
-
     public void FightyFight()
     {
+        hitObstacle = true;
         // Sprawdzenie, czy gracz ma jakiekolwiek żywe Pokemony przed rozpoczęciem walki
         if (!pokemonList.Any(p => p.stats.IsAlive))
         {
@@ -282,10 +250,9 @@ public class Player : HasPokemonList
             return; //Zakończenie metody, jeśli gracz nie ma Pokemonów
         }
 
-        hitObstacle = true;
-
-        List<Enemy> enemiesToRemove = new List<Enemy>();
-        foreach (Enemy enemy in currentMap.enemyList)
+        //List<Enemy> enemiesToRemove = new List<Enemy>();
+        Enemy enemyDefeated = null;
+        /*foreach (Enemy enemy in currentMap.enemyList)// przeszukanie enemies in current map zeby sprawdzic z ktorym walczymy
         {
             if (enemy.row == possibleRow && enemy.col == possibleCol)
             {
@@ -305,12 +272,35 @@ public class Player : HasPokemonList
                     enemiesToRemove.Add(enemy); // Tutaj wywołać walkę, nie zabijać jeszcze !!!!
                 }
             }
+        }*/
+        Enemy enemy = MapHolder.FindEnemyOnArenaAt(possibleRow, possibleCol);
+        if (enemy != null) 
+        {
+            BattleProgram.BattleWindowHolder(this, enemy); // WALKA NA KONKRETNYM PRZECIWNIKU TUTAJ, TUTAJ MASZ ENEMY KTORY JEST W TRAKCIE WALKI
+            enemy.AssignAvatar();
+            if (!(enemy.pokemonList.Any(p => p.stats.IsAlive)))
+            {
+                enemyDefeated = enemy;
+                foreach(Pokemon pokemon in enemy.RollForRescuedPokemons()) // mechanika ratowania(losowa)
+                {
+                    rescuedPokemons.Add(pokemon);
+                }
+                
+            }
+
         }
-        foreach (Enemy enemy in enemiesToRemove)
+        if (enemyDefeated != null)
+        {
+            enemyDefeated.GetRidOfThisAvatar();
+            currentMap.enemyList.Remove(enemyDefeated); // Tutaj zabić !!
+        }
+
+/*
+        foreach (Enemy enemy in enemiesToRemove) // usuniecie przeciwnika
         {
             enemy.GetRidOfThisAvatar();
             currentMap.enemyList.Remove(enemy); // Tutaj zabić !!
-        }
+        }*/
     }
     private Pokemon ChosePokemon()
     {
@@ -366,7 +356,7 @@ public static class PrawieSingleton
     {
         int lowestLevel = 0;
         int highestlevel = 0;
-        if(player.pokemonList.Count != 0)
+        if (player.pokemonList.Count != 0)
         {
             int[] levelsArray = new int[player.pokemonList.Count];
 
