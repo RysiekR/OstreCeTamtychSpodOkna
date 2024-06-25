@@ -26,14 +26,6 @@ public class Player : HasPokemonList
     public Player(Map currentMap)
     {
         rescuedPokemons = new List<Pokemon>();
-        /*        itemsList.Add(ItemFactory.CreateSmallPotion());
-                itemsList.Add(ItemFactory.CreateMediumPotion());
-                itemsList.Add(ItemFactory.CreateHyperPotion());
-                itemsList.Add(ItemFactory.CreateSmallShield());
-                itemsList.Add(ItemFactory.CreateBigShield());
-                itemsList.Add(ItemFactory.CreateSmallBomb());
-                itemsList.Add(ItemFactory.CreateBigBomb());
-        */
         this.currentMap = currentMap;
         InitializePlayerPosition();
         pokemonList.Clear();
@@ -264,29 +256,7 @@ public class Player : HasPokemonList
             return; //Zakończenie metody, jeśli gracz nie ma Pokemonów
         }
 
-        //List<Enemy> enemiesToRemove = new List<Enemy>();
         Enemy enemyDefeated = null;
-        /*foreach (Enemy enemy in currentMap.enemyList)// przeszukanie enemies in current map zeby sprawdzic z ktorym walczymy
-        {
-            if (enemy.row == possibleRow && enemy.col == possibleCol)
-            {
-                BattleProgram.BattleWindowHolder(this, enemy); // WALKA NA KONKRETNYM PRZECIWNIKU TUTAJ, TUTAJ MASZ ENEMY KTORY JEST W TRAKCIE WALKI
-                enemy.AssignAvatar();
-                Random random = new Random();
-                if (!(enemy.pokemonList.Any(p => p.stats.IsAlive)))
-                {
-                    foreach (Pokemon pokemon in enemy.pokemonList)
-                    {
-                        int chance = random.Next(1, 11);
-                        if (chance <= 4)
-                        {
-                            rescuedPokemons.Add(pokemon);
-                        }
-                    }
-                    enemiesToRemove.Add(enemy); // Tutaj wywołać walkę, nie zabijać jeszcze !!!!
-                }
-            }
-        }*/
         Enemy enemy = MapHolder.FindEnemyOnArenaAt(possibleRow, possibleCol);
         if (enemy != null) 
         {
@@ -306,13 +276,6 @@ public class Player : HasPokemonList
             enemyDefeated.GetRidOfThisAvatar();
             currentMap.enemyList.Remove(enemyDefeated); // Tutaj zabić !!
         }
-
-/*
-        foreach (Enemy enemy in enemiesToRemove) // usuniecie przeciwnika
-        {
-            enemy.GetRidOfThisAvatar();
-            currentMap.enemyList.Remove(enemy); // Tutaj zabić !!
-        }*/
     }
     private Pokemon ChosePokemon()
     {
