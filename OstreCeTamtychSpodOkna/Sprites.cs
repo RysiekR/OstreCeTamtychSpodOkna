@@ -4,29 +4,6 @@
     {
         public static readonly string obstacle = "╬┼╦╩╣╠│║╤*#@$':|)(^";
         //minimapy
-/*        public static readonly string[] map =
-        {
-    "WWWWWWWWWWWWW",
-    "W           W",
-    "W           W",
-    "WP          W",
-    "W           W",
-    "W           W",
-    "W           W",
-    "WWWWWWWWWWWWW",
-};
-        public static readonly string[] map2 =
-        {
-    "WWWWWWWWWWWWW",
-    "W           W",
-    "W           W",
-    "W        P  W",
-    "W           W",
-    "W           W",
-    "W           W",
-    "WWWWWWWWWWWWW",
-};
-*/
         public static readonly string[] arena =
         {
     "WWWWWWWWWWWWW",
@@ -142,14 +119,6 @@
             "     ",
         };
 
-        /*public static readonly string[] debugFight =
-        {
-            "     ",
-            " .F. ",
-            " FFF ",
-            " .F. ",
-            "     ",
-        };*/
         //wysokosc sprita potrzebna w map.spriteheight
         public static readonly int spriteHeight = spriteWall.Length;
 
@@ -167,7 +136,6 @@
                 case 'S': bigSprite = spriteShop; break;
                 case 'T': bigSprite = treeSprite; break;
                 case 'R': bigSprite = rescueSprite; break;
-                //case 'F': bigSprite = debugFight; break;
                 default: bigSprite = spriteAir; break;
             }
             return bigSprite;

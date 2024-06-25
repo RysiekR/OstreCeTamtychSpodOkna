@@ -7,12 +7,9 @@ public class Pokemon
     public Type type { get; private set; }
     public Stats stats; //{ get; set; }
     public List<SkillCategory> allSkills = new List<SkillCategory>();
-
     public Pokemon()
     {
         level = new PokemonLevel(this);
-        
-
         Random random = new Random();
         type = (Type)random.Next(0, Enum.GetNames(typeof(Type)).Length);
         Name = PokemonNameGenerator.GenerateName(type);
@@ -21,7 +18,6 @@ public class Pokemon
         {
             level.exp = 5 * level.level + 1;
         }*/
-
         FillSkillsUpToPokemonLevel();
     }
     /// <summary>
@@ -44,11 +40,7 @@ public class Pokemon
         {
             LevelUpLogic();
         }
-
-
     }
-
-
     /// <summary>
     /// Generuje skille. losowo jezeli howMany = 1, co najmniej 1 offensywny jezeli howMany > 1
     /// </summary>
@@ -113,35 +105,6 @@ public class Pokemon
         var healSkills = allSkills.OfType<HealSkill>().Where(s => s.CanUse).ToList();
         return healSkills.Any() ? healSkills[new Random().Next(healSkills.Count)] : null;
     }
-    /*    public void GainExperience(int experiencePoints)
-        {
-
-            int experienceThreshold = 100 * this.Level; //Wartość potrzebna do level up'a
-
-            // double experienceMultiplier = 1.6 / (1 + Math.Exp(opponent.Level - this.Level));
-            // int adjustedExperiencePoints = (int)(experiencePoints * experienceMultiplier) + 1;
-
-            if (experiencePoints >= experienceThreshold)
-            {
-                this.Level++;
-                Console.WriteLine($"{this.Name} zdobył {experiencePoints} punktów doświadczenia i awansował na poziom {this.Level}!");
-
-                //Zwiększanie statystyk po level up'ie
-                this.MaxHP += 10;
-
-                //Warunek ewolucji
-                if (this.Level >= 10)
-                {
-                    this.Name += "*";
-                    Console.WriteLine($"{this.Name} ewoluował!");
-                }
-            }
-            else
-            {
-                Console.WriteLine($"{this.Name} zdobył {experiencePoints} punktów doświadczenia.");
-            }
-        }
-    */
     public void LevelUpLogic()
     {
         stats.LevelUp();
@@ -162,7 +125,6 @@ public class Pokemon
         Console.WriteLine("Shield: " + stats.shield + "/" + stats.maxShield);
         stats.PrintInfo();
         Console.WriteLine("Lv: " + level.level + " Exp: " + level.exp + "/" + level.LevelUpFormula());
-
     }
     public void AllSkillsInfoPrint()
     {

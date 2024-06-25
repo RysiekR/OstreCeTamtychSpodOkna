@@ -7,6 +7,7 @@ public static class Menu
 
     public static void ShowMenu()
     {
+        Console.CursorVisible = true;
         bool con1 = true;
         do
         {
@@ -29,6 +30,7 @@ public static class Menu
                 case ConsoleKey.D4: RescuedPokemons(); break;
             }
         } while (con1);
+        Console.CursorVisible = false;
         Display.QuitMenu();
     }
 

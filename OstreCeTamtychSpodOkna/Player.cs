@@ -347,42 +347,6 @@ public class Player : HasPokemonList
         return pokemonList[0];
     }
 }
-
-public static class PrawieSingleton
-{
-    public static Player player;
-    public static int GetAverageLevelOfPlayerPokemons()
-    {
-        int averageLevel = 0;
-        foreach (Pokemon p in player.pokemonList)
-        {
-            averageLevel += p.level.level;
-        }
-        averageLevel /= player.pokemonList.Count + 1;
-
-        return averageLevel;
-    }
-    public static int GetLevelDifferenceInPlayerPokemons()
-    {
-        int lowestLevel = 0;
-        int highestlevel = 0;
-        if (player.pokemonList.Count != 0)
-        {
-            int[] levelsArray = new int[player.pokemonList.Count];
-
-            for (int i = 0; i < player.pokemonList.Count; i++)
-            {
-                levelsArray[i] = player.pokemonList[i].level.level;
-            }
-
-            lowestLevel = levelsArray.Min();
-            highestlevel = levelsArray.Max();
-        }
-
-
-        return Math.Max(0, (highestlevel - lowestLevel));
-    }
-}
 public static class Hospital
 {
     public static void HealPokemons()
@@ -393,20 +357,3 @@ public static class Hospital
         }
     }
 }
-
-
-
-
-
-/*public struct Position
-{
-    public Position(int rowIn, int colIn)
-    {
-        _row = rowIn; _col = colIn;
-    }
-    public int row { get => _row; set { if (value < 0 && _row + value < 0) { _row = 0; } else { _row += value; } } }
-    public int col { get => _col; set { if (value < 0 && _col + value < 0) { _col = 0; } else { _col += value; } } }
-
-    private int _row;
-    private int _col;
-}*/

@@ -7,6 +7,7 @@ public static class Rescue
     static int howManyTransferred = 0;
     public static void OpenRescueMenu()
     {
+        Console.CursorVisible = true;
         bool con1 = true;
         do
         {
@@ -21,11 +22,11 @@ public static class Rescue
             {
                 Console.WriteLine("You can still transfer some.");
             }
-/*            foreach (Pokemon p in player.rescuedPokemons)
-            {
-                p.PokemonInfoPrint();
-            }
-*/
+            /*            foreach (Pokemon p in player.rescuedPokemons)
+                        {
+                            p.PokemonInfoPrint();
+                        }
+            */
             ConsoleKey pressedKey0 = Console.ReadKey(true).Key;
             switch (pressedKey0)
             {
@@ -36,13 +37,11 @@ public static class Rescue
             }
 
         } while (con1);
+        Console.CursorVisible = false;
         Display.QuitMenu();
-
     }
-
     private static void BuyOut()
     {
-
         bool con7 = true;
         do
         {
@@ -52,8 +51,6 @@ public static class Rescue
             Console.WriteLine("Esc to exit");
             Console.WriteLine("press 1 to show transfered Creatures");
             Console.WriteLine();
-
-
 
             ConsoleKey pressedKey0 = Console.ReadKey(true).Key;
             switch (pressedKey0)
@@ -91,7 +88,7 @@ public static class Rescue
                 return;
             }
             Pokemon pokemonToBuyOut = transferedPokemons[numerIndexPokemon - 1];
-            if (pokemonToBuyOut.level.level > player.tempIntFromNs )
+            if (pokemonToBuyOut.level.level > player.tempIntFromNs)
             {
                 Console.WriteLine("Not enough currency... Defeat more enemies");
                 Console.WriteLine("press any key to continue");
@@ -101,18 +98,15 @@ public static class Rescue
             else
             {
                 Console.WriteLine($"BoughtOut {pokemonToBuyOut.Name}");
-                player.pokemonList.Add( pokemonToBuyOut );
-                transferedPokemons.Remove( pokemonToBuyOut );
+                player.pokemonList.Add(pokemonToBuyOut);
+                transferedPokemons.Remove(pokemonToBuyOut);
                 player.tempIntFromNs -= pokemonToBuyOut.level.level;
                 Console.WriteLine("press any key to continue...");
                 Console.ReadKey();
             }
-
-
         }
-
     }
-        private static void TransferAll()
+    private static void TransferAll()
     {
         int money = 0;
         foreach (Pokemon p in player.rescuedPokemons)
@@ -153,8 +147,5 @@ public static class Rescue
             }
 
         } while (con6);
-
-
     }
-
 }
