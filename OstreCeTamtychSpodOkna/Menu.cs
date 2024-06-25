@@ -1,6 +1,4 @@
-﻿using OstreCeTamtychSpodOkna;
-
-public static class Menu
+﻿public static class Menu
 {
     static Player player = PrawieSingleton.player;
     static List<Pokemon> pokemonList = player.pokemonList;

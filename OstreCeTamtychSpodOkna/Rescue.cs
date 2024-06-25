@@ -1,6 +1,4 @@
-﻿using OstreCeTamtychSpodOkna;
-
-public static class Rescue
+﻿public static class Rescue
 {
     static Player player = PrawieSingleton.player;
     public static List<Pokemon> transferedPokemons = new List<Pokemon>();

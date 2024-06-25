@@ -1,7 +1,4 @@
-﻿
-using OstreCeTamtychSpodOkna;
-
-public class Map
+﻿public class Map
 {
     //w założeniu ma byc obiektem w ktorym mozna trzymac mape
     //np obiekt mapaMiasta, mapaAreny

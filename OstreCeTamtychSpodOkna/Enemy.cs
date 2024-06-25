@@ -1,7 +1,4 @@
-﻿using OstreCeTamtychSpodOkna;
-using System;
-
-public class Enemy : HasPokemonList
+﻿public class Enemy : HasPokemonList
 {
     public int row { get; private set; }
     public int col { get; private set; }

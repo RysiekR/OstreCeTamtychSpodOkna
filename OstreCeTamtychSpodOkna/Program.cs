@@ -1,6 +1,4 @@
-﻿using OstreCeTamtychSpodOkna;
-
-public class Program
+﻿public class Program
 {
     public static void Main()
     {

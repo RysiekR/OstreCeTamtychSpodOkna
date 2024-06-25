@@ -1,5 +1,4 @@
-﻿using OstreCeTamtychSpodOkna;
-using OstreCeTamtychSpodOkna.Equipment;
+﻿using OstreCeTamtychSpodOkna.Equipment;
 using Terminal.Gui;
 
 public class Player : HasPokemonList

@@ -1,6 +1,4 @@
-﻿using OstreCeTamtychSpodOkna;
-
-public static class MapHolder
+﻿public static class MapHolder
 {
     public static Map cityMap = new Map(Sprites.city);
     public static Map tempArenaMap; // w Display.loadarena zrobic temp arena.clear() a pozniej temparena = new bla bla bla 

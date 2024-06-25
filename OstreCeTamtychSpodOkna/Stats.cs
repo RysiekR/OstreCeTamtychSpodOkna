@@ -1,6 +1,4 @@
-﻿using System;
-
-public struct Stats
+﻿public struct Stats
 {
     Pokemon owner;
     private int vitality;

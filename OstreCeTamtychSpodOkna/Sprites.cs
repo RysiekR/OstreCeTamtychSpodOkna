@@ -1,12 +1,10 @@
-﻿namespace OstreCeTamtychSpodOkna
+﻿public class Sprites
 {
-    public class Sprites
+    public static readonly string obstacle = "╬┼╦╩╣╠│║╤╗╔┌─┐│└┘*#@$':|)(^.";
+    //minimapy
+    public static string[] arena => ArenaSprites.GetRandomMapStringArray();
+    public static readonly string[] city =
     {
-        public static readonly string obstacle = "╬┼╦╩╣╠│║╤╗╔┌─┐│└┘*#@$':|)(^.";
-        //minimapy
-        public static string[] arena => ArenaSprites.GetRandomMapStringArray();  
-        public static readonly string[] city =
-        {
     "WWWWWWWWWWWWW",
     "W        TRTW",
     "W A         W",
@@ -16,25 +14,25 @@
     "W           W",
     "WWWWWWWWWWWWW",
 };
-        //sprity
-        public static readonly string[] spriteWall =
-        {
+    //sprity
+    public static readonly string[] spriteWall =
+    {
     "╬╦╬╦╬",
     "╠┼┼┼╣",
     "╬┼┼┼╬",
     "╠┼┼┼╣",
     "╬╩╩╩╬"
 };
-        public static readonly string[] spriteAir =
-        {
+    public static readonly string[] spriteAir =
+    {
     ", , ,",
     " , , ",
     ", , ,",
     " , , ",
     ", , ,",
 };
-        public static readonly string[] spritePortal =
-        {
+    public static readonly string[] spritePortal =
+    {
             "     ",
             " .P. ",
             " PPP ",
@@ -42,8 +40,8 @@
             "     ",
 
         };
-        public static readonly string[] spritePortalToCity =
-        {
+    public static readonly string[] spritePortalToCity =
+    {
             "     ",
             " .C. ",
             " CCC ",
@@ -51,8 +49,8 @@
             "     ",
 
         };
-        public static readonly string[] spritePortalToArena =
-        {
+    public static readonly string[] spritePortalToArena =
+    {
             "     ",
             " .A. ",
             " AAA ",
@@ -60,48 +58,48 @@
             "     ",
 
         };
-        public static readonly string[] spriteHospital =
-        {
+    public static readonly string[] spriteHospital =
+    {
             "╔╤╤╤╗",
             "║┌─┐║",
             "║│+│║",
             "║└─┘║",
             "║│H│║",
         };
-        public static readonly string[] spriteShop =
-        {
+    public static readonly string[] spriteShop =
+    {
             "╔╤╤╤╗",
             "║│││║",
             "║│¥│║",
             "║│││║",
             "║│S│║",
         };
-        public static readonly string[] treeSprite =
-        {
+    public static readonly string[] treeSprite =
+    {
             ".*^*.",
             "*#@#*",
             "'*$*'",
             ")|:|(",
             " |^| "
         };
-        public static readonly string[] rescueSprite =
-        {
+    public static readonly string[] rescueSprite =
+    {
             "**^**",
             "$#!#$",
             "@'#'@",
             ")|^|(",
             " |R| ",
         };
-        public static readonly string[] wall =
-        {
+    public static readonly string[] wall =
+    {
             "+---+",
             "|+++|",
             "|+++|",
             "|+++|",
             "+---+"
         };
-        public static readonly string[] empty =
-        {
+    public static readonly string[] empty =
+    {
             "     ",
             "     ",
             "     ",
@@ -109,36 +107,34 @@
             "     ",
         };
 
-        //wysokosc sprita potrzebna w map.spriteheight
-        public static readonly int spriteHeight = spriteWall.Length;
-
-        public static string[] ChoseSprite(char fromMap)
+    //wysokosc sprita potrzebna w map.spriteheight
+    public static readonly int spriteHeight = spriteWall.Length;
+    public static string[] ChoseSprite(char fromMap)
+    {
+        string[] bigSprite;
+        switch (fromMap)
         {
-            string[] bigSprite;
-            switch (fromMap)
-            {
-                case 'W': bigSprite = spriteWall; break; //zamiast poprostu spriteWall uzyc chosewallsprite
-                case ' ': bigSprite = spriteAir; break;
-                case 'P': bigSprite = spritePortal; break;
-                case 'A': bigSprite = spritePortalToArena; break;
-                case 'C': bigSprite = spritePortalToCity; break;
-                case 'H': bigSprite = spriteHospital; break;
-                case 'S': bigSprite = spriteShop; break;
-                case 'T': bigSprite = treeSprite; break;
-                case 'R': bigSprite = rescueSprite; break;
-                default: bigSprite = spriteAir; break;
-            }
-            return bigSprite;
+            case 'W': bigSprite = spriteWall; break; //zamiast poprostu spriteWall uzyc chosewallsprite
+            case ' ': bigSprite = spriteAir; break;
+            case 'P': bigSprite = spritePortal; break;
+            case 'A': bigSprite = spritePortalToArena; break;
+            case 'C': bigSprite = spritePortalToCity; break;
+            case 'H': bigSprite = spriteHospital; break;
+            case 'S': bigSprite = spriteShop; break;
+            case 'T': bigSprite = treeSprite; break;
+            case 'R': bigSprite = rescueSprite; break;
+            default: bigSprite = spriteAir; break;
         }
+        return bigSprite;
+    }
 
-        //TODO zrobic zeby wybieralo dobra sciane !!! na koniec to !!! robic jak juz bedzie gra dzialala
-        // co ma przyjmowac ? musi przyjmowac sasiadow czyli musi przyjac aktualna mape i z niej wziac row-1/row+1 i col-1/col+1
-        public static string[] ChoseWallSprite(string[] mapSmallSprites)
-        {
-            string[] chosenSprite = new string[spriteHeight];
-            //give me logic procedure
-            return chosenSprite;
-        }
+    //TODO zrobic zeby wybieralo dobra sciane !!! na koniec to !!! robic jak juz bedzie gra dzialala
+    // co ma przyjmowac ? musi przyjmowac sasiadow czyli musi przyjac aktualna mape i z niej wziac row-1/row+1 i col-1/col+1
+    public static string[] ChoseWallSprite(string[] mapSmallSprites)
+    {
+        string[] chosenSprite = new string[spriteHeight];
+        //give me logic procedure
+        return chosenSprite;
     }
 }
 public static class ArenaSprites
@@ -147,7 +143,7 @@ public static class ArenaSprites
 
     public static string[] GetRandomMapStringArray()
     {
-        return listOfMiniMaps[random.Next(0,listOfMiniMaps.Count)];
+        return listOfMiniMaps[random.Next(0, listOfMiniMaps.Count)];
     }
     static readonly string[] a = {
     "WWWWWWWWWWWWWWWWWWWWWWWWWW",
@@ -179,12 +175,12 @@ public static class ArenaSprites
     "W                        W",
     "WWWWWWWWWWWWWWWWWWWWWWWWWW",
 };
-    static readonly List<string[]> listOfMiniMaps = new List<string[]>{ a,b,c};
+    static readonly List<string[]> listOfMiniMaps = new List<string[]> { a, b, c };
 
 }
 
 
-/* all the walls
+/* all the walls and other crap
  * 
 ╔╤╤╤═ ╔╤╤╤╗ ═╤╤╤═ ═╤╤╤╗
 ╟┘│└─ ║│││║ ─┘│└─ ─┘│└╢

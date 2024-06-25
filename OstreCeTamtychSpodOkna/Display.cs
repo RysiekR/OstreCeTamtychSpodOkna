@@ -1,8 +1,4 @@
-﻿using System.Numerics;
-
-namespace OstreCeTamtychSpodOkna
-{
-    public static class Display
+﻿    public static class Display
     {
         private static List<string> display = new List<string>(); // ten ktory powinien juz byc wyswietlony, stary
         private static List<string> newDisplay = new List<string>(); // temp do ktorego trzeba wrzucic zaktualizowana mape do wyswietlenia
@@ -130,4 +126,3 @@ namespace OstreCeTamtychSpodOkna
 
         }
     }
-}
