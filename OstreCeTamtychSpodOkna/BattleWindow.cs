@@ -140,6 +140,7 @@ public class BattleWindow : Window
 
     public BattleWindow(Player player, Enemy enemy) : base("Battle")
     {
+        ColorScheme = new ColorScheme() {Normal = new Terminal.Gui.Attribute(new TrueColor (255, 255, 0).ToConsoleColor()  , new TrueColor(82, 140, 41).ToConsoleColor()) };
         this.player = player;
         this.enemy = enemy;
         ChoosePokemon(enemy);
@@ -513,11 +514,11 @@ public class BattleWindow : Window
     private void CreateItemsGrid(Dialog itemsDialog)
     {
         int rows = (player.itemsList.Count + 1) / 2;
+        int itemIndex = 0;
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < 3; j++)
             {
-                int itemIndex = i * 2 + j;
                 if (itemIndex < player.itemsList.Count)
                 {
                     Item item = player.itemsList[itemIndex];
@@ -528,7 +529,7 @@ public class BattleWindow : Window
                     };
                     itemButton.Clicked += () =>
                     {
-                        player.itemsList.RemoveAt(itemIndex);
+                        player.itemsList.Remove(item);
                         UpdateBattleLog(item.UseItem(playerPokemon, enemyPokemon));
                         UpdateHPBars();
                         if (!enemyPokemon.stats.IsAlive)
@@ -551,6 +552,7 @@ public class BattleWindow : Window
                         itemsDialog.Running = false;
                     };
                     itemsDialog.Add(itemButton);
+                    itemIndex++;
                 }
             }
         }
