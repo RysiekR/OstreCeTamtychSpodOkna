@@ -128,6 +128,7 @@ public class BattleWindow : Window
             {
                 playerPokemon = pokemons[index];
                 InitializeUI();
+                RemoveOldPokemonAscii();
                 AddAsciiPokemonArt();
                 UpdateHPBars();
                 Application.RequestStop(dialog);
@@ -160,6 +161,7 @@ public class BattleWindow : Window
             });
         };
         battleState.StartBattle();
+        RemoveOldPokemonAscii();
         AddAsciiPokemonArt();
         InitializeButtons();
         InitializeUI();
@@ -534,8 +536,8 @@ public class BattleWindow : Window
                         UpdateHPBars();
                         if (!enemyPokemon.stats.IsAlive)
                         {
-                            int expGained = enemyPokemon.ExpAfterWin();
                             enemyPokemon.ExpAfterWin();
+                            int expGained = enemyPokemon.ExpAfterWin();
                             playerPokemon.level.exp = expGained;
                             Application.RequestStop();
                             Application.Top.Running = false;
@@ -612,8 +614,8 @@ public class BattleWindow : Window
 
                                 if (!enemyPokemon.stats.IsAlive)
                                 {
-                                    int expGained = enemyPokemon.ExpAfterWin();
                                     enemyPokemon.ExpAfterWin();
+                                    int expGained = enemyPokemon.ExpAfterWin();
                                     playerPokemon.level.exp = expGained;
                                     Application.RequestStop();
                                     Application.Top.Running = false;
@@ -746,7 +748,6 @@ public class BattleWindow : Window
     }
     private void AddAsciiPokemonArt()
     {
-        
         var playerPokemonArt = new Label(PokemonAscii.GetPokemonAscii())
         {
             X = Pos.Percent(10),
@@ -754,18 +755,84 @@ public class BattleWindow : Window
             Width = 30,
             Height = 14
         };
-        Remove(playerPokemonArt);//wyczysc przed ponownym narysowaniem ascii
         Add(playerPokemonArt);
-
         var enemyPokemonArt = new Label(PokemonAscii.GetPokemonAscii())
         {
             X = Pos.Percent(60),
             Y = Pos.Percent(25),
             Width = 30,
             Height = 14
-        };
-        Remove(enemyPokemonArt);   
+        };  
         Add(enemyPokemonArt);
+    }
+    private void RemoveOldPokemonAscii()
+    {
+        var playerPokemonRemoveArt = new Label(@"
+                                                    
+                                                        
+                                                    
+                                                        
+                                                        
+                                                        
+                                                            
+                                                            
+                                                            
+                                                            
+                                                        
+                                                            
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        
+                                                            
+                                                        
+                                                            
+                                                        
+                                                    
+                                                      
+                                                    ")
+        {
+            X = Pos.Percent(10),
+            Y = Pos.Percent(23),
+            Width = 30,
+            Height = 14
+        };
+        Add(playerPokemonRemoveArt);
+        var enemyPokemonRemoveArt = new Label(@"
+                                                    
+                                                        
+                                                    
+                                                        
+                                                        
+                                                        
+                                                            
+                                                            
+                                                            
+                                                            
+                                                        
+                                                            
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        
+                                                        
+                                                            
+                                                        
+                                                            
+                                                        
+                                                    
+                                                      
+                                                    ")
+        {
+            X = Pos.Percent(60),
+            Y = Pos.Percent(25),
+            Width = 30,
+            Height = 14
+        };
+        Add(enemyPokemonRemoveArt);
     }
 }
 public enum GameMode
