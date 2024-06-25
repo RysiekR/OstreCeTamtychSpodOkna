@@ -35,6 +35,7 @@ public static class Menu
             }
         } while (con1);
         Console.CursorVisible = false;
+        Console.Clear();
         Display.QuitMenu();
     }
 
