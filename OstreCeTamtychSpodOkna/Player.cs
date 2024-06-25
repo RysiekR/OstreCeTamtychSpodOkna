@@ -8,13 +8,13 @@ public class Player : HasPokemonList
     private int grassPoints = 0;
     public int tempIntFromNs = 1;
     public int row = 11;
-    public int col = 46;
+    public int col = 51;
     private int possibleRow;
     private int possibleCol;
     string enemyString = "123456789";
     public Map currentMap;
     public List<Item> itemsList = new List<Item>();
-    public int money = 1000;
+    public int money = 400;
 
     private bool hitObstacle = false;
     ConsoleKey consoleKeyPressed;
