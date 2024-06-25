@@ -27,7 +27,6 @@ public class Program
         Rescue.transferedPokemons.Add(new Pokemon());
         Rescue.transferedPokemons.Add(new Pokemon());
 
-
         while (true)
         {
             player.UpdatePos();
